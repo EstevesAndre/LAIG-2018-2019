@@ -6,8 +6,8 @@
     </views>
 
     <ambient>
-        <ambient r="255.0" g="255.0" b="255.0" a="0.0" />
-        <background r="128.0" g="128.0" b="128.0" a="128.0" />        
+        <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+        <background r="0.5" g="0.5" b="0.5" a="1.0" />        
     </ambient>
 
     <lights>

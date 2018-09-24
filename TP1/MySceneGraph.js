@@ -34,6 +34,9 @@ class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
+        this.ambient = [0, 0, 0, 0];
+        this.background = [0, 0, 0, 0];
+
         this.referenceLength = 1.0;
 
         // File reading 
@@ -222,13 +225,13 @@ class MySceneGraph {
         //Get id of the root element.
         this.idRoot = this.reader.getString(sceneNode, 'root');
         if (this.idRoot == null)
-            return "no root element defined for scene";
+            return "no root element defined for <scene>";
 
         //Get axis length.
         this.referenceLength = this.reader.getString(sceneNode, 'axis_length');
         if (this.referenceLength == null)
         {
-            this.onXMLMinorError("no axis length; assuming 'axis_length=1.0'");
+            this.onXMLMinorError("no axis length defined for <scene>; assuming 'axis_length=1.0'");
             this.referenceLength = 1.0;
         }
         
@@ -254,7 +257,93 @@ class MySceneGraph {
      * @param {ambient block element} ambientNode
      */
     parseAmbient(ambientNode) {
-        // TODO: Parse block
+        var children = ambientNode.children;
+
+        var AMB_INDEX = 0;
+        var BCK_INDEX = 1;
+
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName == "ambient") 
+            {
+                if (i != AMB_INDEX)
+                    this.onXMLMinorError("tag <ambient> out of order");
+                
+                //Get r value
+                var r =  this.reader.getString(children[i], 'r');
+                if(r == null)
+                    return "no r value defined for <ambient>"
+                else if(r < 0 || r > 1)
+                    return "r value for <ambient> out of bounds (0.0 <= r <= 1.0)"
+                this.ambient[0] = r;
+
+                //Get g value
+                var g =  this.reader.getString(children[i], 'g');
+                if(g == null)
+                    return "no g value defined for <ambient>"
+                else if(g < 0 || g > 1)
+                    return "g value for <ambient> out of bounds (0.0 <= g <= 1.0)"
+                this.ambient[1] = g;
+
+                //Get b value
+                var b =  this.reader.getString(children[i], 'b');
+                if(b == null)
+                    return "no b value defined for <ambient>"
+                else if(b < 0 || b > 1)
+                    return "b value for <ambient> out of bounds (0.0 <= b <= 1.0)"
+                this.ambient[2] = b;
+
+                //Get a value
+                var a =  this.reader.getString(children[i], 'a');
+                if(a == null)
+                    return "no a value defined for <ambient>"
+                else if(a < 0 || a > 1)
+                    return "a value for <ambient> out of bounds (0.0 <= a <= 1.0)"
+                this.ambient[3] = a;
+                
+            }
+            else if (children[i].nodeName == "background")
+            {
+                if (i != BCK_INDEX)
+                    this.onXMLMinorError("tag <background> out of order");
+
+                //Get r value
+                var r =  this.reader.getString(children[i], 'r');
+                if(r == null)
+                    return "no r value defined for <background>"
+                else if(r < 0 || r > 1)
+                    return "r value for <background> out of bounds (0.0 <= r <= 1.0)"
+                this.background[0] = r;
+
+                //Get g value
+                var g =  this.reader.getString(children[i], 'g');
+                if(g == null)
+                    return "no g value defined for <background>"
+                else if(g < 0 || g > 1)
+                    return "g value for <background> out of bounds (0.0 <= g <= 1.0)"
+                this.background[1] = g;
+
+                //Get b value
+                var b =  this.reader.getString(children[i], 'b');
+                if(b == null)
+                    return "no b value defined for <background>"
+                else if(b < 0 || b > 1)
+                    return "b value for <background> out of bounds (0.0 <= b <= 1.0)"
+                this.background[2] = b;
+
+                //Get a value
+                var a =  this.reader.getString(children[i], 'a');
+                if(a == null)
+                    return "no a value defined for <background>"
+                else if(a < 0 || a > 1)
+                    return "a value for <background> out of bounds (0.0 <= a <= 1.0)"
+                this.background[3] = a;
+            }
+            else
+            {
+                return "unexpected child tag of <ambient> - <"+ children[i].nodeName + ">";
+            }
+        }
 
         console.log("Parsed ambient");
 
