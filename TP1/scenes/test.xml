@@ -20,14 +20,13 @@
     </lights>
 
     <textures>
-        <texture id="texture_1" file="asdas">
     </textures>
 
     <materials>
     </materials>
 
-    <transformation>
-    </transformation>
+    <transformations>
+    </transformations>
 
     <primitives>
     </primitives>
