@@ -17,9 +17,22 @@
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </omni>        
+
+        <spot id="light_2" enabled="1" angle="0.0" exponent="2.0">
+            <location x="2.0" y="2.0" z="2.0" />
+            <target x="2.0" y="0.0" z="2.0" />
+            <ambient r="0.9" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.9" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.9" g="0.5" b="0.5" a="1.0" />
+        </spot>
     </lights>
 
     <textures>
+        <texture id="texture_1" file="images/trunk-image.jpg" />        
+        <texture id="texture_2" file="images/leaves.jpg" />
+        <texture id="texture_3" file="images/rocks.jpg" />
+        <texture id="texture_4" file="images/bank.jpg" />
+        <texture id="texture_4" file="images/vidral.jpg" />
     </textures>
 
     <materials>

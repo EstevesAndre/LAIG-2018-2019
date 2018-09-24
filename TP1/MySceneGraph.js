@@ -367,7 +367,7 @@ class MySceneGraph {
         for(var i = 0; i < children.length; i++) 
         {
             // verifies the type of the light.
-            if(children[i].nodeName != "omni" && childer[i].nodeName != "spot")
+            if(children[i].nodeName != "omni" && children[i].nodeName != "spot")
             {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
@@ -413,7 +413,7 @@ class MySceneGraph {
             }
             else
             {
-                enableLight = ((aux == 0) ? false : true);
+                enableLight = ((enableIndex == 0) ? false : true);
             }
             
 
@@ -454,14 +454,17 @@ class MySceneGraph {
                 }
 
                 // w
-                var w = this.reader.getFloat(grandChildren[locationIndex], 'w');
-                if (!(w != null && !isNaN(w) && w >= 0 && w <= 1))
+                if(children[i].nodeName == "omni") 
                 {
-                    return "unable to parse w-coordinate of the light location for ID = " + lightId;
-                }
-                else
-                {
-                    locationLight.push(w);
+                    var w = this.reader.getFloat(grandChildren[locationIndex], 'w');
+                    if (!(w != null && !isNaN(w) && w >= 0 && w <= 1))
+                    {
+                        return "unable to parse w-coordinate of the light location for ID = " + lightId;
+                    }
+                    else
+                    {
+                        locationLight.push(w);
+                    }
                 }
             }
             else
@@ -676,51 +679,40 @@ class MySceneGraph {
             if(children[i].nodeName == "spot")
             {                
                 // indices extra of the spot light    
-                var angleIndex = children[i].indexOf("angle");
-                var exponentIndex = children[i].indexOf("exponent");
+                var angleIndex = this.reader.getString(children[i],'angle');
+                var exponentIndex = this.reader.getString(children[i],'exponent');
                 var targetIndex = nodeNames.indexOf("target");
 
                 // angle
                 var angleLight = 0;
-                if (angleIndex == -1) {
-                    return "missing angle value of spot light with ID = " + lightId;
+                if(!(angleIndex != null && !isNaN(angleIndex)))
+                {         
+                    return "unable to parse value component of the 'angle light' field for ID = " + lightId;
                 }
-                else {
-                    var aux = this.reader.getFloat(grandChildren[angleIndex], 'angle');
-                    if (!(aux != null && !isNaN(aux)))
-                    {
-                        return "unable to parse value component of the 'angle light' field for ID = " + lightId;
-                    }
-                    else if(aux < 0 || aux > 2*Math.PI)
-                    {
-                        this.onXMLMinorError("angle of spot light out of range [0, 2*PI] with ID = " + lightId);
-                    }
-                    else
-                    {
-                        angleLight = aux;
-                    }
+                else if(angleIndex < 0 || angleIndex > 2*Math.PI)
+                {
+                    this.onXMLMinorError("angle of spot light out of range [0, 2*PI] with ID = " + lightId);
+                }
+                else
+                {
+                    angleLight = angleIndex;
                 }
 
                 // exponent
                 var exponentLight = 0;
-                if (exponentIndex == -1) {
-                    return "missing exponent value of spot light with ID = " + lightId;
+                if (!(exponentIndex != null && !isNaN(exponentIndex)))
+                {
+                    return "unable to parse value component of the 'exponent light' field for ID = " + lightId;
                 }
-                else {
-                    var aux = this.reader.getFloat(grandChildren[exponentIndex], 'exponent');
-                    if (!(aux != null && !isNaN(aux)))
-                    {
-                        return "unable to parse value component of the 'exponent light' field for ID = " + lightId;
-                    }
-                    else if(aux < 0)
-                    {
-                        return "exponent of spot light with ID = " + lightId + " can not be negative";
-                    }
-                    else
-                    {
-                        exponentLight = aux;
-                    }
+                else if(exponentIndex < 0)
+                {
+                    return "exponent of spot light with ID = " + lightId + " can not be negative";
                 }
+                else
+                {
+                    exponentLight = exponentIndex;
+                }
+            
 
                 // target
                 var targetLight = [];
