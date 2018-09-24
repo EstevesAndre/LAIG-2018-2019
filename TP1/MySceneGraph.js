@@ -395,9 +395,7 @@ class MySceneGraph {
                 nodeNames.push(grandChildren[j].nodeName);
             }
 
-            // Gets indices of each element.
-            var enableIndex = children[i].indexOf("enable");
-
+            // Gets indices of each element.          
             var locationIndex = nodeNames.indexOf("location");
             var ambientIndex = nodeNames.indexOf("ambient");
             var diffuseIndex = nodeNames.indexOf("diffuse");
@@ -405,24 +403,19 @@ class MySceneGraph {
 
             // Light enable/disable
             var enableLight = true;
-            
+    
             // Omni/Spot
-            if(enableIndex == -1)
-            {
-                this.onXMLMinorError("enable value missing for ID = " + lightId + "; assuming 'value = 1'");
+            var enableIndex = this.reader.getString(children[i], 'enabled');
+            if(!(enableIndex != null && !isNaN(enableIndex) && (enableIndex == 0 || enableIndex == 1)))
+            {         
+                this.onXMLMinorError("no enable index defined for light ID = " + lightId + "; assuming true(1)"); 
+                enableLight = true;
             }
             else
             {
-                var aux = this.reader.getFloat(grandChildren[enableIndex], 'value');
-                if(!(aux != null && !isNaN(aux) && (aux == 0 || aux == 1)))
-                {
-                    this.onXMLMinorError("unable to parse value component of the 'enable light' field for ID = " + lightId + "; assuming 'value = 1'");                    
-                }
-                else
-                {
-                    enableLight = ((aux == 0) ? false : true);
-                }
+                enableLight = ((aux == 0) ? false : true);
             }
+            
 
             // Retrieves the light position.
             var locationLight = [];
