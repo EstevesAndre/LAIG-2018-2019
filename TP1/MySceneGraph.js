@@ -34,6 +34,8 @@ class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
+        this.referenceLength = 1.0;
+
         // File reading 
         this.reader = new CGFXMLreader();
 
@@ -212,8 +214,24 @@ class MySceneGraph {
      * @param {scene block element} sceneNode
      */
     parseScene(sceneNode) {
-        // TODO: Parse block
+        var children = sceneNode.children;
 
+        if(children.size != null)
+            return "no children allowed for tag <scene>"
+
+        //Get id of the root element.
+        this.idRoot = this.reader.getString(sceneNode, 'root');
+        if (this.idRoot == null)
+            return "no root element defined for scene";
+
+        //Get axis length.
+        this.referenceLength = this.reader.getString(sceneNode, 'axis_length');
+        if (this.referenceLength == null)
+        {
+            this.onXMLMinorError("no axis length; assuming 'axis_length=1.0'");
+            this.referenceLength = 1.0;
+        }
+        
         console.log("Parsed scene");
 
         return null;
