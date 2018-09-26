@@ -32,7 +32,7 @@
         <texture id="texture_2" file="images/leaves.jpg" />
         <texture id="texture_3" file="images/rocks.jpg" />
         <texture id="texture_4" file="images/bank.jpg" />
-        <texture id="texture_4" file="images/vidral.jpg" />
+        <texture id="texture_5" file="images/vidral.jpg" />
     </textures>
 
     <materials>
@@ -42,6 +42,9 @@
     </transformations>
 
     <primitives>
+        <primitive id="andre">
+            <rectangle x1="0.0" y1="0.0" x2="1.0" y2="1.0" />
+        </primitive>    
     </primitives>
 
     <components>
