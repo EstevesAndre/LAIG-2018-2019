@@ -835,7 +835,297 @@ class MySceneGraph {
      * @param {materials block element} materialsNode
      */
     parseMaterials(materialsNode) {
-        // TODO: Parse block
+
+        var children = materialsNode.children;
+
+        this.materials = [];
+
+        var materialsId = [];
+        var numMaterials = 0;
+        var grandChildren = [];
+        var nodeNames = [];
+        var paramsMaterial = [];
+
+        for(var i = 0; i < children.length; i++)
+        {
+            // verifies if it is a material
+            if (children[i].nodeName != "material")
+            {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // get id of the current material.
+            let materialId = this.reader.getString(children[i],'id');
+            if(materialId == null || materialId == "")
+            {
+                return "no ID defined for material";
+            }
+
+            if(materialsId[materialId] != null)
+            {
+                return "ID must be unique for each material (conflict: ID = " + materialId + ")"; 
+            }
+
+            // get shininess of the current material
+            let shininess = this.reader.getFloat(children[i],'shininess');
+            if(shininess == null || shininess == "")
+            {
+                return "no shininess defined for material with ID = " + shininess;
+            }
+
+            // Specification for the current material
+            grandChildren = children[i].children;
+
+            nodeNames = [];
+
+            if(grandChildren.length != 4)
+            {
+                return "wrong number of tags for a material. It must have 4 tags [\"emission\", \"ambient\", \"diffuse\", \"specular\"]";
+            }
+
+            for(var j = 0; j < grandChildren.length; j++)
+            {
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+            let emissionIndex = nodeNames.indexOf("emission");
+            let ambientIndex = nodeNames.indexOf("ambient");
+            let diffuseIndex = nodeNames.indexOf("diffuse");
+            let specularIndex = nodeNames.indexOf("specular");
+                        
+            paramsMaterial = [];
+            
+            var emission = [];
+            // retrieves the material's emission
+            if (emissionIndex != -1)
+            {
+                emission.push("emission");
+                // R
+                var r = this.reader.getFloat(grandChildren[emissionIndex],'r');
+                if(!(r != null && !isNaN(r)))
+                {
+                    return "unable to parse red value of the emission for material ID = " + materialId;
+                }
+                else
+                {
+                    emission.push(r);
+                }
+
+                // G
+                var g = this.reader.getFloat(grandChildren[emissionIndex],'g');
+                if(!(g != null && !isNaN(g)))
+                {
+                    return "unable to parse green value of the emission for material ID = " + materialId;
+                }
+                else
+                {
+                    emission.push(g);
+                }
+
+                // B
+                var b = this.reader.getFloat(grandChildren[emissionIndex],'b');
+                if(!(b != null && !isNaN(b)))
+                {
+                    return "unable to parse blue value of the emission for material ID = " + materialId;
+                }
+                else
+                {
+                    emission.push(b);
+                }
+
+                // A
+                var a = this.reader.getFloat(grandChildren[emissionIndex],'a');
+                if(!(a != null && !isNaN(a)))
+                {
+                    return "unable to parse action value of the emission for material ID = " + materialId;
+                }
+                else
+                {
+                    emission.push(a);
+                }
+                paramsMaterial.push(emission);                
+            }
+            else
+            {
+                return "material emission tag undefined for ID = " + materialId;
+            }
+
+            var ambient = [];
+            // retrieves the material's ambient
+            if (ambientIndex != -1)
+            {
+                ambient.push("ambient");
+                // R
+                var r = this.reader.getFloat(grandChildren[ambientIndex],'r');
+                if(!(r != null && !isNaN(r)))
+                {
+                    return "unable to parse red value of the ambient for material ID = " + materialId;
+                }
+                else
+                {
+                    ambient.push(r);
+                }
+
+                // G
+                var g = this.reader.getFloat(grandChildren[ambientIndex],'g');
+                if(!(g != null && !isNaN(g)))
+                {
+                    return "unable to parse green value of the ambient for material ID = " + materialId;
+                }
+                else
+                {
+                    ambient.push(g);
+                }
+
+                // B
+                var b = this.reader.getFloat(grandChildren[ambientIndex],'b');
+                if(!(b != null && !isNaN(b)))
+                {
+                    return "unable to parse blue value of the ambient for material ID = " + materialId;
+                }
+                else
+                {
+                    ambient.push(b);
+                }
+
+                // A
+                var a = this.reader.getFloat(grandChildren[ambientIndex],'a');
+                if(!(a != null && !isNaN(a)))
+                {
+                    return "unable to parse action value of the ambient for material ID = " + materialId;
+                }
+                else
+                {
+                    ambient.push(a);
+                }
+                paramsMaterial.push(ambient);                
+            }
+            else
+            {
+                return "material ambient tag undefined for ID = " + materialId;
+            }
+
+            var diffuse = [];
+            // retrieves the material's diffuse
+            if (diffuseIndex != -1)
+            {
+                diffuse.push("diffuse");
+                // R
+                var r = this.reader.getFloat(grandChildren[diffuseIndex],'r');
+                if(!(r != null && !isNaN(r)))
+                {
+                    return "unable to parse red value of the diffuse for material ID = " + materialId;
+                }
+                else
+                {
+                    diffuse.push(r);
+                }
+
+                // G
+                var g = this.reader.getFloat(grandChildren[diffuseIndex],'g');
+                if(!(g != null && !isNaN(g)))
+                {
+                    return "unable to parse green value of the diffuse for material ID = " + materialId;
+                }
+                else
+                {
+                    diffuse.push(g);
+                }
+
+                // B
+                var b = this.reader.getFloat(grandChildren[diffuseIndex],'b');
+                if(!(b != null && !isNaN(b)))
+                {
+                    return "unable to parse blue value of the diffuse for material ID = " + materialId;
+                }
+                else
+                {
+                    diffuse.push(b);
+                }
+
+                // A
+                var a = this.reader.getFloat(grandChildren[diffuseIndex],'a');
+                if(!(a != null && !isNaN(a)))
+                {
+                    return "unable to parse action value of the diffuse for material ID = " + materialId;
+                }
+                else
+                {
+                    diffuse.push(a);
+                }
+                paramsMaterial.push(diffuse);                
+            }
+            else
+            {
+                return "material diffuse tag undefined for ID = " + materialId;
+            }
+
+            var specular = [];
+            // retrieves the material's specular
+            if (specularIndex != -1)
+            {
+                specular.push("specular");
+                // R
+                var r = this.reader.getFloat(grandChildren[specularIndex],'r');
+                if(!(r != null && !isNaN(r)))
+                {
+                    return "unable to parse red value of the specular for material ID = " + materialId;
+                }
+                else
+                {
+                    specular.push(r);
+                }
+
+                // G
+                var g = this.reader.getFloat(grandChildren[specularIndex],'g');
+                if(!(g != null && !isNaN(g)))
+                {
+                    return "unable to parse green value of the specular for material ID = " + materialId;
+                }
+                else
+                {
+                    specular.push(g);
+                }
+
+                // B
+                var b = this.reader.getFloat(grandChildren[specularIndex],'b');
+                if(!(b != null && !isNaN(b)))
+                {
+                    return "unable to parse blue value of the specular for material ID = " + materialId;
+                }
+                else
+                {
+                    specular.push(b);
+                }
+
+                // A
+                var a = this.reader.getFloat(grandChildren[specularIndex],'a');
+                if(!(a != null && !isNaN(a)))
+                {
+                    return "unable to parse action value of the specular for material ID = " + materialId;
+                }
+                else
+                {
+                    specular.push(a);
+                }
+                paramsMaterial.push(specular);                
+            }
+            else
+            {
+                return "material specular tag undefined for ID = " + materialId;
+            }
+
+
+            this.materials.push(paramsMaterial);
+
+            materialsId[materialId] = materialId;
+            numMaterials++;
+        }
+
+        if(numMaterials == 0)
+        {
+            return "at least one material must be defined";
+        }
 
         console.log("Parsed materials");
 
@@ -847,7 +1137,167 @@ class MySceneGraph {
      * @param {transformations block element} transformationsNode
      */
     parseTransformations(transformationsNode) {
-        // TODO: Parse block
+
+        var children = transformationsNode.children;
+
+        this.transformations = [];
+
+        var transformationsId = [];
+        var numTransformations = 0;
+        var grandChildren = [];
+
+        for(var i = 0; i < children.length; i++)
+        {
+            // verifies if it is a transformation.
+            if (children[i].nodeName != "transformation")
+            {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // get id of the current transformation.
+            let transformationId = this.reader.getString(children[i],'id');
+            if( transformationId == null || transformationId == "")
+            {
+                return "no ID defined for transformation";
+            }
+
+            if(transformationsId[transformationId] != null)
+            {
+                return "ID must be unique for each transformation (conflict: ID = " + transformationId + ")";
+            }
+
+            // Specification for the current transformation
+            grandChildren = children[i].children;
+
+            if(grandChildren.length == 0)
+            {
+                return "must be at least one transformation for ID = " + transformationId;
+            }
+
+            var typesTransformation = [];
+
+            for(var j = 0; j < grandChildren.length; j++)
+            {
+                if(grandChildren[j].nodeName == "translate")
+                {
+                    typesTransformation.push("translate");
+                    // X
+                    var x = this.reader.getFloat(grandChildren[j], 'x');
+                    if(!(x != null && !isNaN(x)))
+                    {
+                        return "unable to parse x-coordinate of the translate transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        typesTransformation.push(x);
+                    }
+                    // Y
+                    var y = this.reader.getFloat(grandChildren[j], 'y');
+                    if(!(y != null && !isNaN(y)))
+                    {
+                        return "unable to parse y-coordinate of the translate transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        typesTransformation.push(y);
+                    }
+                    // Z
+                    var z = this.reader.getFloat(grandChildren[j], 'z');
+                    if(!(z != null && !isNaN(z)))
+                    {
+                        return "unable to parse z-coordinate of the translate transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        typesTransformation.push(z);
+                    }
+                    
+                }
+                else if(grandChildren[j].nodeName == "rotate")
+                {
+                    typesTransformation.push("rotate");
+                    // AXIS
+                    var axis = this.reader.getString(grandChildren[j],'axis');
+                    if(axis != "x" && axis != "y" && axis != "z")
+                    {
+                        return "unable to parse the axis-coordinate. Expected: \"x\", \"y\" or \"z\". Given: \"" + axis + "\" for transformation ID = " + transformationId;
+                    }
+                    else
+                    {
+                        typesTransformation.push(axis);
+                    }
+
+                    // ANGLE
+                    var angle = this.reader.getFloat(grandChildren[j],'angle');
+                    if(!(angle != null && !isNaN(angle)))
+                    {
+                        return "unable to parse angle parameter of the scale transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        typesTransformation.push(angle);
+                    }
+                }
+                else if(grandChildren[j].nodeName == "scale")
+                {
+                    typesTransformation.push("scale");
+                    // X
+                    var x = this.reader.getFloat(grandChildren[j], 'x');
+                    if(!(x != null && !isNaN(x)))
+                    {
+                        return "unable to parse x-coordinate of the scale transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        typesTransformation.push(x);
+                    }
+                    // Y
+                    var y = this.reader.getFloat(grandChildren[j], 'y');
+                    if(!(y != null && !isNaN(y)))
+                    {
+                        return "unable to parse y-coordinate of the scale transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        typesTransformation.push(y);
+                    }
+                    // Z
+                    var z = this.reader.getFloat(grandChildren[j], 'z');
+                    if(!(z != null && !isNaN(z)))
+                    {
+                        return "unable to parse z-coordinate of the scale transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        typesTransformation.push(z);
+                    }
+                }
+                else
+                {
+                    return "unknown tag with name = \"" + grandChildren[j].nodeName + "\" for ID = " + transformationId;
+                }
+            }
+
+            /* Added transformations with syntaxe:
+                [TYPE] [VALUES]
+                TYPE = {translate, rotate, scale}
+                VALUES = {x,y,z}        <- case of translation and scale
+                VALUES = {axis, angle}  <- case of rotation
+                
+                Example: {translate, 1, 2, 3};
+                         {rotate, z, 165};
+            */
+            this.transformations.push(typesTransformation);
+
+            transformationsId[transformationId] = transformationId;
+            numTransformations++;
+        }
+
+        if(numTransformations == 0)
+        {
+            return "at least one transformation must be defined";
+        }
 
         console.log("Parsed transformations");
 
@@ -864,6 +1314,7 @@ class MySceneGraph {
 
         this.primitives = [];
         
+        var primitivesId = [];
         var numPrimitives = 0;        
         var grandChildren = [];
 
@@ -880,12 +1331,12 @@ class MySceneGraph {
             let primitiveId = this.reader.getString(children[i],'id');
             if(primitiveId == null || primitiveId == "")
             {
-                return "no ID defined for light";
+                return "no ID defined for primitive";
             }
 
-            if(this.primitives[primitiveId] != null)
+            if(primitivesId[primitiveId] != null)
             {
-                return "ID must be unique for each primitive (conflit: ID = " + primitiveId + ")";
+                return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
             }
 
             // Specification for the current primitive. Verifies if it is one of the primitives.
@@ -903,6 +1354,7 @@ class MySceneGraph {
                             grandChildren[0].nodeName != "torus")
             {
                 this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + "> with ID = " + primitiveId);
+                continue;
             }
 
             var argRectangle = [];            
@@ -1230,7 +1682,7 @@ class MySceneGraph {
                 }
             }
 
-
+            primitivesId[primitiveId] = primitiveId;
             numPrimitives++;
         }
 
