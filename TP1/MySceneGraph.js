@@ -777,7 +777,7 @@ class MySceneGraph {
      /**
      * Parses the <textures> block. 
      * @param {textures block element} texturesNode
-     */ // NEED TO TEST
+     */ // DONE
     parseTextures(texturesNode) {
         
         this.textures = [];
@@ -833,7 +833,7 @@ class MySceneGraph {
      /**
      * Parses the <materials> block. 
      * @param {materials block element} materialsNode
-     */
+     */ // DONE
     parseMaterials(materialsNode) {
 
         var children = materialsNode.children;
@@ -1135,7 +1135,7 @@ class MySceneGraph {
      /**
      * Parses the <transformations> block. 
      * @param {transformations block element} transformationsNode
-     */
+     */ // DONE
     parseTransformations(transformationsNode) {
 
         var children = transformationsNode.children;
@@ -1307,7 +1307,7 @@ class MySceneGraph {
      /**
      * Parses the <primitives> block. 
      * @param {primitives block element} primitivesNode
-     */
+     */  // DONE
     parsePrimitives(primitivesNode) {
         
         var children = primitivesNode.children;
