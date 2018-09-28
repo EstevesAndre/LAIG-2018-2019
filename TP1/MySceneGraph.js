@@ -224,12 +224,12 @@ class MySceneGraph {
 
         //Get id of the root element.
         this.idRoot = this.reader.getString(sceneNode, 'root');
-        if (this.idRoot == null)
-            return "no root element defined for <scene>";
+        
+        if (this.idRoot == null) return "no root element defined for <scene>";
 
         //Get axis length.
         this.referenceLength = this.reader.getString(sceneNode, 'axis_length');
-        if (this.referenceLength == null)
+        if(!(this.referenceLength != null && !isNaN(this.referenceLength)))
         {
             this.onXMLMinorError("no axis length defined for <scene>; assuming 'axis_length=1.0'");
             this.referenceLength = 1.0;
@@ -257,6 +257,7 @@ class MySceneGraph {
      * @param {ambient block element} ambientNode
      */ // DONE
     parseAmbient(ambientNode) {
+        
         var children = ambientNode.children;
 
         var AMB_INDEX = 0;
@@ -265,32 +266,23 @@ class MySceneGraph {
         this.ambient = [];
         this.background = [];
 
-        for (var i = 0; i < children.length; i++) {
+        var error;
 
-            var error;
+        if(children.length != 2) return "wrong number of child tags for ambient";
 
-            if (children[i].nodeName == "ambient") 
-            {
-                if (i != AMB_INDEX)
-                    this.onXMLMinorError("tag <ambient> out of order");
-                
-                // Retrieves the global ambient component.
-                if((error = this.parseRGBA(children, this.ambient, i, "ambient", "ambient light", "none")) != null) return error;                
-            }
-            else if (children[i].nodeName == "background")
-            {
-                if (i != BCK_INDEX)
-                    this.onXMLMinorError("tag <background> out of order");
+        // Retrieves the global ambient component.
+        if (children[AMB_INDEX].nodeName == "ambient") 
+        {        
+            if((error = this.parseRGBA(children, this.ambient, AMB_INDEX, "ambient", "ambient light", "none")) != null) return error;                
+        }       
+        else return "unexpected child tag of <ambient> - <"+ children[AMB_INDEX].nodeName + ">";
 
-                // Retrieves the background clear color component.
-                if((error = this.parseRGBA(children, this.background, i, "background clear color", "background color", "none")) != null) return error;                
-            }
-            else
-            {
-                return "unexpected child tag of <ambient> - <"+ children[i].nodeName + ">";
-            }
-// VER ISTO:::::::::::::::::::::::::::
+        // Retrieves the background clear color component.
+        if (children[BCK_INDEX].nodeName == "background")
+        {
+            if((error = this.parseRGBA(children, this.background, BCK_INDEX, "background clear color", "background color", "none")) != null) return error;                
         }
+        else return "unexpected child tag of <background> - <"+ children[BCK_INDEX].nodeName + ">";
 
         console.log("Parsed ambient");
 
@@ -1187,7 +1179,8 @@ class MySceneGraph {
     {
         if(index != -1)
         {
-            data.push(tag);
+            if(id != "none") data.push(tag);
+
             var error;
             if((error = this.parseValue(values, data, index, block, tag, id, 'r')) != null) return error;      
             if((error = this.parseValue(values, data, index, block, tag, id, 'g')) != null) return error;      
