@@ -245,7 +245,64 @@ class MySceneGraph {
      * @param {views block element} viewsNode
      */
     parseViews(viewsNode) {
-        // TODO: Parse block
+
+        if(viewsNode.nodeName != "views") return "invalid tag, <view> - <" + viewsNode.nodeName + ">";
+
+        var viewDefault = this.reader.getString(viewsNode,'default');
+        if(viewDefault == null) return "no Default name for view";
+
+        var children = viewsNode.children;
+
+        if(children.length == 0) return "Scene must have at least one view";
+
+        for(var i = 0; i < children.length; i++)
+        {
+            if(children[i].nodeName != "perspective" && children[i].nodeName != "ortho") return "invalid child tag, must be \"perspective\" or \"ortho\"";
+
+            let viewId = this.reader.getString(children[i], 'id');
+            if(viewId == null) return "no ID defined for " + children[i].nodeName + " view";
+
+            let viewNear = this.reader.getFloat(children[i], 'near');
+            if(!(viewNear != null && !isNaN(viewNear))) return "unable to parse near component of the " + children[i].nodeName + " view with ID = " + viewId;
+            
+            let viewFar = this.reader.getFloat(children[i], 'far');
+            if(!(viewFar != null && !isNaN(viewFar))) return "unable to parse far component of the " + children[i].nodeName + " view with ID = " + viewId;
+            
+            if(children[i].nodeName == "ortho")
+            {
+                let viewLeft = this.reader.getFloat(children[i], 'left');
+                if(!(viewLeft != null && !isNaN(viewLeft))) return "unable to parse left component of the " + children[i].nodeName + " view with ID = " + viewId;
+
+                let viewRight = this.reader.getFloat(children[i], 'right');
+                if(!(viewRight != null && !isNaN(viewRight))) return "unable to parse right component of the " + children[i].nodeName + " view with ID = " + viewId;
+
+                let viewTop = this.reader.getFloat(children[i], 'top');
+                if(!(viewTop != null && !isNaN(viewTop))) return "unable to parse top component of the " + children[i].nodeName + " view with ID = " + viewId;
+
+                let viewBottom = this.reader.getFloat(children[i], 'bottom');
+                if(!(viewBottom != null && !isNaN(viewBottom))) return "unable to parse bottom component of the " + children[i].nodeName + " view with ID = " + viewId;
+            }
+            else
+            {
+                let viewAngle = this.reader.getFloat(children[i], 'angle');
+                if(!(viewAngle != null && !isNaN(viewAngle))) return "unable to parse angle component of the " + children[i].nodeName + " view with ID = " + viewId;
+
+                var grandChildren = children[i].children;
+                
+                if(grandChildren.length != 2) return "no \"from\" and \"to\" tags defined";
+
+                var fromPos = [];
+                var fromTo = [];
+
+                if(grandChildren[0].nodeName == "from") this.parseXYZw(grandChildren,fromPos,0,"perspective","from","none");
+                else return "wrong tag to perspective view for ID = " + viewId + ", must be \"from\"";
+                
+                if(grandChildren[1].nodeName == "to") this.parseXYZw(grandChildren,fromTo,1,"perspective","to","none");
+                else return "wrong tag to perspective view for ID = " + viewId + ", must be \"to\"";
+
+            }
+            
+        }
 
         console.log("Parsed views");
 
@@ -1205,7 +1262,8 @@ class MySceneGraph {
     {    
         if (index != -1) 
         {
-            data.push(tag);
+            if(id != "none") data.push(tag);
+
             var error;
             if((error = this.parseCoordinates(values, data, index, block, tag, id, 'x')) != null)  return error;
             if((error = this.parseCoordinates(values, data, index, block, tag, id, 'y')) != null)  return error;

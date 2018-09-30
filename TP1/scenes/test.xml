@@ -3,6 +3,11 @@
 
     <views default="default">
         <ortho id="view" near="1.0" far="2.0" left="1.0" right="1.0" top="1.0" bottom="1.0" /> <!-- acrescentar valores -->
+
+        <perspective id="perspec" near="1.0" far="2.0" angle="0.0">
+            <from x="0.0" y="0.0" z="0.0" />
+            <to x="0.0" y="0.0" z="0.0" />
+        </perspective>
     </views>
 
     <ambient>
