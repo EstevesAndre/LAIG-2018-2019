@@ -678,7 +678,7 @@ class MySceneGraph {
      /**
      * Parses the <transformations> block. 
      * @param {transformations block element} transformationsNode
-     */ // DONE
+     */
     parseTransformations(transformationsNode) {
 
         var children = transformationsNode.children;
@@ -691,6 +691,8 @@ class MySceneGraph {
 
         for(var i = 0; i < children.length; i++)
         {
+            var transformation = new Object();
+             
             // verifies if it is a transformation.
             if (children[i].nodeName != "transformation")
             {
@@ -704,6 +706,7 @@ class MySceneGraph {
             {
                 return "no ID defined for transformation";
             }
+            transformation.id = transformationId;
 
             if(transformationsId[transformationId] != null)
             {
@@ -718,32 +721,24 @@ class MySceneGraph {
                 return "must be at least one transformation for ID = " + transformationId;
             }
 
-            var typesTransformation = [];
+            this.scene.loadIdentity();
 
             for(var j = 0; j < grandChildren.length; j++)
             {
+
                 if(grandChildren[j].nodeName == "translate")
                 {
-                    typesTransformation.push("translate");
                     // X
                     var x = this.reader.getFloat(grandChildren[j], 'x');
                     if(!(x != null && !isNaN(x)))
                     {
                         return "unable to parse x-coordinate of the translate transformation with ID = " + transformationId;
                     }
-                    else
-                    {
-                        typesTransformation.push(x);
-                    }
                     // Y
                     var y = this.reader.getFloat(grandChildren[j], 'y');
                     if(!(y != null && !isNaN(y)))
                     {
                         return "unable to parse y-coordinate of the translate transformation with ID = " + transformationId;
-                    }
-                    else
-                    {
-                        typesTransformation.push(y);
                     }
                     // Z
                     var z = this.reader.getFloat(grandChildren[j], 'z');
@@ -753,24 +748,18 @@ class MySceneGraph {
                     }
                     else
                     {
-                        typesTransformation.push(z);
+                        this.scene.translate(x, y, z);
                     }
                     
                 }
                 else if(grandChildren[j].nodeName == "rotate")
                 {
-                    typesTransformation.push("rotate");
                     // AXIS
                     var axis = this.reader.getString(grandChildren[j],'axis');
                     if(axis != "x" && axis != "y" && axis != "z")
                     {
                         return "unable to parse the axis-coordinate. Expected: \"x\", \"y\" or \"z\". Given: \"" + axis + "\" for transformation ID = " + transformationId;
                     }
-                    else
-                    {
-                        typesTransformation.push(axis);
-                    }
-
                     // ANGLE
                     var angle = this.reader.getFloat(grandChildren[j],'angle');
                     if(!(angle != null && !isNaN(angle)))
@@ -779,31 +768,33 @@ class MySceneGraph {
                     }
                     else
                     {
-                        typesTransformation.push(angle);
+                        if(axis == "x")
+                        {
+                            this.scene.rotate(angle, 1, 0, 0);
+                        }
+                        else if (axis = "y")
+                        {
+                            this.scene.rotate(angle, 0, 1, 0);
+                        }
+                        else
+                        {
+                            this.scene.rotate(angle, 0, 0, 1);
+                        }
                     }
                 }
                 else if(grandChildren[j].nodeName == "scale")
                 {
-                    typesTransformation.push("scale");
                     // X
                     var x = this.reader.getFloat(grandChildren[j], 'x');
                     if(!(x != null && !isNaN(x)))
                     {
                         return "unable to parse x-coordinate of the scale transformation with ID = " + transformationId;
                     }
-                    else
-                    {
-                        typesTransformation.push(x);
-                    }
                     // Y
                     var y = this.reader.getFloat(grandChildren[j], 'y');
                     if(!(y != null && !isNaN(y)))
                     {
                         return "unable to parse y-coordinate of the scale transformation with ID = " + transformationId;
-                    }
-                    else
-                    {
-                        typesTransformation.push(y);
                     }
                     // Z
                     var z = this.reader.getFloat(grandChildren[j], 'z');
@@ -813,7 +804,7 @@ class MySceneGraph {
                     }
                     else
                     {
-                        typesTransformation.push(z);
+                        this.scene.scale(x, y, z);
                     }
                 }
                 else
@@ -831,7 +822,10 @@ class MySceneGraph {
                 Example: {translate, 1, 2, 3};
                          {rotate, z, 165};
             */
-            this.transformations.push(typesTransformation);
+
+            transformation.matrix = this.scene.getMatrix();
+
+            this.transformations.push(transformation);
 
             transformationsId[transformationId] = transformationId;
             numTransformations++;
