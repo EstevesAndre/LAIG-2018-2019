@@ -34,8 +34,7 @@ class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
-        this.ambient = [0, 0, 0, 0];
-        this.background = [0, 0, 0, 0];
+        this.lights = [];
 
         this.referenceLength = 1.0;
 
@@ -329,15 +328,25 @@ class MySceneGraph {
 
         // Retrieves the global ambient component.
         if (children[AMB_INDEX].nodeName == "ambient") 
-        {        
-            if((error = this.parseRGBA(children, this.ambient, AMB_INDEX, "ambient", "ambient light", "none")) != null) return error;                
+        {   
+            var d1 = [];     
+            if((error = this.parseRGBA(children, d1, AMB_INDEX, "ambient", "ambient light", "none")) != null) return error;                
+            this.ambient.r = d1[1];
+            this.ambient.g = d1[2];
+            this.ambient.b = d1[3];
+            this.ambient.a = d1[4];
         }       
         else return "unexpected child tag of <ambient> - <"+ children[AMB_INDEX].nodeName + ">";
 
         // Retrieves the background clear color component.
         if (children[BCK_INDEX].nodeName == "background")
         {
-            if((error = this.parseRGBA(children, this.background, BCK_INDEX, "background clear color", "background color", "none")) != null) return error;                
+            var d2 = [];
+            if((error = this.parseRGBA(children, d2, BCK_INDEX, "background clear color", "background color", "none")) != null) return error;                
+            this.background.r = d2[1];
+            this.background.g = d2[2];
+            this.background.b = d2[3];
+            this.background.a = d2[4];
         }
         else return "unexpected child tag of <background> - <"+ children[BCK_INDEX].nodeName + ">";
 
@@ -354,8 +363,6 @@ class MySceneGraph {
     {
         var children = lightsNode.children;
 
-        this.lights = [];
-
         var lightIds = [];
         var numLights = 0;
 
@@ -364,6 +371,8 @@ class MySceneGraph {
         
         for(var i = 0; i < children.length; i++) 
         {
+            var light = new Object();
+
             // verifies the type of the light.
             if(children[i].nodeName != "omni" && children[i].nodeName != "spot")
             {
@@ -374,6 +383,7 @@ class MySceneGraph {
             // Get id of the current light.
             let lightId = this.reader.getString(children[i], 'id');
             if(lightId == null) return "no ID defined for light";
+            light.id = lightId;
             
             // Checks for repeated IDs.
             if (lightIds[lightId] != null) return "ID must be unique for each light (conflict: ID = " + lightId + ")";
@@ -389,18 +399,15 @@ class MySceneGraph {
             var ambientIndex = nodeNames.indexOf("ambient");
             var diffuseIndex = nodeNames.indexOf("diffuse");
             var specularIndex = nodeNames.indexOf("specular");
-
-            // Light enable/disable
-            var enableLight = true;
     
             // Omni/Spot
             var enableIndex = this.reader.getString(children[i], 'enabled');
             if(!(enableIndex != null && !isNaN(enableIndex) && (enableIndex == 0 || enableIndex == 1)))
             {         
                 this.onXMLMinorError("no enable index defined for light ID = " + lightId + "; assuming true(1)"); 
-                enableLight = true;
+                light.enableLight = true;
             }
-            else enableLight = ((enableIndex == 0) ? false : true);
+            else light.enable = ((enableIndex == 0) ? false : true);
             
             var error;
 
@@ -409,7 +416,11 @@ class MySceneGraph {
             if((error = this.parseXYZw(grandChildren, locationLight, locationIndex, "lights", "location", lightId, true)) != null) return error;
             else
             {
-            //   paramsLights.push(locationLight); // FALTA DEFINIR A ESTRUTURA DE DADOS PARA AS LUZES
+                light.location = new Object();
+                light.location.x = locationLight[1];
+                light.location.y = locationLight[2];
+                light.location.z = locationLight[3];
+                light.location.w = locationLight[4];
             }
                   
             // Retrieves the ambient component.
@@ -417,7 +428,11 @@ class MySceneGraph {
             if((error = this.parseRGBA(grandChildren, ambientIllumination, ambientIndex, "lights", "ambient", lightId)) != null) return error;
             else
             {
-            //   paramsLights.push(ambientIllumination);
+                light.ambient = new Object();
+                light.ambient.r = ambientIllumination[1];
+                light.ambient.g = ambientIllumination[2];
+                light.ambient.b = ambientIllumination[3];
+                light.ambient.a = ambientIllumination[4];
             }
 
             // Retrieves the diffuse component.
@@ -425,7 +440,11 @@ class MySceneGraph {
             if((error = this.parseRGBA(grandChildren, diffuseIllumination, diffuseIndex, "lights", "diffuse", lightId)) != null) return error;
             else
             {
-            //   paramsLights.push(diffuseIllumination);
+                light.diffuse = new Object();
+                light.diffuse.r = diffuseIllumination[1];
+                light.diffuse.g = diffuseIllumination[2];
+                light.diffuse.b = diffuseIllumination[3];
+                light.diffuse.a = diffuseIllumination[4];
             }
 
             // Retrieves the specular component.
@@ -433,44 +452,56 @@ class MySceneGraph {
             if((error = this.parseRGBA(grandChildren, specularIllumination, specularIndex, "lights", "specular", lightId)) != null) return error;
             else
             {
-            //   paramsLights.push(specularIllumination);
+                light.specular = new Object();
+                light.specular.r = specularIllumination[1];
+                light.specular.g = specularIllumination[2];
+                light.specular.b = specularIllumination[3];
+                light.specular.a = specularIllumination[4];
             }
 
             if(children[i].nodeName == "spot")
-            {                
+            {     
+                light.type = "spot";
+
                 // indices extra of the spot light    
                 var angleIndex = this.reader.getString(children[i],'angle');
                 var exponentIndex = this.reader.getString(children[i],'exponent');
                 var targetIndex = nodeNames.indexOf("target");
 
                 // angle
-                var angleLight = 0;
                 if(!(angleIndex != null && !isNaN(angleIndex))) return "unable to parse value component of the 'angle light' field for ID = " + lightId;
                 else if(angleIndex < 0 || angleIndex > 2*Math.PI) this.onXMLMinorError("angle of spot light out of range [0, 2*PI] with ID = " + lightId);
-                else angleLight = angleIndex;
+                else light.angle = angleIndex;
 
                 // exponent
-                var exponentLight = 0;
                 if (!(exponentIndex != null && !isNaN(exponentIndex))) return "unable to parse value component of the 'exponent light' field for ID = " + lightId;
                 else if(exponentIndex < 0) return "exponent of spot light with ID = " + lightId + " can not be negative";
-                else exponentLight = exponentIndex;
+                else light.exponent = exponentIndex;
 
-                // Retrieves the light position.
+                // Retrieves the light target.
                 var targetLight = [];
                 if((error = this.parseXYZw(grandChildren, targetLight, targetIndex, "lights", "target", lightId, false)) != null) return error;                
                 else
                 {
-                //   paramsLights.push(targetLight); // FALTA DEFINIR A ESTRUTURA DE DADOS PARA AS LUZES
+                    light.target = new Object();
+                    light.target.x = targetLight[1];
+                    light.target.y = targetLight[2];
+                    light.target.z = targetLight[3];
                 }
             }
+            else
+            {
+                light.type = "omni";
+            }
 
+            this.lights.push(light);
             lightIds[lightId] = lightId;
             numLights++;            
         }
         
         if(numLights == 0) return "at least one light must be defined";
         else if(numLights > 8) this.onXMLMinorError("too many lights defined; WebGL imposes a limit of 8 lights");
-        
+
         console.log("Parsed lights");
 
         return null;

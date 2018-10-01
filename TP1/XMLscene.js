@@ -58,13 +58,13 @@ class XMLscene extends CGFscene {
                 var light = this.graph.lights[key];
 
                 //lights are predefined in cgfscene
-                this.lights[i].setPosition(light[1][0], light[1][1], light[1][2], light[1][3]);
-                this.lights[i].setAmbient(light[2][0], light[2][1], light[2][2], light[2][3]);
-                this.lights[i].setDiffuse(light[3][0], light[3][1], light[3][2], light[3][3]);
-                this.lights[i].setSpecular(light[4][0], light[4][1], light[4][2], light[4][3]);
+                this.lights[i].setPosition(light.location.x, light.location.y, light.location.z, light.location.w);
+                this.lights[i].setAmbient(light.ambient.r, light.ambient.g, light.ambient.b, light.ambient.a);
+                this.lights[i].setDiffuse(light.diffuse.r, light.diffuse.g, light.diffuse.b, light.diffuse.a);
+                this.lights[i].setSpecular(light.specular.r, light.specular.g, light.specular.b, light.specular.a);
 
                 this.lights[i].setVisible(true);
-                if (light[0])
+                if (light.enable)
                     this.lights[i].enable();
                 else
                     this.lights[i].disable();
@@ -86,15 +86,15 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
-        this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
-        this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
+        this.setGlobalAmbientLight(this.graph.ambient.r, this.graph.ambient.g, this.graph.ambient.b, this.graph.ambient.a);
+        this.gl.clearColor(this.graph.background.r, this.graph.background.g, this.graph.background.b, this.graph.background.a);
 
         this.initLights();
 
         // Adds lights group.
-        //this.interface.addLightsGroup(this.graph.lights);
+        this.interface.addLightsGroup(this.graph.lights);
 
-        //this.sceneInited = true;
+        this.sceneInited = true;
     }
 
 
