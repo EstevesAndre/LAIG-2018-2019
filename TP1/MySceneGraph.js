@@ -844,7 +844,7 @@ class MySceneGraph {
      /**
      * Parses the <primitives> block. 
      * @param {primitives block element} primitivesNode
-     */  // DONE
+     */ 
     parsePrimitives(primitivesNode) {
         
         var children = primitivesNode.children;
@@ -857,6 +857,8 @@ class MySceneGraph {
 
         for(var i = 0; i < children.length; i++)
         {
+            var primitive = new Object();
+
             // verifies if it is primitive.
             if (children[i].nodeName != "primitive")
             {
@@ -870,6 +872,7 @@ class MySceneGraph {
             {
                 return "no ID defined for primitive";
             }
+            primitive.id = primitiveId;
 
             if(primitivesId[primitiveId] != null)
             {
@@ -893,16 +896,11 @@ class MySceneGraph {
                 this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + "> with ID = " + primitiveId);
                 continue;
             }
-
-            var argRectangle = [];            
-            var argTriangle = [];
-            var argCylinder = [];
-            var argSphere = [];
-            var argTorus = [];
             
             // RECTANGLE
             if(grandChildren[0].nodeName == "rectangle")
             {
+                primitive.type = "rectangle";
                 // x1
                 var x1 = this.reader.getFloat(grandChildren[0],'x1');
                 if(!(x1 != null && !isNaN(x1)))
@@ -911,7 +909,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argRectangle.push(x1);
+                    primitive.x1 = x1;
                 }
 
                 // y1
@@ -922,7 +920,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argRectangle.push(y1);
+                    primitive.y1 = y1;
                 }
 
                 // x2
@@ -933,7 +931,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argRectangle.push(x2);
+                    primitive.x2 = x2;
                 }
 
                 // y2
@@ -944,7 +942,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argRectangle.push(y2);
+                    primitive.y2 = y2;
                 }
 
             }
@@ -959,7 +957,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(x1);
+                    primitive.x1 = x1;
                 }
 
                 // y1
@@ -970,7 +968,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(y1);
+                    primitive.y1 = y1;
                 }
 
                 // z1
@@ -981,7 +979,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(z1);
+                    primitive.z1 = z1;
                 }
 
                 // x2
@@ -992,7 +990,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(x2);
+                    primitive.x2 = x2;
                 }
 
                 // y2
@@ -1003,7 +1001,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(y2);
+                    primitive.y2 = y2;
                 }
 
                 // z2
@@ -1014,7 +1012,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(z2);
+                    primitive.z2 = z2;
                 }
 
                 // x3
@@ -1025,7 +1023,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(x3);
+                    primitive.x3 = x3;
                 }
 
                 // y3
@@ -1036,7 +1034,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(y3);
+                    primitive.y3 = y3;
                 }
 
                 // z3
@@ -1062,7 +1060,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argCylinder.push(base);
+                    primitive.base = base;
                 }
 
                 // top
@@ -1073,7 +1071,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argCylinder.push(top);
+                    primitive.top = top;
                 }
 
                 // height
@@ -1084,7 +1082,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argCylinder.push(height);
+                    primitive.height = height;
                 }
 
                 // slices
@@ -1099,7 +1097,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argCylinder.push(slices);
+                    primitive.slices = slices;
                 }
 
                 // stacks
@@ -1114,7 +1112,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argCylinder.push(stacks);
+                    primitive.stacks = stacks;
                 }
                 
             }
@@ -1129,7 +1127,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argSphere.push(radius);
+                    primitive.radius = radius;
                 }
 
                 // slices
@@ -1144,7 +1142,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argSphere.push(slices);
+                    primitive.slices = slices;
                 }
 
                 // stacks
@@ -1159,7 +1157,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argSphere.push(stacks);
+                    primitive.stacks = stacks;
                 }
                 
             }
@@ -1174,7 +1172,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argTorus.push(inner);
+                    primitive.inner = inner;
                 }
 
                 // outer
@@ -1185,7 +1183,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argTorus.push(outer);
+                    primitive.outer = outer;
                 }
 
                 // slices
@@ -1200,7 +1198,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argTorus.push(slices);
+                    primitive.slices = slices;
                 }
 
                 // loops
@@ -1215,7 +1213,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                    argTorus.push(loops);
+                    primitive.loops = loops;
                 }
             }
 
