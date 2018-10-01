@@ -1,0 +1,81 @@
+<yas>
+    <scene root="footballField" axis_length="1.0" />
+
+    <!-- no views yet -->
+    <views default="3D_view">
+
+    </views>
+
+    <ambient>        
+        <ambient r="0.5" g="0.7" b="0.0" a="1.0" />
+        <background r="0.2" g="0.5" b="0.8" a="1.0" />        
+    </ambient>
+
+    <lights>
+        <omni id="leftCorner1" enabled="1">            
+            <location x="-6.25" y="3.0" z="-4.4" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </omni>
+
+        <omni id="leftCorner2" enabled="1">            
+            <location x="-6.25" y="3.0" z="4.4" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </omni>
+
+        <omni id="rightCorner1" enabled="1">            
+            <location x="6.25" y="3.0" z="-4.4" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </omni>
+
+        <omni id="rightCorner2" enabled="1">            
+            <location x="6.25" y="3.0" z="4.4" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="football" file="images/football_blackWhite.jpg" />
+    </textures>
+
+    <materials>
+        <material id="field" shininess="2.0">            
+            <emission r="0.1" g="1.0" b="0.1" a="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+    </materials>
+
+    <!--transformation, think about it -->
+    <transformations>
+
+    </transformations>
+
+    <primitives>
+        <primitive id="field">
+            <rectangle x1="-5.25" y1="3.4" x2="5.25" y2="-3.4" /> <!--Field size -->
+        </primitive>
+
+        <primitive id="football">
+            <sphere radius="1.0" slices="12" stacks="12" />
+        </primitive>
+
+        <primitive id="">
+            <cylinder base="0.2" top="0.2" height="1" slices="12" stacks="12" />
+        </primitive>
+    </primitives>
+
+    <components>
+    
+    </components>
+
+
+</yas>
