@@ -214,7 +214,7 @@ class MySceneGraph {
      /**
      * Parses the <scene> block. 
      * @param {scene block element} sceneNode
-     */ // DONE
+     */
     parseScene(sceneNode) {
         var children = sceneNode.children;
 
@@ -242,7 +242,7 @@ class MySceneGraph {
     /**
      * Parses the <views> block. 
      * @param {views block element} viewsNode
-     */
+     */ //TODO
     parseViews(viewsNode) {
 
         if(viewsNode.nodeName != "views") return "invalid tag, <view> - <" + viewsNode.nodeName + ">";
@@ -311,7 +311,7 @@ class MySceneGraph {
      /**
      * Parses the <ambient> block. 
      * @param {ambient block element} ambientNode
-     */ // DONE
+     */
     parseAmbient(ambientNode) {
         
         var children = ambientNode.children;
@@ -358,7 +358,7 @@ class MySceneGraph {
      /**
      * Parses the <ligts> block. 
      * @param {lights block element} lightsNode
-     */ // DONE - DATA ESTRUCTURE MISSING
+     */
     parseLights(lightsNode) 
     {
         var children = lightsNode.children;
@@ -520,6 +520,8 @@ class MySceneGraph {
         
         for(var i = 0; i < children.length; i++) 
         {
+            var texture = new Object();
+
             // verifies the type of the light.
             if(children[i].nodeName != "texture")
             {
@@ -537,7 +539,10 @@ class MySceneGraph {
             let fileLink = this.reader.getString(children[i],'file');
             if(fileLink == null || fileLink == "") return "no file location defined for texture with ID = " + textureId;
 
-            this.textures.push([textureId,fileLink]);
+            texture.id = textureId;
+            texture.file = fileLink;
+
+            this.textures.push(texture);
 
             texturesId[textureId] = textureId;
             numTextures++;
