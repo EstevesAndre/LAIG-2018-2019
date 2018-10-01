@@ -1091,7 +1091,7 @@ class MySceneGraph {
                 {
                     return "unable to parse slices of the Cylinder primitive for ID = " + primitiveId;
                 }
-                else if(slices % 10 != 0)
+                else if(slices % 1 != 0)
                 {
                     return "slices parameter of Cylinder must be an integer for ID = " + primitiveId;
                 }
@@ -1106,7 +1106,7 @@ class MySceneGraph {
                 {
                     return "unable to parse stacks of the Cylinder primitive for ID = " + primitiveId;
                 }
-                else if(stacks % 10 != 0)
+                else if(stacks % 1 != 0)
                 {
                     return "stacks parameter of Cylinder must be an integer for ID = " + primitiveId;
                 }
@@ -1136,7 +1136,7 @@ class MySceneGraph {
                 {
                     return "unable to parse slices of the Sphere primitive for ID = " + primitiveId;
                 }
-                else if(slices % 10 != 0)
+                else if(slices % 1 != 0)
                 {
                     return "slices parameter of Sphere must be an integer for ID = " + primitiveId;
                 }
@@ -1151,9 +1151,9 @@ class MySceneGraph {
                 {
                     return "unable to parse stacks of the Sphere primitive for ID = " + primitiveId;
                 }
-                else if(loops % 10 != 0)
+                else if(stacks % 1 != 0)
                 {
-                    return "loops parameter of Sphere must be an integer for ID = " + primitiveId;
+                    return "stacks parameter of Sphere must be an integer for ID = " + primitiveId;
                 }
                 else
                 {
@@ -1192,7 +1192,7 @@ class MySceneGraph {
                 {
                     return "unable to parse slices of the Torus primitive for ID = " + primitiveId;
                 }
-                else if(slices % 10 != 0)
+                else if(slices % 1 != 0)
                 {
                     return "slices parameter of Torus must be an integer for ID = " + primitiveId;
                 }
@@ -1207,7 +1207,7 @@ class MySceneGraph {
                 {
                     return "unable to parse loops of the Torus primitive for ID = " + primitiveId;
                 }
-                else if(loops % 10 != 0)
+                else if(loops % 1 != 0)
                 {
                     return "loops parameter of Torus must be an integer for ID = " + primitiveId;
                 }
@@ -1216,6 +1216,8 @@ class MySceneGraph {
                     primitive.loops = loops;
                 }
             }
+
+            this.primitives.push(primitive);
 
             primitivesId[primitiveId] = primitiveId;
             numPrimitives++;
@@ -1237,7 +1239,55 @@ class MySceneGraph {
      * @param {components block element} componentsNode
      */
     parseComponents(componentsNode) {
-        // TODO: Parse block
+        var children = componentsNode.children;
+
+        this.components = [];
+        
+        var componentIds = [];
+        var numComponents = 0;        
+        var grandChildren = [];
+
+        var root_found = false;
+
+        for(var i = 0; i < children.length; i++)
+        {               
+            // verifies if it is a component.
+            if (children[i].nodeName != "component")
+            {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // get id of the current component.
+            let componentId = this.reader.getString(children[i],'id');
+            if( componentId == null || componentId == "")
+            {
+                return "no ID defined for component";
+            }
+
+            if(componentIds[componentId] != null)
+            {
+                return "ID must be unique for each component (conflict: ID = " + componentId + ")";
+            }
+
+            if(componentId == this.idRoot)
+            {
+                root_found = true;
+            }
+
+            componentIds[componentId] = componentId;
+            numComponents++;
+        }
+
+        if(!root_found)
+        {
+            return "did not find component matching declared root id: " + this.idRoot;
+        }
+
+        if(numComponents == 0)
+        {
+            return "at least one component must be defined";
+        }
 
         console.log("Parsed components");
 

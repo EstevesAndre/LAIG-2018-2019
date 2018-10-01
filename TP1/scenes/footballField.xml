@@ -1,5 +1,5 @@
 <yas>
-    <scene root="footballField" axis_length="1.0" />
+    <scene root="football" axis_length="1.0" />
 
     <!-- no views yet -->
      <views default="3D_view">
