@@ -2,8 +2,13 @@
     <scene root="footballField" axis_length="1.0" />
 
     <!-- no views yet -->
-    <views default="3D_view">
+     <views default="3D_view">
+        <ortho id="view" near="1.0" far="2.0" left="1.0" right="1.0" top="1.0" bottom="1.0" /> <!-- acrescentar valores -->
 
+        <perspective id="3D_view" near="1.0" far="2.0" angle="0.0">
+            <from x="0.0" y="0.0" z="0.0" />
+            <to x="0.0" y="0.0" z="0.0" />
+        </perspective>
     </views>
 
     <ambient>        
@@ -56,7 +61,20 @@
 
     <!--transformation, think about it -->
     <transformations>
+        <transformation id="football">
+            <scale x="0.25" y="0.25" z="0.25" />
+            <rotate axis="x" angle="45" />
+            <translate x="3" y="-2" z="0.25" />
+        </transformation>
 
+        <transformation id="field_TO_xOz">
+            <rotate axis="x" angle="90" />
+            <translate x="0.0" y="0.1" z="0.0" />
+        </transformation>
+        
+        <transformation id="ground_TO_xOz">
+            <rotate axis="x" angle="90" />
+        </transformation>
     </transformations>
 
     <primitives>
@@ -64,17 +82,72 @@
             <rectangle x1="-5.25" y1="3.4" x2="5.25" y2="-3.4" /> <!--Field size -->
         </primitive>
 
+        <primitive id="ground">
+            <rectangle x1="-8.0" y1="5.0" x2="8.0" y2="-5.0" />
+        </primitive>
+
         <primitive id="football">
             <sphere radius="1.0" slices="12" stacks="12" />
         </primitive>
 
-        <primitive id="">
+        <primitive id="goal_front">
             <cylinder base="0.2" top="0.2" height="1" slices="12" stacks="12" />
+        </primitive>
+        
+        <primitive id="goal_back">
+            <cylinder base="0.2" top="0.2" height="1" slices="6" stacks="6" />
         </primitive>
     </primitives>
 
     <components>
-    
+        <component id="football">
+            <transformation>
+                <transformationref id="football" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="football" />
+            </children>
+        </component>
+
+        <component id="field">
+            <transformation>
+                <transformationref id="field_TO_xOz" />
+            </transformation>
+
+            <materials>
+                <material id="innherit" />
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children> 
+                <primitiveref id="field" />
+            </children>
+        </component>
+
+        <component id="ground">
+            <transformation>
+                <transformationref id="ground_TO_xOz" />
+            </transformation>
+
+            <materials>
+                <material id="innherit" />
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children> 
+                <primitiveref id="ground" />
+            </children>
+        </component>
+
     </components>
 
 
