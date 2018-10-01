@@ -510,7 +510,7 @@ class MySceneGraph {
      /**
      * Parses the <textures> block. 
      * @param {textures block element} texturesNode
-     */ // DONE
+     */
     parseTextures(texturesNode) {
         
         this.textures = [];
@@ -561,7 +561,7 @@ class MySceneGraph {
      /**
      * Parses the <materials> block. 
      * @param {materials block element} materialsNode
-     */ // DONE
+     */
     parseMaterials(materialsNode) {
 
         var children = materialsNode.children;
@@ -576,6 +576,8 @@ class MySceneGraph {
 
         for(var i = 0; i < children.length; i++)
         {
+            var material = new Object();
+
             // verifies if it is a material.
             if (children[i].nodeName != "material")
             {
@@ -632,8 +634,35 @@ class MySceneGraph {
             if((error = this.parseRGBA(grandChildren, specular, specularIndex, "material", "specular", materialId)) != null) return error;
             else paramsMaterial.push(specular);
 
+            material.id = materialId;
+            material.shininess = shininess;
+
+            material.emission = new Object();
+            material.emission.r = paramsMaterial[0][1];
+            material.emission.g = paramsMaterial[0][2];
+            material.emission.b = paramsMaterial[0][3];
+            material.emission.a = paramsMaterial[0][4];
+
+            material.ambient = new Object();
+            material.ambient.r = paramsMaterial[1][1];
+            material.ambient.g = paramsMaterial[1][2];
+            material.ambient.b = paramsMaterial[1][3];
+            material.ambient.a = paramsMaterial[1][4];
+
+            material.diffuse = new Object();
+            material.diffuse.r = paramsMaterial[2][1];
+            material.diffuse.g = paramsMaterial[2][2];
+            material.diffuse.b = paramsMaterial[2][3];
+            material.diffuse.a = paramsMaterial[2][4];
+
+            material.specular = new Object();
+            material.specular.r = paramsMaterial[3][1];
+            material.specular.g = paramsMaterial[3][2];
+            material.specular.b = paramsMaterial[3][3];
+            material.specular.a = paramsMaterial[3][4];
+
             // structure to store materials
-            this.materials.push(paramsMaterial);            
+            this.materials.push(material);            
             // Material with materialId stored correclty
             materialsId[materialId] = materialId;
             numMaterials++;
