@@ -48,6 +48,7 @@
 
     <textures>
         <texture id="football" file="images/football_blackWhite.jpg" />
+        <texture id="bars" file="images/white.jpg" />
     </textures>
 
     <materials>
@@ -145,6 +146,58 @@
 
             <children> 
                 <primitiveref id="ground" />
+            </children>
+        </component>
+
+        <component id="goalFrontBars">
+            <transformation>
+                <scale x="0.2" y="0.2" z="1.0" />
+                <rotate axis="x" angle="-90" />
+                <translate  />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goal_front" />
+            </children>
+        </component>
+
+        <component id="goalFrontUpBar">
+            <transformation>
+                <scale x="0.2" y="0.2" z="1.0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goal_front" />
+            </children>
+        </component>
+
+        <component id="goalFrontBars">
+            <transformation>
+                <scale x="0.2" y="0.2" z="1.0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goal_front" />
             </children>
         </component>
 
