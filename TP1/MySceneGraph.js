@@ -1308,6 +1308,8 @@ class MySceneGraph {
                 }
                 else if(grandChildren[j].nodeName == "texture")
                 {
+                    this.components[i].texture = new Object();
+
                     if(j != COMP_TEXT_INDEX)
                     {
                         this.onXMLMinorError("tag <texture> out of order");
@@ -1323,7 +1325,7 @@ class MySceneGraph {
                     {
                         var text = new Object();
                         text.id = textId;
-                        this.components[i].texture = text;
+                        this.components[i].texture.txt = text;
                     }
                     else
                     {
