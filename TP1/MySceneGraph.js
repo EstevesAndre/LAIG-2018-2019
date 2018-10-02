@@ -716,102 +716,9 @@ class MySceneGraph {
             // Specification for the current transformation
             grandChildren = children[i].children;
 
-            if(grandChildren.length == 0)
-            {
-                return "must be at least one transformation for ID = " + transformationId;
-            }
+            var ret = this.parseTransformation(this.scene, grandChildren, transformationId);
 
-            this.scene.loadIdentity();
-
-            for(var j = 0; j < grandChildren.length; j++)
-            {
-
-                if(grandChildren[j].nodeName == "translate")
-                {
-                    // X
-                    var x = this.reader.getFloat(grandChildren[j], 'x');
-                    if(!(x != null && !isNaN(x)))
-                    {
-                        return "unable to parse x-coordinate of the translate transformation with ID = " + transformationId;
-                    }
-                    // Y
-                    var y = this.reader.getFloat(grandChildren[j], 'y');
-                    if(!(y != null && !isNaN(y)))
-                    {
-                        return "unable to parse y-coordinate of the translate transformation with ID = " + transformationId;
-                    }
-                    // Z
-                    var z = this.reader.getFloat(grandChildren[j], 'z');
-                    if(!(z != null && !isNaN(z)))
-                    {
-                        return "unable to parse z-coordinate of the translate transformation with ID = " + transformationId;
-                    }
-                    else
-                    {
-                        this.scene.translate(x, y, z);
-                    }
-                    
-                }
-                else if(grandChildren[j].nodeName == "rotate")
-                {
-                    // AXIS
-                    var axis = this.reader.getString(grandChildren[j],'axis');
-                    if(axis != "x" && axis != "y" && axis != "z")
-                    {
-                        return "unable to parse the axis-coordinate. Expected: \"x\", \"y\" or \"z\". Given: \"" + axis + "\" for transformation ID = " + transformationId;
-                    }
-                    // ANGLE
-                    var angle = this.reader.getFloat(grandChildren[j],'angle');
-                    if(!(angle != null && !isNaN(angle)))
-                    {
-                        return "unable to parse angle parameter of the scale transformation with ID = " + transformationId;
-                    }
-                    else
-                    {
-                        if(axis == "x")
-                        {
-                            this.scene.rotate(angle, 1, 0, 0);
-                        }
-                        else if (axis = "y")
-                        {
-                            this.scene.rotate(angle, 0, 1, 0);
-                        }
-                        else
-                        {
-                            this.scene.rotate(angle, 0, 0, 1);
-                        }
-                    }
-                }
-                else if(grandChildren[j].nodeName == "scale")
-                {
-                    // X
-                    var x = this.reader.getFloat(grandChildren[j], 'x');
-                    if(!(x != null && !isNaN(x)))
-                    {
-                        return "unable to parse x-coordinate of the scale transformation with ID = " + transformationId;
-                    }
-                    // Y
-                    var y = this.reader.getFloat(grandChildren[j], 'y');
-                    if(!(y != null && !isNaN(y)))
-                    {
-                        return "unable to parse y-coordinate of the scale transformation with ID = " + transformationId;
-                    }
-                    // Z
-                    var z = this.reader.getFloat(grandChildren[j], 'z');
-                    if(!(z != null && !isNaN(z)))
-                    {
-                        return "unable to parse z-coordinate of the scale transformation with ID = " + transformationId;
-                    }
-                    else
-                    {
-                        this.scene.scale(x, y, z);
-                    }
-                }
-                else
-                {
-                    return "unknown tag with name = \"" + grandChildren[j].nodeName + "\" for ID = " + transformationId;
-                }
-            }
+            if(ret != null) return ret;
 
             /* Added transformations with syntaxe:
                 [TYPE] [VALUES]
@@ -1250,7 +1157,9 @@ class MySceneGraph {
         var root_found = false;
 
         for(var i = 0; i < children.length; i++)
-        {               
+        {
+            var component = new Object();
+            
             // verifies if it is a component.
             if (children[i].nodeName != "component")
             {
@@ -1264,6 +1173,7 @@ class MySceneGraph {
             {
                 return "no ID defined for component";
             }
+            component.id = componentId;
 
             if(componentIds[componentId] != null)
             {
@@ -1275,6 +1185,7 @@ class MySceneGraph {
                 root_found = true;
             }
 
+            this.components.push(component);
             componentIds[componentId] = componentId;
             numComponents++;
         }
@@ -1287,6 +1198,230 @@ class MySceneGraph {
         if(numComponents == 0)
         {
             return "at least one component must be defined";
+        }
+
+        for(var i = 0; i < children.length; i++)
+        {
+            var COMP_TRANSF_INDEX = 0;
+            var COMP_MAT_INDEX = 1;
+            var COMP_TEXT_INDEX = 2;
+            var COMP_CHLD_INDEX = 3;
+
+            grandChildren = children[i].children;
+
+            if(grandChildren.length != 4)
+            {
+                return "invalid number of child tags for component"
+            }
+
+            for(var j = 0; j < grandChildren.length; j++)
+            {
+                // <transformation>
+                if(grandChildren[j].nodeName == "transformation")
+                {
+                    if(j != COMP_TRANSF_INDEX)
+                    {
+                        this.onXMLMinorError("tag <transformation> out of order");
+                    }
+
+                    if(grandChildren[j].children.length == 0)
+                        return "tag <transformation> must have children";
+
+                    // if transformationref
+                    if(grandChildren[j].children[0].nodeName == "transformationref")
+                    {
+                        if(grandChildren[j].children.length != 1)
+                            return "tag <transformation> must have only one ref";
+
+                        let transformationrefId = this.reader.getString(grandChildren[j].children[0], 'id');
+                        if(transformationrefId == null) return "no ID defined for transformationref";
+
+                        var k = 0;
+
+                        for(k; k < this.transformations.length; k++)
+                        {
+                            if(this.transformations[k].id == transformationrefId)
+                            {
+                                this.components[i].matrix = this.transformations[k];
+                                break;
+                            }
+                        }
+
+                        if(this.components[i].matrix == null) 
+                            return "no matching transformation for tag <transformmationref> id = " + transformationrefId;
+                    }
+                    else //if transformation defined "on the fly"
+                    {
+                        var ret = this.parseTransformation(this.scene, grandChildren[j].children, "undefined");
+                        
+                        if(ret != null) return ret;
+
+                        this.components[i].matrix = this.scene.getMatrix();
+                    }
+                }
+                //<materials>
+                else if(grandChildren[j].nodeName == "materials")
+                {
+                    this.components[i].materials = [];
+
+                    if(j != COMP_MAT_INDEX)
+                    {
+                        this.onXMLMinorError("tag <materials> out of order");
+                    }
+
+                    if(grandChildren[j].children.length == 0)
+                        return "tag <materials> must have children";
+
+                    var k = 0;
+
+                    for(k; k < grandChildren[j].children.length; k++)
+                    {
+                        let matId = this.reader.getString(grandChildren[j].children[k], 'id');
+                        if(matId == null) return "no ID defined for material";
+
+                        // inheritance
+                        if(matId == "inherit")
+                        {
+                            var mat = new Object();
+                            mat.id = matId;
+                            this.components[i].materials.push(mat);
+                            continue;
+                        }
+
+                        var l = 0;
+
+                        var idFound = false;
+
+                        for(l; l < this.materials.length; l++)
+                        {
+                            if(this.materials[l].id == matId)
+                            {
+                                this.components[i].materials.push(this.materials[l]);
+                                idFound = true;
+                                break;
+                            }
+                        }
+
+                        if(!idFound) return "no material matches the reference tag <material> id = " + matId;
+                    }
+
+                }
+                else if(grandChildren[j].nodeName == "texture")
+                {
+                    if(j != COMP_TEXT_INDEX)
+                    {
+                        this.onXMLMinorError("tag <texture> out of order");
+                    }
+
+                    if(grandChildren[j].children.length != 0)
+                        return "no children allowed for tag texture";
+
+                    let textId = this.reader.getString(grandChildren[j], 'id');
+                    if(textId == null) return "no ID defined for texture";
+
+                    if(textId == "inherit" || textId == "none")
+                    {
+                        var text = new Object();
+                        text.id = textId;
+                        this.components[i].texture = text;
+                    }
+                    else
+                    {
+                        var l = 0;
+
+                        var idFound = false;
+
+                        for(l; l < this.textures.length; l++)
+                        {
+                            if(this.textures[l].id == textId)
+                            {
+                                this.components[i].texture.txt = this.textures[l];
+                                idFound = true;
+                                break;
+                            }
+                        }
+
+                        if(!idFound) return "no texture matches the reference tag <texture> id = " + textId;
+                    
+                        let length_s = this.reader.getString(grandChildren[j], 'length_s');
+                        if(length_s == null) return "no length_s defined for texture";
+                        this.components[i].texture.length_s = length_s;
+
+                        let length_t = this.reader.getString(grandChildren[j], 'length_t');
+                        if(length_t == null) return "no length_t defined for texture";
+                        this.components[i].texture.length_t = length_t;
+
+                    }
+                }
+                else if(grandChildren[j].nodeName == "children")
+                {
+                    if(j != COMP_CHLD_INDEX)
+                    {
+                        this.onXMLMinorError("tag <children> out of order");
+                    }
+
+                    if(grandChildren[j].children.length == 0)
+                        return "tag <children> must have children";
+
+                    var k = 0;
+
+                    for(k; k < grandChildren[j].children[k].length; k++)
+                    {
+                        this.components[i].children = [];
+
+                        if(grandChildren[j].children[k].nodeName == "componentref")
+                        {
+                            var l = 0;
+
+                            let id = this.reader.getString(grandChildren[j].children[k], 'id');
+                            if(id == null) return "no ID defined for componentref";
+
+                            var componentFound = false;
+
+                            for(l; l < this.components.length; l++)
+                            {
+                                if(this.components[l].id == id)
+                                {
+                                    this.components[i].children.push(this.components[l]);
+                                    componentFound = true;
+                                    break;
+                                }
+                            }
+
+                            if(!componentFound) return "no component matches the reference tag <componentref> id = " + id;
+
+                        }
+                        else if (grandChildren[j].children[k].nodeName == "primitiveref")
+                        {
+                            var l = 0;
+
+                            let id = this.reader.getString(grandChildren[j].children[k], 'id');
+                            if(id == null) return "no ID defined for primitiveref";
+
+                            var primitiveFound = false;
+
+                            for(l; l < this.primitives.length; l++)
+                            {
+                                if(this.primitives[l].id == id)
+                                {
+                                    this.components[i].children.push(this.primitives[l]);
+                                    primitiveFound = true;
+                                    break;
+                                }
+                            }
+
+                            if(!primitiveFound) return "no primitive matches the reference tag <primitiveref> id = " + id;
+
+                        }
+                        else
+                            return "unexpected child tag of <children> - <"+ grandChildren[j].nodeName + ">";
+                    }
+                }
+                else
+                {
+                    return "unexpected child tag of <component> - <"+ grandChildren[j].nodeName + ">";
+                }
+            }
         }
 
         console.log("Parsed components");
@@ -1380,6 +1515,106 @@ class MySceneGraph {
         else return block + " " + tag + " tag undefined for ID = " + id;
         
         return null;
+    }
+
+    parseTransformation(scene, grandChildren, transformationId)
+    {
+        if(grandChildren.length == 0)
+            {
+                return "must be at least one transformation for ID = " + transformationId;
+            }
+
+            scene.loadIdentity();
+
+            for(var j = 0; j < grandChildren.length; j++)
+            {
+
+                if(grandChildren[j].nodeName == "translate")
+                {
+                    // X
+                    var x = this.reader.getFloat(grandChildren[j], 'x');
+                    if(!(x != null && !isNaN(x)))
+                    {
+                        return "unable to parse x-coordinate of the translate transformation with ID = " + transformationId;
+                    }
+                    // Y
+                    var y = this.reader.getFloat(grandChildren[j], 'y');
+                    if(!(y != null && !isNaN(y)))
+                    {
+                        return "unable to parse y-coordinate of the translate transformation with ID = " + transformationId;
+                    }
+                    // Z
+                    var z = this.reader.getFloat(grandChildren[j], 'z');
+                    if(!(z != null && !isNaN(z)))
+                    {
+                        return "unable to parse z-coordinate of the translate transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        scene.translate(x, y, z);
+                    }
+                    
+                }
+                else if(grandChildren[j].nodeName == "rotate")
+                {
+                    // AXIS
+                    var axis = this.reader.getString(grandChildren[j],'axis');
+                    if(axis != "x" && axis != "y" && axis != "z")
+                    {
+                        return "unable to parse the axis-coordinate. Expected: \"x\", \"y\" or \"z\". Given: \"" + axis + "\" for transformation ID = " + transformationId;
+                    }
+                    // ANGLE
+                    var angle = this.reader.getFloat(grandChildren[j],'angle');
+                    if(!(angle != null && !isNaN(angle)))
+                    {
+                        return "unable to parse angle parameter of the scale transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        if(axis == "x")
+                        {
+                            scene.rotate(angle, 1, 0, 0);
+                        }
+                        else if (axis = "y")
+                        {
+                            scene.rotate(angle, 0, 1, 0);
+                        }
+                        else
+                        {
+                            scene.rotate(angle, 0, 0, 1);
+                        }
+                    }
+                }
+                else if(grandChildren[j].nodeName == "scale")
+                {
+                    // X
+                    var x = this.reader.getFloat(grandChildren[j], 'x');
+                    if(!(x != null && !isNaN(x)))
+                    {
+                        return "unable to parse x-coordinate of the scale transformation with ID = " + transformationId;
+                    }
+                    // Y
+                    var y = this.reader.getFloat(grandChildren[j], 'y');
+                    if(!(y != null && !isNaN(y)))
+                    {
+                        return "unable to parse y-coordinate of the scale transformation with ID = " + transformationId;
+                    }
+                    // Z
+                    var z = this.reader.getFloat(grandChildren[j], 'z');
+                    if(!(z != null && !isNaN(z)))
+                    {
+                        return "unable to parse z-coordinate of the scale transformation with ID = " + transformationId;
+                    }
+                    else
+                    {
+                        scene.scale(x, y, z);
+                    }
+                }
+                else
+                {
+                    return "unknown tag with name = \"" + grandChildren[j].nodeName + "\" for ID = " + transformationId;
+                }
+            }
     }
 
 }
