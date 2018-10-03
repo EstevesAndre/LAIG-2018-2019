@@ -28,6 +28,7 @@ class MySceneGraph {
         this.nodes = [];
 
         this.idRoot = null;                    // The id of the root element.
+        this.rootElem = new Object();
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -331,10 +332,10 @@ class MySceneGraph {
         {   
             var d1 = [];     
             if((error = this.parseRGBA(children, d1, AMB_INDEX, "ambient", "ambient light", "none")) != null) return error;                
-            this.ambient.r = d1[1];
-            this.ambient.g = d1[2];
-            this.ambient.b = d1[3];
-            this.ambient.a = d1[4];
+            this.ambient.r = d1[0];
+            this.ambient.g = d1[1];
+            this.ambient.b = d1[2];
+            this.ambient.a = d1[3];
         }       
         else return "unexpected child tag of <ambient> - <"+ children[AMB_INDEX].nodeName + ">";
 
@@ -343,13 +344,13 @@ class MySceneGraph {
         {
             var d2 = [];
             if((error = this.parseRGBA(children, d2, BCK_INDEX, "background clear color", "background color", "none")) != null) return error;                
-            this.background.r = d2[1];
-            this.background.g = d2[2];
-            this.background.b = d2[3];
-            this.background.a = d2[4];
+            this.background.r = d2[0];
+            this.background.g = d2[1];
+            this.background.b = d2[2];
+            this.background.a = d2[3];
         }
         else return "unexpected child tag of <background> - <"+ children[BCK_INDEX].nodeName + ">";
-
+  
         console.log("Parsed ambient");
 
         return null;
@@ -856,6 +857,7 @@ class MySceneGraph {
              // TRIANGLE
             else if(grandChildren[0].nodeName == "triangle")
              {
+                primitive.type = "triangle";
                 // x1
                 var x1 = this.reader.getFloat(grandChildren[0],'x1');
                 if(!(x1 != null && !isNaN(x1)))
@@ -959,6 +961,7 @@ class MySceneGraph {
              // CYLINDER
             else if(grandChildren[0].nodeName == "cylinder")
             {
+                primitive.type = "cylinder";
                 // base
                 var base = this.reader.getFloat(grandChildren[0],'base');
                 if(!(base != null && !isNaN(base)))
@@ -1026,6 +1029,7 @@ class MySceneGraph {
             // SPHERE
             else if(grandChildren[0].nodeName == "sphere")
             {
+                primitive.type = "sphere";
                 // radius
                 var radius = this.reader.getFloat(grandChildren[0],'radius');
                 if(!(radius != null && !isNaN(radius)))
@@ -1071,6 +1075,7 @@ class MySceneGraph {
             // TORUS
             else 
             {
+                primitive.type = "torus";
                 // inner
                 var inner = this.reader.getFloat(grandChildren[0],'inner');
                 if(!(inner != null && !isNaN(inner)))
@@ -1159,6 +1164,7 @@ class MySceneGraph {
         for(var i = 0; i < children.length; i++)
         {
             var component = new Object();
+            component.type = "component";
             
             // verifies if it is a component.
             if (children[i].nodeName != "component")
@@ -1183,6 +1189,7 @@ class MySceneGraph {
             if(componentId == this.idRoot)
             {
                 root_found = true;
+                this.rootElem = component;
             }
 
             this.components.push(component);
@@ -1242,7 +1249,7 @@ class MySceneGraph {
                         {
                             if(this.transformations[k].id == transformationrefId)
                             {
-                                this.components[i].matrix = this.transformations[k];
+                                this.components[i].matrix = this.transformations[k].matrix;
                                 break;
                             }
                         }
@@ -1367,7 +1374,7 @@ class MySceneGraph {
 
                     var k = 0;
 
-                    for(k; k < grandChildren[j].children[k].length; k++)
+                    for(k; k < grandChildren[j].children.length; k++)
                     {
                         this.components[i].children = [];
 
@@ -1425,7 +1432,6 @@ class MySceneGraph {
                 }
             }
         }
-
         console.log("Parsed components");
 
         return null;
@@ -1461,15 +1467,54 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // entry point for graph rendering
-        //TODO: Render loop starting at root of graph
+        this.displayComponent(this.rootElem);
+    }
+
+    displayComponent(comp)
+    {    
+        this.scene.multMatrix(comp.matrix);
+        
+        var k = 0;
+        for(k; k < comp.children.length; k++)
+        {
+            this.scene.pushMatrix();
+            if(comp.children[k].type == "component")
+            {
+                this.displayComponent(comp.children[k]);
+            }
+            else
+            {
+                this.displayPrimitive(comp.children[k]);
+            }
+            this.scene.popMatrix();
+        }
+    }
+
+    displayPrimitive(prim)
+    {
+        if(prim.type == "rectangle")
+        {
+            var rect = new MyRectangle(this.scene, prim.x1, prim.y1, prim.x2, prim.y2);
+            rect.display();
+        }
+        else if(prim.type == "triangle")
+        {
+            var tri = new MyTriangle(this.scene, prim.x1, prim.y1, prim.z1, prim.x2, prim.y2, prim.z2, prim.x3, prim.y3, prim.z3);
+            tri.display();
+        }
+        else if(prim.type == "cylinder")
+        {
+            var cyl = new MyCylinder(this.scene, prim.base, prim.top, prim.height, prim.slices, prim.stacks);
+            cyl.display();
+        }
     }
 
     parseValue(values, data, index, block, tag, id, variavel)
     {        
         var k = this.reader.getFloat(values[index],variavel);
         
-        if(!(k != null && !isNaN(k)))   return "unable to parse " + variavel + " value of the <" + tag + "> for " + block + " ID = " + id;
+        if(!(k != null && !isNaN(k)))  
+         return "unable to parse " + variavel + " value of the <" + tag + "> for " + block + " ID = " + id;
         else if(k < 0 || k > 1)         return variavel + " value of <" + tag + "> " + block + " out of bounds [0,1] for ID = " + id;
         else                            data.push(k);
 
@@ -1573,17 +1618,19 @@ class MySceneGraph {
                     }
                     else
                     {
+                        var angle_rad = angle * 0.017453;
+
                         if(axis == "x")
                         {
-                            scene.rotate(angle, 1, 0, 0);
+                            scene.rotate(angle_rad, 1, 0, 0);
                         }
-                        else if (axis = "y")
+                        else if (axis == "y")
                         {
-                            scene.rotate(angle, 0, 1, 0);
+                            scene.rotate(angle_rad, 0, 1, 0);
                         }
                         else
                         {
-                            scene.rotate(angle, 0, 0, 1);
+                            scene.rotate(angle_rad, 0, 0, 1);
                         }
                     }
                 }
