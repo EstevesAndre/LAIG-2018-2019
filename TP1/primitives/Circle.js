@@ -10,7 +10,7 @@ class Circle extends CGFobject
 	{
 		super(scene);
 
-        this.slices = slices;
+		this.slices = slices;
 
 		this.initBuffers();
 	};
@@ -40,7 +40,6 @@ class Circle extends CGFobject
 		{
 			this.vertices.push(Math.cos(i * angle), Math.sin(i * angle), 0);
 			this.normals.push(0,0,1);			
-			
 			// Place to texCoords				
 			this.texCoords.push(0.5 + Math.cos(i * angle) / 2, 0.5 - Math.sin(i * angle) / 2);
 

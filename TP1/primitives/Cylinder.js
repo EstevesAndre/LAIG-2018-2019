@@ -16,7 +16,7 @@ class Cylinder extends CGFobject
         this.slices = slices;
         this.stacks = stacks;
 
-        this.face = new MyCircle(scene, this.slices);
+        this.face = new Circle(scene, this.slices);
 
 		this.initBuffers();
 	};
@@ -70,9 +70,14 @@ class Cylinder extends CGFobject
     
     display()
     {
+		this.scene.pushMatrix();
+			this.scene.scale(this.base,this.top,this.height);
+			this.drawElements(this.scene.gl.TRIANGLES);
+		this.scene.popMatrix();
+		
         this.scene.pushMatrix();
-        this.scene.scale(this.top, this.top, 1);
-            this.scale.translate(0, 0, this.height);
+        	this.scene.scale(this.top, this.top, 1);
+            this.scene.translate(0, 0, this.height);
             this.face.display();
         this.scene.popMatrix();
         
@@ -80,7 +85,7 @@ class Cylinder extends CGFobject
             this.scene.scale(this.base, this.base, 1);
             this.scene.rotate(Math.PI, 1, 0, 0);
             this.face.display();
-        this.scene.popMatrix();
-        
+		this.scene.popMatrix();
+		
     };
 };

@@ -799,7 +799,8 @@ class MySceneGraph {
                 grandChildren[0].nodeName != "triangle" &&
                     grandChildren[0].nodeName != "cylinder" &&
                         grandChildren[0].nodeName != "sphere" &&
-                            grandChildren[0].nodeName != "torus")
+                            grandChildren[0].nodeName != "circle" &&
+                                grandChildren[0].nodeName != "torus")
             {
                 this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + "> with ID = " + primitiveId);
                 continue;
@@ -1072,8 +1073,23 @@ class MySceneGraph {
                 }
                 
             }
+            // CIRCLE
+            else if(grandChildren[0].nodeName == "circle")
+            {
+                primitive.type = "circle";
+                
+                var slices = this.reader.getFloat(grandChildren[0],'slices');
+                if(!(slices != null && !isNaN(slices)))
+                {
+                    return "unable to parser slices of the circle primitive for ID = " + primitiveId;
+                }
+                else
+                {
+                    primitive.slices = slices;
+                }
+            }
             // TORUS
-            else 
+            else if(grandChildren[0].nodeName == "torus")
             {
                 primitive.type = "torus";
                 // inner
@@ -1494,19 +1510,29 @@ class MySceneGraph {
     {
         if(prim.type == "rectangle")
         {
-            var rect = new MyRectangle(this.scene, prim.x1, prim.y1, prim.x2, prim.y2);
+            var rect = new Rectangle(this.scene, prim.x1, prim.y1, prim.x2, prim.y2);
             rect.display();
         }
         else if(prim.type == "triangle")
         {
-            var tri = new MyTriangle(this.scene, prim.x1, prim.y1, prim.z1, prim.x2, prim.y2, prim.z2, prim.x3, prim.y3, prim.z3);
+            var tri = new Triangle(this.scene, prim.x1, prim.y1, prim.z1, prim.x2, prim.y2, prim.z2, prim.x3, prim.y3, prim.z3);
             tri.display();
         }
         else if(prim.type == "cylinder")
         {
-            var cyl = new MyCylinder(this.scene, prim.base, prim.top, prim.height, prim.slices, prim.stacks);
-            cyl.display();
+            var cyl = new Cylinder(this.scene, prim.base, prim.top, prim.height, prim.slices, prim.stacks);
+            cyl.display();            
         }
+        else if(prim.type == "circle")
+        {
+            var cir = new Circle(this.scene, prim.slices);
+            cir.display();
+        }
+        /*else if(prim.type == "sphere")
+        {
+            var sph = new Sphere(this.scene, prim.radius, prim.slices, prim.stacks);
+            sph.display();
+        }*/
     }
 
     parseValue(values, data, index, block, tag, id, variavel)
