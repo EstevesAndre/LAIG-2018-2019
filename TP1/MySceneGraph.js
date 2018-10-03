@@ -1390,9 +1390,10 @@ class MySceneGraph {
 
                     var k = 0;
 
+                    this.components[i].children = [];
+
                     for(k; k < grandChildren[j].children.length; k++)
                     {
-                        this.components[i].children = [];
 
                         if(grandChildren[j].children[k].nodeName == "componentref")
                         {
@@ -1441,6 +1442,7 @@ class MySceneGraph {
                         else
                             return "unexpected child tag of <children> - <"+ grandChildren[j].nodeName + ">";
                     }
+                    console.log(this.components[i].children.length);
                 }
                 else
                 {
