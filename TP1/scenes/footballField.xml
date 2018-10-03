@@ -109,6 +109,10 @@
         <primitive id="box">
             <box width="3.0" height="3.0" depth="3.0" />
         </primitive>
+
+        <primitive id="torus">
+            <torus inner="1.0" outer="2.0" slices="20" loops="20" />
+        </primitive>
     </primitives>
 
     <components>
@@ -128,7 +132,7 @@
                 <!-- <primitiveref id="tr" />    
                 <componentref id="goalFrontBars" />
                 <primitiveref id="ground" /> -->
-                <primitiveref id="box" />
+                <primitiveref id="torus" />
             </children>
         </component>
         <component id="football">
