@@ -955,7 +955,7 @@ class MySceneGraph {
                 }
                 else
                 {
-                argTriangle.push(z3);
+                    primitive.z3 = z3;
                 }
  
             }
