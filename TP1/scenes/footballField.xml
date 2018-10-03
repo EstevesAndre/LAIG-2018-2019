@@ -105,6 +105,10 @@
                       x2="8.0" y2="2.0" z2="2.0"
                       x3="3.0" y3="4.0" z3="3.1" />
         </primitive>
+
+        <primitive id="box">
+            <box width="3.0" height="3.0" depth="3.0" />
+        </primitive>
     </primitives>
 
     <components>
@@ -121,7 +125,10 @@
             <texture id="none" length_s="1.0" length_t="1.0" />
 
             <children>
-                <primitiveref id="tr" />                             
+                <!-- <primitiveref id="tr" />    
+                <componentref id="goalFrontBars" />
+                <primitiveref id="ground" /> -->
+                <primitiveref id="box" />
             </children>
         </component>
         <component id="football">
@@ -137,6 +144,7 @@
 
             <children>
                 <primitiveref id="football" />
+                <componentref id="goalFrontUpBar" />
             </children>
         </component>
 
