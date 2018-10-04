@@ -995,195 +995,210 @@ class MySceneGraph {
             var COMP_MAT_INDEX = 1;
             var COMP_TEXT_INDEX = 2;
             var COMP_CHLD_INDEX = 3;
+            
+            let componentId = this.reader.getString(children[i],'id');
 
             grandChildren = children[i].children;
 
-            if(grandChildren.length != 4) return "invalid number of child tags for component"
+            if(grandChildren.length != 4) return "invalid number of child tags for component with ID = " + componentId;
 
-            for(var j = 0; j < grandChildren.length; j++)
+            var nodeNames = [];            
+            for(var j = 0; j < grandChildren.length; j++) nodeNames.push(grandChildren[j].nodeName);
+
+            // Gets indices of each element.    
+            var transformationIndex = nodeNames.indexOf("transformation");
+            var materialsIndex = nodeNames.indexOf("materials");
+            var textureIndex = nodeNames.indexOf("texture");
+            var childrenIndex = nodeNames.indexOf("children");
+
+            if(transformationIndex != -1)
             {
-                // <transformation>
-                if(grandChildren[j].nodeName == "transformation")
+                if(transformationIndex != COMP_TRANSF_INDEX) this.onXMLMinorError("tag <transformation> out of order");
+
+                if(grandChildren[transformationIndex].children.length == 0) return "tag <transformation> must have children";
+
+                // if transformationref
+                if(grandChildren[transformationIndex].children[0].nodeName == "transformationref")
                 {
-                    if(j != COMP_TRANSF_INDEX) this.onXMLMinorError("tag <transformation> out of order");
+                    if(grandChildren[transformationIndex].children.length != 1) return "tag <transformation> must have only one ref";
 
-                    if(grandChildren[j].children.length == 0) return "tag <transformation> must have children";
-
-                    // if transformationref
-                    if(grandChildren[j].children[0].nodeName == "transformationref")
-                    {
-                        if(grandChildren[j].children.length != 1) return "tag <transformation> must have only one ref";
-
-                        let transformationrefId = this.reader.getString(grandChildren[j].children[0], 'id');
-                        if(transformationrefId == null) return "no ID defined for transformationref";
-
-                        var k = 0;
-
-                        for(k; k < this.transformations.length; k++)
-                        {
-                            if(this.transformations[k].id == transformationrefId)
-                            {
-                                this.components[i].matrix = this.transformations[k].matrix;
-                                break;
-                            }
-                        }
-
-                        if(this.components[i].matrix == null) return "no matching transformation for tag <transformmationref> id = " + transformationrefId;
-                    }
-                    else //if transformation defined "on the fly"
-                    {
-                        var ret = this.parseTransformation(this.scene, grandChildren[j].children, "undefined");
-                        
-                        if(ret != null) return ret;
-
-                        this.components[i].matrix = this.scene.getMatrix();
-                    }
-                }
-                //<materials>
-                else if(grandChildren[j].nodeName == "materials")
-                {
-                    this.components[i].materials = [];
-
-                    if(j != COMP_MAT_INDEX) this.onXMLMinorError("tag <materials> out of order");
-
-                    if(grandChildren[j].children.length == 0) return "tag <materials> must have children";
+                    let transformationrefId = this.reader.getString(grandChildren[transformationIndex].children[0], 'id');
+                    if(transformationrefId == null) return "no ID defined for transformationref";
 
                     var k = 0;
 
-                    for(k; k < grandChildren[j].children.length; k++)
+                    for(k; k < this.transformations.length; k++)
                     {
-                        let matId = this.reader.getString(grandChildren[j].children[k], 'id');
-                        if(matId == null) return "no ID defined for material";
-
-                        // inheritance
-                        if(matId == "inherit")
+                        if(this.transformations[k].id == transformationrefId)
                         {
-                            var mat = new Object();
-                            mat.id = matId;
-                            this.components[i].materials.push(mat);
-                            continue;
+                            this.components[i].matrix = this.transformations[k].matrix;
+                            break;
                         }
+                    }
 
-                        var l = 0;
-                        var idFound = false;
+                    if(this.components[i].matrix == null) return "no matching transformation for tag <transformmationref> id = " + transformationrefId;
+                }
+                else //if transformation defined "on the fly"
+                {
+                    var ret = this.parseTransformation(this.scene, grandChildren[transformationIndex].children, "undefined");
+                    
+                    if(ret != null) return ret;
 
-                        for(l; l < this.materials.length; l++)
+                    this.components[i].matrix = this.scene.getMatrix();
+                }
+            }
+            else
+                return "unable to find transformation tag for component ID = " + componentId;
+
+            if(materialsIndex != -1)
+            {
+                this.components[i].materials = [];
+
+                if(materialsIndex != COMP_MAT_INDEX) this.onXMLMinorError("tag <materials> out of order");
+
+                if(grandChildren[materialsIndex].children.length == 0) return "tag <materials> must have children";
+
+                var k = 0;
+
+                for(k; k < grandChildren[materialsIndex].children.length; k++)
+                {
+                    let matId = this.reader.getString(grandChildren[materialsIndex].children[k], 'id');
+                    if(matId == null) return "no ID defined for material";
+
+                    // inheritance
+                    if(matId == "inherit")
+                    {
+                        var mat = new Object();
+                        mat.id = matId;
+                        this.components[i].materials.push(mat);
+                        continue;
+                    }
+
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.materials.length; l++)
+                    {
+                        if(this.materials[l].id == matId)
                         {
-                            if(this.materials[l].id == matId)
+                            this.components[i].materials.push(this.materials[l]);
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no material matches the reference tag <material> id = " + matId;
+                }
+            }
+            else   
+                return "unable to find materials tag for component ID = " + componentId;
+            
+            if(textureIndex != -1)
+            {
+                this.components[i].texture = new Object();
+
+                if(textureIndex != COMP_TEXT_INDEX) this.onXMLMinorError("tag <texture> out of order");
+
+                if(grandChildren[textureIndex].children.length != 0) return "no children allowed for tag texture";
+
+                let textId = this.reader.getString(grandChildren[textureIndex], 'id');
+                if(textId == null) return "no ID defined for texture";
+
+                if(textId == "inherit" || textId == "none")
+                {
+                    var text = new Object();
+                    text.id = textId;
+                    this.components[i].texture.txt = text;
+                }
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == textId)
+                        {
+                            this.components[i].texture.txt = this.textures[l];
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference tag <texture> id = " + textId;
+                
+                    let length_s = this.reader.getString(grandChildren[textureIndex], 'length_s');
+                    if(length_s == null) return "no length_s defined for texture";
+                    this.components[i].texture.length_s = length_s;
+
+                    let length_t = this.reader.getString(grandChildren[textureIndex], 'length_t');
+                    if(length_t == null) return "no length_t defined for texture";
+                    this.components[i].texture.length_t = length_t;
+
+                }
+            }
+            else
+                return "unable to find texture tag for component ID = " + componentId;
+            
+            if(childrenIndex != -1)
+            {
+                if(childrenIndex != COMP_CHLD_INDEX) this.onXMLMinorError("tag <children> out of order for component with ID = " + componentId);
+
+                if(grandChildren[childrenIndex].children.length == 0) return "tag <children> must have children for component with ID = " + componentId;
+
+                var k = 0;
+                this.components[i].children = [];
+
+                for(k; k < grandChildren[childrenIndex].children.length; k++)
+                {
+                    if(grandChildren[childrenIndex].children[k].nodeName == "componentref")
+                    {
+                        var l = 0;
+                        let id = this.reader.getString(grandChildren[childrenIndex].children[k], 'id');
+                        if(id == null) return "no ID defined for componentref";
+
+                        var componentFound = false;
+
+                        for(l; l < this.components.length; l++)
+                        {
+                            if(this.components[l].id == id)
                             {
-                                this.components[i].materials.push(this.materials[l]);
-                                idFound = true;
+                                this.components[i].children.push(this.components[l]);
+                                componentFound = true;
                                 break;
                             }
                         }
 
-                        if(!idFound) return "no material matches the reference tag <material> id = " + matId;
+                        if(!componentFound) return "no component matches the reference tag <componentref> id = " + id;
+
                     }
-
-                }
-                else if(grandChildren[j].nodeName == "texture")
-                {
-                    this.components[i].texture = new Object();
-
-                    if(j != COMP_TEXT_INDEX) this.onXMLMinorError("tag <texture> out of order");
-
-                    if(grandChildren[j].children.length != 0) return "no children allowed for tag texture";
-
-                    let textId = this.reader.getString(grandChildren[j], 'id');
-                    if(textId == null) return "no ID defined for texture";
-
-                    if(textId == "inherit" || textId == "none")
+                    else if (grandChildren[childrenIndex].children[k].nodeName == "primitiveref")
                     {
-                        var text = new Object();
-                        text.id = textId;
-                        this.components[i].texture.txt = text;
+                        var l = 0;
+                        let id = this.reader.getString(grandChildren[childrenIndex].children[k], 'id');
+                        if(id == null) return "no ID defined for primitiveref";
+
+                        var primitiveFound = false;
+
+                        for(l; l < this.primitives.length; l++)
+                        {
+                            if(this.primitives[l].id == id)
+                            {
+                                this.components[i].children.push(this.primitives[l]);
+                                primitiveFound = true;
+                                break;
+                            }
+                        }
+
+                        if(!primitiveFound) return "no primitive matches the reference tag <primitiveref> id = " + id;
                     }
                     else
-                    {
-                        var l = 0;
-                        var idFound = false;
-
-                        for(l; l < this.textures.length; l++)
-                        {
-                            if(this.textures[l].id == textId)
-                            {
-                                this.components[i].texture.txt = this.textures[l];
-                                idFound = true;
-                                break;
-                            }
-                        }
-
-                        if(!idFound) return "no texture matches the reference tag <texture> id = " + textId;
-                    
-                        let length_s = this.reader.getString(grandChildren[j], 'length_s');
-                        if(length_s == null) return "no length_s defined for texture";
-                        this.components[i].texture.length_s = length_s;
-
-                        let length_t = this.reader.getString(grandChildren[j], 'length_t');
-                        if(length_t == null) return "no length_t defined for texture";
-                        this.components[i].texture.length_t = length_t;
-
-                    }
+                        return "unexpected child tag of <children> - <"+ grandChildren[childrenIndex].nodeName + ">";
                 }
-                else if(grandChildren[j].nodeName == "children")
-                {
-                    if(j != COMP_CHLD_INDEX) this.onXMLMinorError("tag <children> out of order");
-
-                    if(grandChildren[j].children.length == 0) return "tag <children> must have children";
-
-                    var k = 0;
-                    this.components[i].children = [];
-
-                    for(k; k < grandChildren[j].children.length; k++)
-                    {
-                        if(grandChildren[j].children[k].nodeName == "componentref")
-                        {
-                            var l = 0;
-                            let id = this.reader.getString(grandChildren[j].children[k], 'id');
-                            if(id == null) return "no ID defined for componentref";
-
-                            var componentFound = false;
-
-                            for(l; l < this.components.length; l++)
-                            {
-                                if(this.components[l].id == id)
-                                {
-                                    this.components[i].children.push(this.components[l]);
-                                    componentFound = true;
-                                    break;
-                                }
-                            }
-
-                            if(!componentFound) return "no component matches the reference tag <componentref> id = " + id;
-
-                        }
-                        else if (grandChildren[j].children[k].nodeName == "primitiveref")
-                        {
-                            var l = 0;
-                            let id = this.reader.getString(grandChildren[j].children[k], 'id');
-                            if(id == null) return "no ID defined for primitiveref";
-
-                            var primitiveFound = false;
-
-                            for(l; l < this.primitives.length; l++)
-                            {
-                                if(this.primitives[l].id == id)
-                                {
-                                    this.components[i].children.push(this.primitives[l]);
-                                    primitiveFound = true;
-                                    break;
-                                }
-                            }
-
-                            if(!primitiveFound) return "no primitive matches the reference tag <primitiveref> id = " + id;
-                        }
-                        else
-                            return "unexpected child tag of <children> - <"+ grandChildren[j].nodeName + ">";
-                    }
-                }
-                else 
-                    return "unexpected child tag of <component> - <"+ grandChildren[j].nodeName + ">";
             }
+            else
+                return "chidlren tag undefined for component ID = " + componentId;
+            
         }
         console.log("Parsed components");
 

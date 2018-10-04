@@ -6,43 +6,43 @@
         <ortho id="view" near="1.0" far="2.0" left="1.0" right="1.0" top="1.0" bottom="1.0" /> <!-- acrescentar valores -->
 
         <perspective id="3D_view" near="1.0" far="2.0" angle="0.0">
-            <from x="0.0" y="0.0" z="0.0" />
+            <from x="20.0" y="5.0" z="0.0" />
             <to x="0.0" y="0.0" z="0.0" />
         </perspective>
     </views>
 
     <ambient>        
-        <ambient r="0.5" g="0.7" b="0.0" a="1.0" />
-        <background r="0.2" g="0.5" b="0.8" a="1.0" />        
+        <ambient r="0.9" g="0.7" b="0.7" a="1.0" />
+        <background r="0.4" g="0.5" b="0.8" a="1.0" />        
     </ambient>
 
     <lights>
         <omni id="leftCorner1" enabled="1">            
-            <location x="-6.25" y="3.0" z="-4.4" w="1.0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <location x="-8.8" y="8.0" z="-12.5" w="1.0" />
+            <ambient r="1.0" g="0.5" b="1.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="1.0" b="0.5" a="1.0" />
         </omni>
 
         <omni id="leftCorner2" enabled="1">            
-            <location x="-6.25" y="3.0" z="4.4" w="1.0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <location x="8.8" y="8.0" z="-12.5" w="1.0" />
+            <ambient r="0.5" g="1.0" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </omni>
 
         <omni id="rightCorner1" enabled="1">            
-            <location x="6.25" y="3.0" z="-4.4" w="1.0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <location x="-4.4" y="8.0" z="12.5" w="1.0" />
+            <ambient r="0.5" g="0.5" b="1.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </omni>
 
         <omni id="rightCorner2" enabled="1">            
-            <location x="6.25" y="3.0" z="4.4" w="1.0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <location x="8.8" y="8.0" z="12.5" w="1.0" />
+            <ambient r="0.5" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.5" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="0.5" b="0.5" a="1.0" />
         </omni>
     </lights>
 
@@ -60,58 +60,52 @@
         </material>
     </materials>
 
-    <!--transformation, think about it -->
     <transformations>
         <transformation id="football">
             <scale x="0.25" y="0.25" z="0.25" />
             <rotate axis="x" angle="45" />
             <translate x="3" y="-2" z="0.25" />
         </transformation>
-
-        <transformation id="field_TO_xOz">
-            <rotate axis="x" angle="-90" />
-            <translate x="0.0" y="0.1" z="0.0" />
-        </transformation>
         
-        <transformation id="ground_TO_xOz">
+        <transformation id="groundRotation">
+            <rotate axis="y" angle="90" />
             <rotate axis="x" angle="-90" />
         </transformation>
     </transformations>
 
     <primitives>
-        <primitive id="field">
-            <rectangle x1="-5.25" y1="3.4" x2="5.25" y2="-3.4" /> <!--Field size -->
+        <primitive id="rectangleField">
+            <rectangle x1="-10.5" y1="-6.8" x2="10.5" y2="6.8" /> <!--Field size -->
         </primitive>
 
-        <primitive id="ground">
-           <rectangle x1="-8.0" y1="5.0" x2="8.0" y2="-5.0" />
+        <primitive id="rectangleGround">
+           <rectangle x1="-14.0" y1="-9.0" x2="14.0" y2="9.0" />
         </primitive>
 
         <primitive id="football">
-            <sphere radius="1.0" slices="12" stacks="12" />
+            <sphere radius="0.1" slices="18" stacks="18" />
         </primitive>
 
-        <primitive id="goal_front">     
-            <cylinder base="0.2" top="0.2" height="2" slices="12" stacks="12" />
+        <primitive id="goalFront">     
+            <cylinder base="0.2" top="0.2" height="1.8" slices="12" stacks="12" />
         </primitive>
         
-        <primitive id="goal_back">
-            <!-- <cylinder base="0.2" top="0.2" height="1" slices="6" stacks="6" /> -->
-            <cylinder base="3" top="3" height="10" slices="6" stacks="6" />
+        <primitive id="goalBack">
+            <cylinder base="0.1" top="0.1" height="1" slices="6" stacks="6" />            
         </primitive>
 
-        <primitive id="tr">
+        <primitive id="triangle">           <!-- not needed in the field -->
             <triangle x1="0.0" y1="0.0" z1="0.0"
                       x2="8.0" y2="2.0" z2="2.0"
                       x3="3.0" y3="4.0" z3="3.1" />
         </primitive>
 
-        <primitive id="box">
-            <box width="3.0" height="3.0" depth="3.0" />
+        <primitive id="box">                <!-- close to goal -->
+            <box width="0.2" height="0.2" depth="1.0" />
         </primitive>
 
-        <primitive id="torus">
-            <torus inner="1.0" outer="2.0" slices="40" loops="40" />
+        <primitive id="torus">              <!-- field's center -->
+            <torus inner="2.0" outer="3.0" slices="40" loops="40" />
         </primitive>
     </primitives>
 
@@ -129,12 +123,15 @@
             <texture id="none" length_s="1.0" length_t="1.0" />
 
             <children>
-                <!-- <primitiveref id="tr" />    
-                <componentref id="goalFrontBars" />
-                <primitiveref id="ground" /> -->
-                <primitiveref id="torus" />
+                <componentref id="goalLeft" />
+                <componentref id="goalRight" />
+                <componentref id="field" />
+                <componentref id="ground" />
+                <componentref id="topTorus" />
+                <componentref id="football" />
             </children>
         </component>
+        
         <component id="football">
             <transformation>
                 <transformationref id="football" />
@@ -148,13 +145,12 @@
 
             <children>
                 <primitiveref id="football" />
-                <componentref id="goalFrontUpBar" />
             </children>
         </component>
 
         <component id="field">
             <transformation>
-                <transformationref id="field_TO_xOz" />
+                <transformationref id="groundRotation" />
             </transformation>
 
             <materials>
@@ -164,13 +160,13 @@
             <texture id="none" length_s="1.0" length_t="1.0" />
 
             <children> 
-                <primitiveref id="field" />
+                <primitiveref id="rectangleField" />
             </children>
         </component>
 
         <component id="ground">
             <transformation>
-                <transformationref id="ground_TO_xOz" />
+                <transformationref id="groundRotation" />
             </transformation>
 
             <materials>
@@ -180,15 +176,47 @@
             <texture id="none" length_s="1.0" length_t="1.0" />
 
             <children> 
-                <primitiveref id="ground" />
+                <primitiveref id="rectangleGround" />
             </children>
         </component>
 
-        <component id="goalFrontBars">
+        <!-- GOAL INITIAL COMPONENTS -->
+        <component id="goal">
             <transformation>
+                <translate x="0.0" y="0.0" z="0.0" />
+            </transformation>
+
+            <materials> 
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="goalFrontBarLeft" />
+                <componentref id="goalFrontBarRight" />
+                <componentref id="goalFrontTop" />
+
+                <componentref id="goalBack_groundLeft" />
+                <componentref id="goalBack_groundRight" />
+
+                <componentref id="goalBack_groundBack" />
+                <componentref id="goalBack_TopBack" />
+
+                <componentref id="goalBack_VerticalLeft" />
+                <componentref id="goalBack_VerticalRight" />
+
+                <componentref id="goalUpBarLeft" />
+                <componentref id="goalUpBarRight" />
+
+            </children>
+        </component>
+
+        <component id="goalFrontBarLeft">
+            <transformation>
+                <translate x="-1.5" y="0.0" z="0.0" />
                 <rotate axis="x" angle="-90" />
                 <scale x="0.2" y="0.2" z="1.0" />
-                <!-- <translate  /> -->
             </transformation>
 
             <materials>
@@ -198,13 +226,15 @@
             <texture id="bars" length_s="1.0" length_t="1.0" />
 
             <children>
-                <primitiveref id="goal_front" />
+                <primitiveref id="goalFront" />
             </children>
         </component>
 
-        <component id="goalFrontUpBar">
+        <component id="goalFrontBarRight">
             <transformation>
+                <translate x="1.5" y="0.0" z="0.0" />
                 <rotate axis="x" angle="-90" />
+                <scale x="0.2" y="0.2" z="1.0" />
             </transformation>
 
             <materials>
@@ -214,10 +244,221 @@
             <texture id="bars" length_s="1.0" length_t="1.0" />
 
             <children>
-                <primitiveref id="goal_front" />
+                <primitiveref id="goalFront" />
             </children>
         </component>
 
+        <component id="goalFrontTop">
+            <transformation>
+                <translate x="1.5" y="1.8" z="0.0" />
+                <rotate axis="y" angle="-90" />
+                <scale x="0.2" y="0.2" z="1.66" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goalFront" />
+            </children>
+        </component>
+
+        <component id="goalBack_groundLeft">
+            <transformation>
+                <translate x="-1.5" y="0.0" z="-1.0" />
+                <scale x="0.2" y="0.2" z="1.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goalBack" />
+            </children>
+        </component>
+        
+        <component id="goalBack_groundRight">
+            <transformation>
+                <translate x="1.5" y="0.0" z="-1.0" />
+                <scale x="0.2" y="0.2" z="1.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goalBack" />
+            </children>
+        </component>
+
+        <component id="goalBack_groundBack">
+            <transformation>
+                <translate x="-1.5" y="0.0" z="-1.0" />
+                <rotate axis="y" angle="90" />
+                <scale x="0.2" y="0.2" z="3.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goalBack" />
+            </children>
+        </component>
+        
+        <component id="goalBack_TopBack">
+            <transformation>
+                <translate x="0.0" y="1.5" z="0.0" />                
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="goalBack_groundBack" />
+            </children>
+        </component>
+
+        <component id="goalBack_VerticalRight">
+            <transformation>
+                <translate x="1.5" y="0.0" z="-1.0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="0.17" y="0.17" z="1.5" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goalBack" />
+            </children>
+        </component>
+        
+        <component id="goalBack_VerticalLeft">
+            <transformation>
+                <translate x="-1.5" y="0.0" z="-1.0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="0.17" y="0.17" z="1.5" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goalBack" />
+            </children>
+        </component>
+
+        <component id="goalUpBarLeft">
+            <transformation>
+                <translate x="-1.5" y="1.5" z="-1.0" />
+                <rotate axis="x" angle="-17" />             
+                <scale x="0.17" y="0.17" z="1.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goalBack" />
+            </children>
+        </component>
+        
+        <component id="goalUpBarRight">
+            <transformation>
+                <translate x="1.5" y="1.5" z="-1.0" />
+                <rotate axis="x" angle="-17" />             
+                <scale x="0.17" y="0.17" z="1.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="goalBack" />
+            </children>
+        </component>
+        <!-- END GOAL DEFINITION -->
+
+        <component id="goalLeft">
+            <transformation>
+                <translate x="0.0" y="0.0" z="-10.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="goal" />
+            </children>
+        </component>
+
+        <component id="goalRight">
+            <transformation>
+                <translate x="0.0" y="0.0" z="10.0" />
+                <rotate axis="y" angle="180" />             
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="goal" />
+            </children>
+        </component>
+    
+        <component id="topTorus" >
+    
+            <transformation>
+                <translate x="0.0" y="10.0" z="0.0" />            
+                <scale x="2.5" y="1.5" z="5.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="bars" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
+        
+        
 
     </components>
 
