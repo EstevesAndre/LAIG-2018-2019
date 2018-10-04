@@ -111,7 +111,7 @@
         </primitive>
 
         <primitive id="torus">
-            <torus inner="1.0" outer="2.0" slices="20" loops="20" />
+            <torus inner="1.0" outer="2.0" slices="40" loops="40" />
         </primitive>
     </primitives>
 

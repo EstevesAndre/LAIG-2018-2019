@@ -40,9 +40,9 @@ class Torus extends CGFobject
         {
             for(let i = 0; i <= this.slices; i++)
             {
-                this.vertices.push( Math.cos(i * angleSlice) * rCenter + (this.inner + rCenter) * Math.cos(k * angleloop),
+                this.vertices.push( Math.cos(i * angleSlice) * rCenter * Math.cos(k * angleloop) + (this.inner + rCenter) * Math.cos(k * angleloop),
                                     Math.sin(i * angleSlice) * rCenter,
-                                    - Math.cos(i * angleSlice) * rCenter - (this.inner + rCenter) * Math.sin(k * angleloop)
+                                    Math.cos(i * angleSlice) * rCenter * Math.sin(k * angleloop) + (this.inner + rCenter) * Math.sin(k * angleloop)
                                     );
 
 
