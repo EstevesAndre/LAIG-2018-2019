@@ -581,7 +581,7 @@ class MySceneGraph {
             grandChildren = children[i].children;
             nodeNames = [];
 
-            if(grandChildren.length != 4) return "wrong number of tags for a material. It must have 4 tags [\"emission\", \"ambient\", \"diffuse\", \"specular\"]";
+            if(grandChildren.length != 4) return "wrong number of tags for a material with ID = " + materialId + ". It must have 4 tags [\"emission\", \"ambient\", \"diffuse\", \"specular\"]";
             
 
             for(var j = 0; j < grandChildren.length; j++)  nodeNames.push(grandChildren[j].nodeName);

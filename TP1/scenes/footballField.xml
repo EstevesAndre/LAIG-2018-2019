@@ -1,11 +1,10 @@
 <yas>
     <scene root="root" axis_length="1.0" />
 
-    <!-- no views yet -->
      <views default="3D_view">
-        <ortho id="view" near="1.0" far="2.0" left="1.0" right="1.0" top="1.0" bottom="1.0" /> <!-- acrescentar valores -->
+        <ortho id="view" near="10.0" far="20.0" left="0.0" right="5.0" top="5.0" bottom="0.0" />
 
-        <perspective id="3D_view" near="1.0" far="2.0" angle="0.0">
+        <perspective id="3D_view" near="10.0" far="20.0" angle="0.0">
             <from x="20.0" y="5.0" z="0.0" />
             <to x="0.0" y="0.0" z="0.0" />
         </perspective>
@@ -49,6 +48,9 @@
     <textures>
         <texture id="football" file="images/football_blackWhite.jpg" />
         <texture id="bars" file="images/white.jpg" />
+        <texture id="grass" file="images/grass.jpg" />
+        <texture id="ground" file="images/ground.jpg" />
+        <texture id="topTexTorus" file="images/torus.jpg" />
     </textures>
 
     <materials>
@@ -58,6 +60,21 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
+
+        <material id="bars" shininess="1.0">             
+            <emission r="0.9" g="0.9" b="0.9" a="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+
+        <material id="ground" shininess="4.0"   >
+            <emission r="0.5" g="0.5" b="0.5" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.2" g="0.2" b="0.2" a="1.0" />
+            <specular r="0.3" g="0.3" b="0.3" a="1.0" />
+        </material>
+
     </materials>
 
     <transformations>
@@ -96,8 +113,8 @@
 
         <primitive id="triangle">           <!-- not needed in the field -->
             <triangle x1="0.0" y1="0.0" z1="0.0"
-                      x2="8.0" y2="2.0" z2="2.0"
-                      x3="3.0" y3="4.0" z3="3.1" />
+                      x2="4.0" y2="0.0" z2="0.0"
+                      x3="2.0" y3="0.0" z3="2.5" />
         </primitive>
 
         <primitive id="box">                <!-- close to goal -->
@@ -117,7 +134,7 @@
             </transformation>
 
             <materials>
-                <material id="inherit" />
+                <material id="ground" />
             </materials>
 
             <texture id="none" length_s="1.0" length_t="1.0" />
@@ -129,6 +146,8 @@
                 <componentref id="ground" />
                 <componentref id="topTorus" />
                 <componentref id="football" />
+                <componentref id="cornerBox" />
+                <componentref id="flag" />
             </children>
         </component>
         
@@ -154,10 +173,10 @@
             </transformation>
 
             <materials>
-                <material id="inherit" />
+                <material id="field" />
             </materials>
 
-            <texture id="none" length_s="1.0" length_t="1.0" />
+            <texture id="grass" length_s="1.0" length_t="1.0" />
 
             <children> 
                 <primitiveref id="rectangleField" />
@@ -170,10 +189,10 @@
             </transformation>
 
             <materials>
-                <material id="inherit" />
+                <material id="ground" />
             </materials>
 
-            <texture id="none" length_s="1.0" length_t="1.0" />
+            <texture id="ground" length_s="1.0" length_t="1.0" />
 
             <children> 
                 <primitiveref id="rectangleGround" />
@@ -187,7 +206,7 @@
             </transformation>
 
             <materials> 
-                <material id="inherit" />
+                <material id="bars" />
             </materials>
 
             <texture id="bars" length_s="1.0" length_t="1.0" />
@@ -223,7 +242,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalFront" />
@@ -241,7 +260,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalFront" />
@@ -259,7 +278,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalFront" />
@@ -276,7 +295,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalBack" />
@@ -293,7 +312,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalBack" />
@@ -311,7 +330,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalBack" />
@@ -327,7 +346,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <componentref id="goalBack_groundBack" />
@@ -345,7 +364,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalBack" />
@@ -363,7 +382,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalBack" />
@@ -381,7 +400,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalBack" />
@@ -399,7 +418,7 @@
                 <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="goalBack" />
@@ -413,7 +432,7 @@
             </transformation>
 
             <materials>
-                <material id="inherit" />
+                <material id="bars" />
             </materials>
 
             <texture id="bars" length_s="1.0" length_t="1.0" />
@@ -430,7 +449,7 @@
             </transformation>
 
             <materials>
-                <material id="inherit" />
+                <material id="bars" />
             </materials>
 
             <texture id="bars" length_s="1.0" length_t="1.0" />
@@ -441,24 +460,57 @@
         </component>
     
         <component id="topTorus" >
-    
             <transformation>
                 <translate x="0.0" y="10.0" z="0.0" />            
                 <scale x="2.5" y="1.5" z="5.0" />
             </transformation>
 
             <materials>
-                <material id="inherit" />
+                <material id="field" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="topTexTorus" length_s="1.0" length_t="1.0" />
 
             <children>
                 <primitiveref id="torus" />
             </children>
         </component>
+
+        <component id="flag">
+            <transformation>
+                <translate x="10.0" y="1.0" z="14.0"/>
+                <scale x="0.1" y="0.1" z="0.1" />
+                <rotate axis="z" angle="-90" />
+            </transformation>
+            
+            <materials>
+                <material id="ground" />
+            </materials>
+
+            <texture id="ground" length_s="1.0" length_t="1.0" />
+
+            <children> 
+                <primitiveref id="triangle" />
+            </children>
+        </component>
         
-        
+        <component id="cornerBox">
+            <transformation>
+                <translate x="10.0" y="0.0" z="14.0" />                
+                <scale x="0.2" y="1.0" z="0.2" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+
+            <materials>
+                <material id="ground" />
+            </materials>
+
+            <texture id="ground" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="box" />
+            </children>
+        </component>            
 
     </components>
 
