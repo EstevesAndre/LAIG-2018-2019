@@ -1,5 +1,5 @@
 <yas>
-    <scene root="root" axis_length="1.0" />
+    <scene root="football" axis_length="1.0" />
 
      <views default="3D_view">
         <ortho id="view" near="10.0" far="20.0" left="0.0" right="5.0" top="5.0" bottom="0.0" />
@@ -81,7 +81,7 @@
         <transformation id="football">
             <scale x="0.25" y="0.25" z="0.25" />
             <rotate axis="x" angle="45" />
-            <translate x="3" y="-2" z="0.25" />
+            <translate x="3" y="2" z="0.25" />
         </transformation>
         
         <transformation id="groundRotation">
@@ -100,7 +100,7 @@
         </primitive>
 
         <primitive id="football">
-            <sphere radius="0.1" slices="18" stacks="18" />
+            <sphere radius="0.1" slices="12" stacks="12" />
         </primitive>
 
         <primitive id="goalFront">     
