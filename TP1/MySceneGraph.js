@@ -545,14 +545,14 @@ parseViews(viewsNode) {
         {
             var texture = new Object();
 
-            // verifies the type of the light.
+            // verifies the type of the texture.
             if(children[i].nodeName != "texture")
             {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
             }  
             
-            // Get id of the current light.
+            // Get id of the current texture.
             let textureId = this.reader.getString(children[i], 'id');
             if(textureId == null || textureId == "") return "no ID defined";
            
@@ -564,6 +564,8 @@ parseViews(viewsNode) {
 
             texture.id = textureId;
             texture.file = fileLink;
+
+            texture.text = new CGFtexture(this.scene, texture.file);
 
             this.textures.push(texture);
 
@@ -682,11 +684,12 @@ parseViews(viewsNode) {
             material.specular.a = paramsMaterial[3][4];
 
             material.mat = new CGFappearance(this.scene);
-			material.mat.setEmission(material.emission.r, material.emission.g, material.emission.b, material.emission.a);
+            material.mat.setEmission(material.emission.r, material.emission.g, material.emission.b, material.emission.a);
             material.mat.setAmbient(material.ambient.r, material.ambient.g, material.ambient.b, material.ambient.a);
-			material.mat.setDiffuse(material.diffuse.r, material.diffuse.g, material.diffuse.b, material.diffuse.a);
-			material.mat.setSpecular(material.specular.r, material.specular.g, material.specular.b, material.specular.a);
-			
+            material.mat.setDiffuse(material.diffuse.r, material.diffuse.g, material.diffuse.b, material.diffuse.a);
+            material.mat.setSpecular(material.specular.r, material.specular.g, material.specular.b, material.specular.a);
+            material.mat.setShininess(material.shininess);
+
             // structure to store materials
             this.materials.push(material);            
             // Material with materialId stored correclty
@@ -973,6 +976,15 @@ parseViews(viewsNode) {
                 else primitive.depth = depth;
             }
 
+            if(primitive.type == "rectangle") primitive.obj = new Rectangle(this.scene, primitive.x1, primitive.y1, primitive.x2, primitive.y2);
+            else if(primitive.type == "triangle") primitive.obj = new Triangle(this.scene, primitive.x1, primitive.y1, primitive.z1, primitive.x2, primitive.y2, primitive.z2, primitive.x3, primitive.y3, primitive.z3);
+            else if(primitive.type == "cylinder") primitive.obj = new Cylinder(this.scene, primitive.base, primitive.top, primitive.height, primitive.slices, primitive.stacks);
+            else if(primitive.type == "circle") primitive.obj = new Circle(this.scene, primitive.slices);
+            else if(primitive.type == "sphere") primitive.obj = new Sphere(this.scene, primitive.radius, primitive.slices, primitive.stacks);
+            else if(primitive.type == "box") primitive.obj = new Box(this.scene, primitive.width, primitive.height, primitive.depth);
+            else if(primitive.type == "torus") primitive.obj = new Torus(this.scene, primitive.inner, primitive.outer, primitive.slices, primitive.loops);
+        
+
             this.primitives.push(primitive);
             primitivesId[primitiveId] = primitiveId;
             numPrimitives++;
@@ -1111,7 +1123,7 @@ parseViews(viewsNode) {
                     if(matId == null) return "no ID defined for material";
 
                     // inheritance
-                    if(matId == "inherit")
+                    if(matId == "inherit" || matId == "none")
                     {
                         var mat = new Object();
                         mat.id = matId;
@@ -1280,16 +1292,23 @@ parseViews(viewsNode) {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.displayComponent(this.rootElem, null);
+        this.displayComponent(this.rootElem, null, null);
     }
 
-    displayComponent(comp, material)
-    {    
+    displayComponent(comp, material, texture)
+    {   
         var m = material;
+        var t = texture;
 
         if(comp.materials[0].id != "inherit")
-            m = comp.materials[0].mat;
-            
+        {
+            m = comp.materials[0];
+        } 
+
+        if(comp.texture.txt.id != "inherit")
+        {
+            t = comp.texture;
+        }
 
         this.scene.multMatrix(comp.matrix);        
         var k = 0;
@@ -1297,26 +1316,23 @@ parseViews(viewsNode) {
         for(k; k < comp.children.length; k++)
         {
             this.scene.pushMatrix();
-                if(comp.children[k].type == "component") this.displayComponent(comp.children[k], m);
-                else this.displayPrimitive(comp.children[k], m);
+                if(comp.children[k].type == "component") this.displayComponent(comp.children[k], m, t);
+                else this.displayPrimitive(comp.children[k], m, t);
             this.scene.popMatrix();
         }
     }
 
-    displayPrimitive(prim, mat)
+    displayPrimitive(prim, mat, text)
     {
-        var obj;
-        if(prim.type == "rectangle") obj = new Rectangle(this.scene, prim.x1, prim.y1, prim.x2, prim.y2);
-        else if(prim.type == "triangle") obj = new Triangle(this.scene, prim.x1, prim.y1, prim.z1, prim.x2, prim.y2, prim.z2, prim.x3, prim.y3, prim.z3);
-        else if(prim.type == "cylinder") obj = new Cylinder(this.scene, prim.base, prim.top, prim.height, prim.slices, prim.stacks);
-        else if(prim.type == "circle") obj = new Circle(this.scene, prim.slices);
-        else if(prim.type == "sphere") obj = new Sphere(this.scene, prim.radius, prim.slices, prim.stacks);
-        else if(prim.type == "box") obj = new Box(this.scene, prim.width, prim.height, prim.depth);
-        else if(prim.type == "torus") obj = new Torus(this.scene, prim.inner, prim.outer, prim.slices, prim.loops);
-        else return "displayPrimitive called with no primitive defined with name = " + prim;
+        if(mat.id != "none")
+        {
+            if(text.txt.id != "none")
+                mat.mat.setTexture(text.txt.text);
 
-        mat.apply();
-        obj.display();
+            mat.mat.apply();
+        }
+     
+        prim.obj.display();
     }
 
     parseValue(values, data, index, block, tag, id, variavel)
