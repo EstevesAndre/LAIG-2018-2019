@@ -642,6 +642,12 @@ class MySceneGraph {
             material.specular.b = paramsMaterial[3][3];
             material.specular.a = paramsMaterial[3][4];
 
+            material.mat = new CGFappearance(this.scene);
+			material.mat.setEmission(material.emission.r, material.emission.g, material.emission.b, material.emission.a);
+            material.mat.setAmbient(material.ambient.r, material.ambient.g, material.ambient.b, material.ambient.a);
+			material.mat.setDiffuse(material.diffuse.r, material.diffuse.g, material.diffuse.b, material.diffuse.a);
+			material.mat.setSpecular(material.specular.r, material.specular.g, material.specular.b, material.specular.a);
+			
             // structure to store materials
             this.materials.push(material);            
             // Material with materialId stored correclty
@@ -1235,24 +1241,37 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.displayComponent(this.rootElem);
+        this.displayComponent(this.rootElem, null);
     }
 
-    displayComponent(comp)
+    displayComponent(comp, material)
     {    
+        var m = material;
+
+        if(comp.materials[0].id != "inherit")
+        {
+            m = comp.materials[0].mat;
+            console.log(comp.id, " ", comp.materials[0].id);
+        }
+        else
+        {
+            console.log("herdar", comp.id, " ", m);
+        }
+            
+
         this.scene.multMatrix(comp.matrix);        
         var k = 0;
 
         for(k; k < comp.children.length; k++)
         {
             this.scene.pushMatrix();
-                if(comp.children[k].type == "component") this.displayComponent(comp.children[k]);
-                else this.displayPrimitive(comp.children[k]);
+                if(comp.children[k].type == "component") this.displayComponent(comp.children[k], m);
+                else this.displayPrimitive(comp.children[k], m);
             this.scene.popMatrix();
         }
     }
 
-    displayPrimitive(prim)
+    displayPrimitive(prim, mat)
     {
         var obj;
         if(prim.type == "rectangle") obj = new Rectangle(this.scene, prim.x1, prim.y1, prim.x2, prim.y2);
@@ -1264,6 +1283,7 @@ class MySceneGraph {
         else if(prim.type == "torus") obj = new Torus(this.scene, prim.inner, prim.outer, prim.slices, prim.loops);
         else return "displayPrimitive called with no primitive defined with name = " + prim;
 
+        mat.apply();
         obj.display();
     }
 
