@@ -232,6 +232,7 @@ class MySceneGraph {
 parseViews(viewsNode) {
 
     this.views = [];
+    this.defaultView;
     var viewsId = [];
 
     if(viewsNode.nodeName != "views") return "invalid tag, <view> - <" + viewsNode.nodeName + ">";
@@ -312,19 +313,10 @@ parseViews(viewsNode) {
             if(grandChildren[1].nodeName == "to") this.parseXYZw(grandChildren,toPos,1,"perspective","to","none");
             else return "wrong tag to perspective view for ID = " + viewId + ", must be \"to\"";
 
-            let from = new Object();
-            let to = new Object();
-            
-            from.x = fromPos[0];
-            from.y = fromPos[1];
-            from.z = fromPos[2];
-            to.x = toPos[0];
-            to.y = toPos[1];
-            to.z = toPos[2];
-            
-            view.from = from;
-            view.to = to;                
-        }   
+            view.from = vec3.fromValues(fromPos[0],fromPos[1], fromPos[2]);
+            view.to = vec3.fromValues(toPos[0],toPos[1], toPos[2]);
+        }
+
         viewsId[viewId] = viewId;            
         this.views.push(view);
 

@@ -24,9 +24,9 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = false;
 
-        this.initCameras();
-
         this.enableTextures(true);
+
+        this.initCameras();
 
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
@@ -90,6 +90,11 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.graph.ambient.r, this.graph.ambient.g, this.graph.ambient.b, this.graph.ambient.a);
         this.gl.clearColor(this.graph.background.r, this.graph.background.g, this.graph.background.b, this.graph.background.a);
 
+        var d = this.graph.defaultView;
+        this.camera = new CGFcamera(d.angle, d.near, d.far, d.from, d.to);
+        this.interface.setActiveCamera(this.camera);
+
+        
         this.initLights();
 
         // Adds lights group.
