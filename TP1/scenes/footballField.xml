@@ -46,28 +46,28 @@
     </lights>
 
     <textures>
-        <texture id="football" file="images/football_blackWhite.jpg" />
-        <texture id="bars" file="images/white.jpg" />
-        <texture id="grass" file="images/leaves.jpg" />
-        <texture id="ground" file="images/ground.jpg" />
-        <texture id="topTexTorus" file="images/torus.jpg" />
-        <texture id="flag" file="images/flagCorner.jpg" />
-        <texture id="stick" file="images/white.jpg" />
+        <texture id="football" file="scenes/images/football_blackWhite.jpg" />
+        <texture id="bars" file="scenes/images/white.jpg" />
+        <texture id="grass" file="scenes/images/leaves.jpg" />
+        <texture id="ground" file="scenes/images/ground.jpg" />
+        <texture id="topTexTorus" file="scenes/images/torus.jpg" />
+        <texture id="flag" file="scenes/images/flagCorner.jpg" />
+        <texture id="stick" file="scenes/images/white.jpg" />
     </textures>
 
     <materials>
         <material id="field" shininess="2.0">            
-            <emission r="0.1" g="1.0" b="0.1" a="1.0" />
-            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <emission r="0.5" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.5" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.5" g="0.0" b="0.0" a="1.0" />
         </material>
 
         <material id="bars" shininess="1.0">             
-            <emission r="0.9" g="0.9" b="0.9" a="1.0" />
-            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <emission r="0.0" g="1.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="1.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="1.0" b="0.0" a="1.0" />
         </material>
 
         <material id="ground" shininess="4.0"   >
