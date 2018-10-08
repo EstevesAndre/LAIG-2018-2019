@@ -259,7 +259,13 @@ parseViews(viewsNode) {
         // Checks for repeated IDs.
         if (viewsId[viewId] != null) return "ID must be unique for each view (conflict: ID = " + viewId + ")";
 
-        if(viewId == viewDefault) defaultFound = true;
+        var isDefaultView = false;
+
+        if(viewId == viewDefault)
+        {
+            defaultFound = true;
+            isDefaultView = true;
+        }
 
         let viewNear = this.reader.getFloat(children[i], 'near');
         if(!(viewNear != null && !isNaN(viewNear))) return "unable to parse near component of the " + children[i].nodeName + " view with ID = " + viewId;
@@ -321,6 +327,11 @@ parseViews(viewsNode) {
         }   
         viewsId[viewId] = viewId;            
         this.views.push(view);
+
+        if(isDefaultView)
+        {
+            this.defaultView = view;
+        }
     }
     
     if(!defaultFound) return "default view with ID = " + viewDefault + " not found";
