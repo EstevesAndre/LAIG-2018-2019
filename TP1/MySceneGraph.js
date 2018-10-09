@@ -803,7 +803,6 @@ parseViews(viewsNode) {
                     grandChildren[0].nodeName != "cylinder" &&
                         grandChildren[0].nodeName != "sphere" &&
                             grandChildren[0].nodeName != "circle" &&
-                                grandChildren[0].nodeName != "box" &&
                                     grandChildren[0].nodeName != "torus")
             {
                 this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + "> with ID = " + primitiveId);
@@ -962,29 +961,12 @@ parseViews(viewsNode) {
                 else if(loops % 1 != 0) return "loops parameter of Torus must be an integer for ID = " + primitiveId;
                 else primitive.loops = loops;
             }
-            else if(grandChildren[0].nodeName == "box")
-            {
-                primitive.type = "box";
-                // width
-                var width = this.reader.getFloat(grandChildren[0],'width');
-                if(!(width != null && !isNaN(width))) return "unable to parse width of the Sphere primitive for ID = " + primitiveId;
-                else primitive.width = width;
-                // height
-                var height = this.reader.getFloat(grandChildren[0],'height');
-                if(!(height != null && !isNaN(height))) return "unable to parse height of the Sphere primitive for ID = " + primitiveId;
-                else primitive.height = height;
-                // depth
-                var depth = this.reader.getFloat(grandChildren[0],'depth');
-                if(!(depth != null && !isNaN(depth))) return "unable to parse depth of the Sphere primitive for ID = " + primitiveId;
-                else primitive.depth = depth;
-            }
 
             if(primitive.type == "rectangle") primitive.obj = new Rectangle(this.scene, primitive.x1, primitive.y1, primitive.x2, primitive.y2);
             else if(primitive.type == "triangle") primitive.obj = new Triangle(this.scene, primitive.x1, primitive.y1, primitive.z1, primitive.x2, primitive.y2, primitive.z2, primitive.x3, primitive.y3, primitive.z3);
             else if(primitive.type == "cylinder") primitive.obj = new Cylinder(this.scene, primitive.base, primitive.top, primitive.height, primitive.slices, primitive.stacks);
             else if(primitive.type == "circle") primitive.obj = new Circle(this.scene, primitive.slices);
             else if(primitive.type == "sphere") primitive.obj = new Sphere(this.scene, primitive.radius, primitive.slices, primitive.stacks);
-            else if(primitive.type == "box") primitive.obj = new Box(this.scene, primitive.width, primitive.height, primitive.depth);
             else if(primitive.type == "torus") primitive.obj = new Torus(this.scene, primitive.inner, primitive.outer, primitive.slices, primitive.loops);
         
 

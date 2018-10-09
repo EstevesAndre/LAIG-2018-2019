@@ -124,8 +124,8 @@
                       x3="2.0" y3="0.0" z3="2.5" />
         </primitive>
 
-        <primitive id="box">                
-            <box width="0.2" height="0.2" depth="1.0" />
+        <primitive id="box">              
+            <cylinder base="0.2" top="0.2" height="1.0" slices="4" stacks="4" />
         </primitive>
 
         <primitive id="torus">             
