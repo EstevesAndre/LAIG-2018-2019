@@ -1316,6 +1316,10 @@ parseViews(viewsNode) {
 
             mat.mat.apply();
         }
+
+        // just to test
+        if(prim.type == "rectangle")
+            prim.obj.updateTexCoords(15,15);
      
         prim.obj.display();
     }

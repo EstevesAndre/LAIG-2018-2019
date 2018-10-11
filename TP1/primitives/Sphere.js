@@ -29,7 +29,8 @@ class Sphere extends CGFobject
 
 		var angle = (2* Math.PI) / this.slices;
 		var division = 1.0 / this.stacks;
-
+		
+		let alpha_angle = Math.PI/(2*this.stacks);
 		for(let k = 0; k <= this.stacks; k++)
 		{
 			// last stack
@@ -60,8 +61,13 @@ class Sphere extends CGFobject
 										Math.cos(Math.asin(division*(k))) ) ;
 									
 					this.texCoords.push( (Math.cos(i * angle)*Math.cos(Math.asin(division*(k))) ) / 2.0 + 0.5, 
-										-(Math.sin(i * angle)*Math.cos(Math.asin(division*(k))) ) / 2.0 + 0.5);					
-				
+										-(Math.sin(i * angle)*Math.cos(Math.asin(division*(k))) ) / 2.0 + 0.5);				
+										
+								/*	console.log( "STACK = " + k + " SLICE = " + i + ", " +
+											((Math.cos(i * angle)*Math.cos(Math.asin(division*(k))) ) / 2.0 + 0.5) 
+											+ " || " +
+											(-(Math.sin(i * angle)*Math.cos(Math.asin(division*(k))) ) / 2.0 + 0.5));*/
+					
 					if(k != 0 && i != 0)
 					{
 						this.indices.push(	(this.slices+1)*k + i - 1, 
