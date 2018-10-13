@@ -33,38 +33,32 @@ class Torus extends CGFobject
 
         var angleloop = (2 * Math.PI) / this.loops;
         var angleSlice = (2 * Math.PI) / this.slices;
-        var rCenter = (this.outer - this.inner) / 2.0;
-
 
         for(let k = 0; k <= this.loops; k++)
         {
             for(let i = 0; i <= this.slices; i++)
             {
-                this.vertices.push( Math.cos(i * angleSlice) * rCenter * Math.cos(k * angleloop) + (this.inner + rCenter) * Math.cos(k * angleloop),
-                                    Math.sin(i * angleSlice) * rCenter,
-                                    Math.cos(i * angleSlice) * rCenter * Math.sin(k * angleloop) + (this.inner + rCenter) * Math.sin(k * angleloop)
-                                    );
-
+                this.vertices.push( Math.cos(i * angleSlice) * this.inner * Math.cos(k * angleloop) + this.outer * Math.cos(k * angleloop),                                    
+                                    Math.cos(i * angleSlice) * this.inner * Math.sin(k * angleloop) + this.outer * Math.sin(k * angleloop),
+                                    Math.sin(i * angleSlice) * this.inner);
 
                 this.normals.push(  Math.cos(i * angleSlice),
                                     Math.sin(i * angleSlice),
                                     -Math.cos(i * angleSlice)
                                     );
                 
-                this.texCoords.push(1-i/this.slices,k*angleloop);
+                this.texCoords.push(i/this.slices,k/this.loops);
 
                 if(k != 0 && i != 0)
                 {
-                    this.indices.push((this.slices+1)*k + i - 1, 
-									  (this.slices+1)*(k-1) + i - 1, 
-									  (this.slices+1)*(k-1) + i);
+                    this.indices.push((this.slices+1)*k + i - 1,  
+                                      (this.slices+1)*(k-1) + i,                                      
+									  (this.slices+1)*(k-1) + i - 1);
 									  
 					this.indices.push((this.slices+1)*k + i - 1, 
-									  (this.slices+1)*(k-1) + i,
-									  (this.slices+1)*k + i);
+                                      (this.slices+1)*k + i,                                      
+									  (this.slices+1)*(k-1) + i);
                 }
-
-
             }
         }
         
