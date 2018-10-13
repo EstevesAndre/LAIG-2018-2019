@@ -37,11 +37,6 @@ class Cylinder extends CGFobject
 		{
 			for(let i = 0; i <= this.slices; i++)
 			{
-				console.log(
-					Math.cos(i * angle) * (this.base + radiusStack * k), 
-					Math.sin(i * angle) * (this.base + radiusStack * k),
-					k * division
-				);
 				this.vertices.push(Math.cos(i * angle) * (this.base + radiusStack * k), 
 								   Math.sin(i * angle) * (this.base + radiusStack * k),
 								   k * division);
