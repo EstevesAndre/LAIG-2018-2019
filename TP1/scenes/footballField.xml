@@ -53,6 +53,8 @@
         <texture id="topTexTorus" file="scenes/images/torus.jpg" />
         <texture id="flag" file="scenes/images/flagCorner.jpg" />
         <texture id="stick" file="scenes/images/white.jpg" />
+        <texture id="blue" file="scenes/images/blue.jpg" />
+        <texture id="red" file="scenes/images/red.jpg" />
     </textures>
 
     <materials>
@@ -91,9 +93,19 @@
             <translate x="3" y="0.25" z="6" />
         </transformation>
         
-        <transformation id="groundRotation">
+        <transformation id="fieldRotation">
             <rotate axis="y" angle="90" />
             <rotate axis="x" angle="-90" />
+        </transformation>
+
+        <transformation id="groundRotation">
+            <translate x="0.0" y="-0.1" z="0.0" />
+            <rotate axis="y" angle="90" />
+            <rotate axis="x" angle="-90" />
+        </transformation>
+
+        <transformation id="none">
+            <translate x="0.0" y="0.0" z="0.0" />
         </transformation>
     </transformations>
 
@@ -110,6 +122,10 @@
             <sphere radius="0.25" slices="24" stacks="24" />
         </primitive>
 
+        <primitive id="test">
+            <sphere radius="1" slices="4" stacks="8" />
+        </primitive>
+    
         <primitive id="goalFront">     
             <cylinder base="0.2" top="0.2" height="1.8" slices="12" stacks="12" />
         </primitive>
@@ -136,9 +152,23 @@
 
     <components>
         
+        <component id="test">
+            <transformation>
+                <transformationref id="none" />
+            </transformation>   
+            <materials>
+                <material id="ground" />                
+            </materials>
+            <texture id="ground" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="test" />
+            </children>
+        </component>
+
+
         <component id="root">
              <transformation>
-                <translate x="0.0" y="0.0" z="0.0" />
+                <transformationref id="none" />
             </transformation>
 
             <materials>
@@ -150,7 +180,8 @@
             <children>
                 <componentref id="goalLeft" />
                 <componentref id="goalRight" />
-                <componentref id="field" />                
+                <componentref id="field" />    
+                <componentref id="ground" />            
                 <componentref id="topTorus" />
                 <componentref id="football" />
                 <componentref id="cornerRight1" />
@@ -178,14 +209,14 @@
 
         <component id="field">
             <transformation>
-                <transformationref id="groundRotation" />
+                <transformationref id="fieldRotation" />
             </transformation>
 
             <materials>
                 <material id="field" />
             </materials>
 
-            <texture id="grass" length_s="1.0" length_t="1.0" />
+            <texture id="grass" length_s="15.0" length_t="15.0" />
 
             <children> 
                 <primitiveref id="rectangleField" />
@@ -201,7 +232,7 @@
                 <material id="ground" />
             </materials>
 
-            <texture id="ground" length_s="1.0" length_t="1.0" />
+            <texture id="ground" length_s="5.0" length_t="5.0" />
 
             <children> 
                 <primitiveref id="rectangleGround" />
@@ -211,14 +242,14 @@
         <!-- GOAL INITIAL COMPONENTS -->
         <component id="goal">
             <transformation>
-                <translate x="0.0" y="0.0" z="0.0" />
+                <transformationref id="none" />
             </transformation>
 
             <materials> 
-                <material id="bars" />
+                <material id="inherit" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
 
             <children>
                 <componentref id="goalFrontBarLeft" />
@@ -444,7 +475,7 @@
                 <material id="bars" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="blue" length_s="1.0" length_t="1.0" />
 
             <children>
                 <componentref id="goal" />
@@ -461,7 +492,7 @@
                 <material id="bars" />
             </materials>
 
-            <texture id="bars" length_s="1.0" length_t="1.0" />
+            <texture id="red" length_s="1.0" length_t="1.0" />
 
             <children>
                 <componentref id="goal" />
