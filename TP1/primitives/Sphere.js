@@ -41,8 +41,8 @@ class Sphere extends CGFobject
 									Math.sin(i * angleSlices),
 									Math.sin(k * angleStacks));
 				
-				mult == 1 ? this.texCoords.push(Math.cos(i * angleSlices), Math.sin(k * angleStacks) / 2.0 + 0.5) : 
-							this.texCoords.push(Math.cos(i * angleSlices), -Math.sin(k * angleStacks) / 2.0 + 0.5);
+				mult == 1 ? this.texCoords.push(Math.cos(i * angleSlices) / 2.0 + 0.5, Math.sin(k * angleStacks) / 2.0 + 0.5) : 
+							this.texCoords.push(Math.cos(i * angleSlices) / 2.0 + 0.5, -Math.sin(k * angleStacks) / 2.0 + 0.5);
 
 				if(k != 0 && i != 0)
 				{					
