@@ -97,14 +97,22 @@ class XMLscene extends CGFscene {
         this.gl.clearColor(this.graph.background.r, this.graph.background.g, this.graph.background.b, this.graph.background.a);
 
         var d = this.graph.defaultView;
-        this.camera = new CGFcamera(d.angle, d.near, d.far, d.from, d.to);
+        if(this.graph.defaultView.type == "perspective")
+            this.camera = new CGFcamera(d.angle, d.near, d.far, d.from, d.to);
+        else
+            this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
         this.interface.setActiveCamera(this.camera);
+        this.Current_Camera = d.id;
+        this.prev_camara = this.Current_Camera;
 
         
         this.initLights();
 
         // Adds lights group.
         this.interface.addLightsGroup(this.graph.lights);
+
+        // Adds views group.
+        this.interface.addViewsGroup(this.graph.views);
 
         this.sceneInited = true;
     }
@@ -132,6 +140,22 @@ class XMLscene extends CGFscene {
         if (this.sceneInited) {
             // Draw axis
             this.axis.display();
+
+            //changes camera if necessary
+            if(this.prev_camara != this.Current_Camera)
+            {
+                this.prev_camara = this.Current_Camera
+                var cc = this.Current_Camera;
+
+                var d = this.graph.views.find(function( element ) {
+                    return element.id == cc;
+                });
+                if(d.type == "perspective")
+                    this.camera = new CGFcamera(d.angle, d.near, d.far, d.from, d.to);
+                else
+                    this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
+                this.interface.setActiveCamera(this.camera);
+            }
 
             var i = 0;
             for (var key in this.lightValues) {

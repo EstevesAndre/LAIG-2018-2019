@@ -2,9 +2,9 @@
     <scene root="root" axis_length="1.0" />
 
      <views default="3D_view">
-        <ortho id="view" near="10.0" far="20.0" left="0.0" right="5.0" top="5.0" bottom="0.0">        
-            <from x="20.0" y="5.0" z="0.0" />
-            <to x="0.0" y="0.0" z="0.0" />
+        <ortho id="view" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
+            <from x="0.0" y="0.0" z="0.0" />
+            <to x="0.0" y="0.0" z="10.0" />
         </ortho>
 
         <perspective id="3D_view" near="0.1" far="500" angle="0.4">
