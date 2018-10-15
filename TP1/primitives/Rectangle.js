@@ -39,12 +39,9 @@ class Rectangle extends CGFobject
 				0, 0, 1
 			];			
 					
-		this.texCoords = [
-                0, 0,
-                0, 1,
-                1, 1,
-                1, 0
-			];
+		this.updateTexCoords(1,1);
+		
+		console.log(this.texCoords);
 
 		this.primitiveType=this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
@@ -53,13 +50,13 @@ class Rectangle extends CGFobject
 	updateTexCoords(s,t)
 	{
 		this.texCoords = [
-			0,t,
-			0,0,
-			s,0,
-			s,t
+			0, Math.abs(this.y1 / t),
+			0, 0,
+			Math.abs(this.x2 / s), 0,
+			Math.abs(this.x2 / s), Math.abs(this.y1 / t)
 		];
 
 		this.updateTexCoordsGLBuffers();
-
 	};
+	
 };

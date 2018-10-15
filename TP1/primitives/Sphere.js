@@ -26,6 +26,7 @@ class Sphere extends CGFobject
 
 		var angleSlices = (2*Math.PI)/this.slices;
 		var angleStacks = Math.PI/this.stacks;
+		
 		var inc = 0;
 		var mult = 1;
 
