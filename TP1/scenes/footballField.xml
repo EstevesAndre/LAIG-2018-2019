@@ -227,7 +227,7 @@
                 <material id="field" />
             </materials>
 
-            <texture id="grass" length_s="15.0" length_t="15.0" />
+            <texture id="grass" length_s="0.5" length_t="0.5" />
 
             <children> 
                 <primitiveref id="rectangleField" />
@@ -243,7 +243,7 @@
                 <material id="ground" />
             </materials>
 
-            <texture id="ground" length_s="5.0" length_t="5.0" />
+            <texture id="ground" length_s="2.8" length_t="1.8" />
 
             <children> 
                 <primitiveref id="rectangleGround" />
