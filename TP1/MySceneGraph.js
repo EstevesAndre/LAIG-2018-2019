@@ -1285,9 +1285,9 @@ parseViews(viewsNode) {
         var m = material;
         var t = texture;
 
-        if(comp.materials[0].id != "inherit")
+        if(comp.materials[this.scene.Mcnt % comp.materials.length].id != "inherit")
         {
-            m = comp.materials[0];
+            m = comp.materials[this.scene.Mcnt % comp.materials.length];
         } 
 
         if(comp.texture.txt.id != "inherit")

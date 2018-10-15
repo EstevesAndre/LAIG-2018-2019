@@ -20,6 +20,8 @@ class MyInterface extends CGFinterface {
 
         this.gui = new dat.GUI();
 
+        this.initKeys();
+
         // add a group of controls (and open/expand by defult)
 
         return true;
@@ -58,4 +60,18 @@ class MyInterface extends CGFinterface {
 
         group.add(this.scene, 'Current_Camera', names);
     }
+
+    initKeys()
+	{
+		this.processKeyboard = function() {};
+	};
+	
+	processKeyDown(event)
+	{        
+        if(event.code == "KeyM")
+            this.scene.Mcnt++;
+        
+        console.log(this.scene.Mcnt);
+	};
+
 }
