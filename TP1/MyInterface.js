@@ -70,8 +70,6 @@ class MyInterface extends CGFinterface {
 	{        
         if(event.code == "KeyM")
             this.scene.Mcnt++;
-        
-        console.log(this.scene.Mcnt);
 	};
 
 }

@@ -646,6 +646,7 @@
 
             <materials>
                 <material id="white" />
+                <material id="red" />
             </materials>
 
             <texture id="stick" length_s="1.0" length_t="1.0" />
