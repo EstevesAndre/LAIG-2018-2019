@@ -66,9 +66,15 @@ class XMLscene extends CGFscene {
                 
                 this.lights[i].setVisible(true);
                 if (light.enable)
+                {
                     this.lights[i].enable();
+                    this['Light_'+this.lights[i].id+"_on"] = true;
+                }
                 else
+                {
                     this.lights[i].disable();
+                    this['Light_'+this.lights[i].id+"_on"] = false;
+                }
 
                 this.lights[i].update();
 
@@ -130,7 +136,7 @@ class XMLscene extends CGFscene {
             var i = 0;
             for (var key in this.lightValues) {
                 if (this.lightValues.hasOwnProperty(key)) {
-                    if (this.lightValues[key]) {
+                    if (this['Light_' + key + "_on"]) {
                         this.lights[i].setVisible(true);
                         this.lights[i].enable();
                     }
