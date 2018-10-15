@@ -299,23 +299,23 @@ parseViews(viewsNode) {
             let viewAngle = this.reader.getFloat(children[i], 'angle');
             if(!(viewAngle != null && !isNaN(viewAngle))) return "unable to parse angle component of the " + children[i].nodeName + " view with ID = " + viewId;
             view.angle = viewAngle;
-
-            var grandChildren = children[i].children;
-            
-            if(grandChildren.length != 2) return "no \"from\" and \"to\" tags defined";
-
-            var fromPos = [];
-            var toPos = [];
-
-            if(grandChildren[0].nodeName == "from") this.parseXYZw(grandChildren,fromPos,0,"perspective","from","none");
-            else return "wrong tag to perspective view for ID = " + viewId + ", must be \"from\"";
-            
-            if(grandChildren[1].nodeName == "to") this.parseXYZw(grandChildren,toPos,1,"perspective","to","none");
-            else return "wrong tag to perspective view for ID = " + viewId + ", must be \"to\"";
-
-            view.from = vec3.fromValues(fromPos[0],fromPos[1], fromPos[2]);
-            view.to = vec3.fromValues(toPos[0],toPos[1], toPos[2]);
         }
+        
+        var grandChildren = children[i].children;
+        
+        if(grandChildren.length != 2) return "no \"from\" and \"to\" tags defined";
+
+        var fromPos = [];
+        var toPos = [];
+
+        if(grandChildren[0].nodeName == "from") this.parseXYZw(grandChildren,fromPos,0,"perspective","from","none");
+        else return "wrong tag to perspective view for ID = " + viewId + ", must be \"from\"";
+        
+        if(grandChildren[1].nodeName == "to") this.parseXYZw(grandChildren,toPos,1,"perspective","to","none");
+        else return "wrong tag to perspective view for ID = " + viewId + ", must be \"to\"";
+
+        view.from = vec3.fromValues(fromPos[0],fromPos[1], fromPos[2]);
+        view.to = vec3.fromValues(toPos[0],toPos[1], toPos[2]);
 
         viewsId[viewId] = viewId;            
         this.views.push(view);
