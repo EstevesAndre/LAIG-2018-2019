@@ -1,5 +1,5 @@
 <yas>
-    <scene root="root" axis_length="1.0" />
+    <scene root="football" axis_length="1.0" />
 
      <views default="Side">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
@@ -56,7 +56,7 @@
     <textures>
         <texture id="football" file="scenes/images/football_blackWhite.jpg" />
         <texture id="bars" file="scenes/images/white.jpg" />
-        <texture id="grass" file="scenes/images/leaves.jpg" />
+        <texture id="grass" file="scenes/images/grass.jpg" />
         <texture id="ground" file="scenes/images/ground.jpg" />
         <texture id="topTexTorus" file="scenes/images/torus.jpg" />
         <texture id="flag" file="scenes/images/flagCorner.jpg" />
@@ -131,15 +131,11 @@
         </primitive>
 
         <primitive id="rectangleGround">
-           <rectangle x1="-14.0" y1="-9.0" x2="14.0" y2="9.0" />
+           <rectangle x1="-14.0" y1="-12.0" x2="14.0" y2="12.0" />
         </primitive>
 
         <primitive id="football">
-            <sphere radius="0.25" slices="24" stacks="24" />
-        </primitive>
-
-        <primitive id="test">
-            <sphere radius="1" slices="4" stacks="8" />
+            <sphere radius="4" slices="24" stacks="12" />
         </primitive>
     
         <primitive id="goalFront">     
@@ -165,27 +161,12 @@
         </primitive>
 
         <primitive id="torus">             
-            <torus inner="0.45" outer="4.0" slices="24" loops="24" />
+            <torus inner="0.45" outer="4.0" slices="40" loops="40" />
         </primitive>
 
     </primitives>
 
     <components>
-        
-        <component id="test">
-            <transformation>
-                <transformationref id="none" />
-            </transformation>   
-            <materials>
-                <material id="ground" />                
-            </materials>
-            <texture id="ground" length_s="1.0" length_t="1.0" />
-            <children>
-                <primitiveref id="test" />
-            </children>
-        </component>
-
-
         <component id="root">
              <transformation>
                 <transformationref id="none" />

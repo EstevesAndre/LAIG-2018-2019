@@ -26,50 +26,33 @@ class Sphere extends CGFobject
 
 		var angleSlices = (2*Math.PI)/this.slices;
 		var angleStacks = Math.PI/this.stacks;
-		
-		var inc = 0;
-		var mult = 1;
+		let j = -this.stacks/2.0;
 
-		for(let k = 0; k <= this.stacks; k++)
+		for(let k = 0; k <= this.stacks; k++, j++)
 		{
 			for(let i = 0; i <= this.slices; i++)
 			{	
-				this.vertices.push(	Math.cos(i * angleSlices) * (this.radius * Math.cos(k * angleStacks)),
-									Math.sin(i * angleSlices) * (this.radius * Math.cos(k * angleStacks)),
-									mult * this.radius * Math.sin(k * angleStacks));				
+				this.vertices.push(	Math.cos(i * angleSlices) * (this.radius * Math.cos(j * angleStacks)),
+									Math.sin(i * angleSlices) * (this.radius * Math.cos(j * angleStacks)),
+									this.radius * Math.sin(j * angleStacks));				
 				
 				this.normals.push( 	Math.cos(i * angleSlices),
 									Math.sin(i * angleSlices),
-									Math.sin(k * angleStacks));
+									Math.sin(j * angleStacks));				
 				
-				
-				mult == 1 ? this.texCoords.push(Math.cos(i * angleSlices) / 2.0 + 0.5, Math.sin(k * angleStacks) / 2.0 + 0.5) : 
-							this.texCoords.push(Math.cos(i * angleSlices) / 2.0 + 0.5, -Math.sin(k * angleStacks) / 2.0 + 0.5);
-				
-				/*console.log("k = " + k + ", i = "+ i);
-				mult == 1 ? 
-					console.log(Math.cos(i * angleSlices) / 2.0 + 0.5, Math.sin(k * angleStacks) / 2.0 + 0.5) : 
-					console.log(Math.cos(i * angleSlices) / 2.0 + 0.5, -Math.sin(k * angleStacks) / 2.0 + 0.5);
-				
-				console.log("");*/
+				this.texCoords.push(1-i/this.slices, 
+									k/this.stacks);
 
 				if(k != 0 && i != 0)
 				{					
-					this.indices.push(	(this.slices+1)*k + i - 1 + inc, 
-										(this.slices+1)*(k-1) + i - 1 + inc, 
-										(this.slices+1)*(k-1) + i + inc);
+					this.indices.push(	(this.slices+1)*k + i - 1, 
+										(this.slices+1)*(k-1) + i - 1, 
+										(this.slices+1)*(k-1) + i);
 
-					this.indices.push(	(this.slices+1)*k + i - 1 + inc, 
-										(this.slices+1)*(k-1) + i + inc, 
-										(this.slices+1)*k + i + inc);					
+					this.indices.push(	(this.slices+1)*k + i - 1, 
+										(this.slices+1)*(k-1) + i, 
+										(this.slices+1)*k + i);					
 				}
-			}
-
-			if(k == this.stacks / 2.0 && mult == 1)
-			{
-				inc = this.slices + 1;					
-				mult = -1;
-				k--;
 			}
 		}
 

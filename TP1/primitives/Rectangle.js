@@ -40,8 +40,6 @@ class Rectangle extends CGFobject
 			];			
 					
 		this.updateTexCoords(1,1);
-		
-		console.log(this.texCoords);
 
 		this.primitiveType=this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
