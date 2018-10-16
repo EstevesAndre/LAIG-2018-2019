@@ -102,9 +102,9 @@
 
         <material id="white" shininess="1.0" >            
             <emission r="0.7" g="0.7" b="0.7" a="1.0" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
-            <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.3" g="0.2" b="0.2" a="1.0" />
+            <specular r="0.3" g="0.2" b="0.2" a="1.0" />
         </material>
 
         <material id="red" shininess="1.0" >            
@@ -161,8 +161,8 @@
 
         <primitive id="triangle">       
             <triangle x1="0.0" y1="0.0" z1="0.0"
-                      x2="4.0" y2="0.0" z2="0.0"
-                      x3="2.0" y3="0.0" z3="2.5" />
+                      x2="2.0" y2="0.0" z2="2.5"
+                      x3="4.0" y3="0.0" z3="0.0" />
         </primitive>
 
         <primitive id="box">              
@@ -180,6 +180,7 @@
     </primitives>
 
     <components>
+
         <component id="root">
              <transformation>
                 <transformationref id="none" />
