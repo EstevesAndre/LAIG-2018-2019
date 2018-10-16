@@ -1,5 +1,5 @@
 <yas>
-    <scene root="football" axis_length="1.0" />
+    <scene root="root" axis_length="1.0" />
 
      <views default="Side">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
@@ -19,45 +19,57 @@
     </views>
 
     <ambient>        
-        <ambient r="0.9" g="0.7" b="0.7" a="1.0" />
+        <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
         <background r="0.4" g="0.5" b="0.8" a="1.0" />        
     </ambient>
 
     <lights>
-        <omni id="leftCorner1" enabled="1">            
-            <location x="-8.8" y="8.0" z="-12.5" w="1.0" />
+        <spot id="leftCorner1" enabled="1" angle="10" exponent="2.0">            
+            <location x="-6.0" y="8.0" z="-10.0" w="1.0" />
+            <target x="0.0" y="0.0" z="0.0" />
             <ambient r="1.0" g="0.5" b="1.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="1.0" b="0.5" a="1.0" />
-        </omni>
+        </spot>
 
-        <omni id="leftCorner2" enabled="1">            
-            <location x="8.8" y="8.0" z="-12.5" w="1.0" />
+        <spot id="leftCorner2" enabled="1" angle="10" exponent="2.0">            
+            <location x="6.0" y="8.0" z="-10.0" w="1.0" />
+            <target x="0.0" y="0.0" z="0.0" />
             <ambient r="0.5" g="1.0" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-        </omni>
+        </spot>
 
-        <omni id="rightCorner1" enabled="1">            
-            <location x="-4.4" y="8.0" z="12.5" w="1.0" />
+        <spot id="rightCorner1" enabled="1" angle="10" exponent="2.0">            
+            <location x="-6.0" y="8.0" z="10.0" w="1.0" />
+            <target x="0.0" y="0.0" z="0.0" />
             <ambient r="0.5" g="0.5" b="1.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-        </omni>
+        </spot>
 
-        <omni id="rightCorner2" enabled="1">            
-            <location x="8.8" y="8.0" z="12.5" w="1.0" />
+        <spot id="rightCorner2" enabled="1" angle="10" exponent="2.0">            
+            <location x="6.0" y="8.0" z="10.0" w="1.0" />            
+            <target x="0.0" y="0.0" z="0.0" />
+            <ambient r="0.5" g="0.5" b="1.0" a="1.0" />
+            <diffuse r="0.5" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="0.5" b="0.5" a="1.0" />
+        </spot>
+
+        <omni id="center" enabled="1">            
+            <location x="0.0" y="8.0" z="0.0" w="1.0" />
             <ambient r="0.5" g="1.0" b="1.0" a="1.0" />
             <diffuse r="0.5" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="0.5" b="0.5" a="1.0" />
         </omni>
+
     </lights>
 
     <textures>
         <texture id="football" file="scenes/images/football_blackWhite.jpg" />
         <texture id="bars" file="scenes/images/white.jpg" />
         <texture id="grass" file="scenes/images/grass.jpg" />
-        <texture id="ground" file="scenes/images/ground.jpg" />
+        <texture id="ground" file="scenes/images/track.jpg" />
         <texture id="topTexTorus" file="scenes/images/torus.jpg" />
         <texture id="flag" file="scenes/images/flagCorner.jpg" />
         <texture id="stick" file="scenes/images/white.jpg" />
@@ -89,8 +101,8 @@
         </material>
 
         <material id="white" shininess="1.0" >            
-            <emission r="0.9" g="0.9" b="0.9" a="1.0" />
-            <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
+            <emission r="0.7" g="0.7" b="0.7" a="1.0" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
             <specular r="0.6" g="0.6" b="0.6" a="1.0" />
         </material>
@@ -107,6 +119,7 @@
     <transformations>
         <transformation id="footballT">
             <translate x="3" y="0.25" z="6" />
+            <rotate axis="x" angle="90" />
         </transformation>
         
         <transformation id="fieldRotation">
@@ -116,7 +129,7 @@
 
         <transformation id="groundRotation">
             <translate x="0.0" y="-0.1" z="0.0" />
-            <rotate axis="y" angle="90" />
+            <scale x="12.0" y="5.0" z="15.0" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
@@ -130,12 +143,12 @@
             <rectangle x1="-10.5" y1="-6.8" x2="10.5" y2="6.8" /> <!--Field size -->
         </primitive>
 
-        <primitive id="rectangleGround">
-           <rectangle x1="-14.0" y1="-12.0" x2="14.0" y2="12.0" />
+        <primitive id="ground">
+            <circle slices="12" />          
         </primitive>
 
         <primitive id="football">
-            <sphere radius="4" slices="24" stacks="12" />
+            <sphere radius="0.25" slices="24" stacks="12" />
         </primitive>
     
         <primitive id="goalFront">     
@@ -239,7 +252,7 @@
             <texture id="ground" length_s="2.8" length_t="1.8" />
 
             <children> 
-                <primitiveref id="rectangleGround" />
+                <primitiveref id="ground" />
             </children>
         </component>
 

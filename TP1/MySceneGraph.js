@@ -498,7 +498,7 @@ parseViews(viewsNode) {
 
                 // angle
                 if(!(angleIndex != null && !isNaN(angleIndex))) return "unable to parse value component of the 'angle light' field for ID = " + lightId;
-                else if(angleIndex < 0 || angleIndex > 2*Math.PI) this.onXMLMinorError("angle of spot light out of range [0, 2*PI] with ID = " + lightId);
+                else if(angleIndex < 0 || angleIndex > 360) this.onXMLMinorError("angle of spot light out of range [0, 360] with ID = " + lightId);
                 else light.angle = angleIndex;
 
                 // exponent
