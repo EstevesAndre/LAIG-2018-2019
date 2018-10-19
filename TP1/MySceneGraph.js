@@ -802,8 +802,7 @@ parseViews(viewsNode) {
                 grandChildren[0].nodeName != "triangle" &&
                     grandChildren[0].nodeName != "cylinder" &&
                         grandChildren[0].nodeName != "sphere" &&
-                            grandChildren[0].nodeName != "circle" &&
-                                    grandChildren[0].nodeName != "torus")
+                            grandChildren[0].nodeName != "torus")
             {
                 this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + "> with ID = " + primitiveId);
                 continue;
@@ -926,15 +925,6 @@ parseViews(viewsNode) {
                 else if(stacks % 1 != 0) return "stacks parameter of Sphere must be an integer for ID = " + primitiveId;
                 else primitive.stacks = stacks;                
             }
-            // CIRCLE
-            else if(grandChildren[0].nodeName == "circle")
-            {
-                primitive.type = "circle";
-                
-                var slices = this.reader.getFloat(grandChildren[0],'slices');
-                if(!(slices != null && !isNaN(slices))) return "unable to parser slices of the circle primitive for ID = " + primitiveId;
-                else primitive.slices = slices;
-            }
             // TORUS
             else if(grandChildren[0].nodeName == "torus")
             {
@@ -965,7 +955,6 @@ parseViews(viewsNode) {
             if(primitive.type == "rectangle") primitive.obj = new Rectangle(this.scene, primitive.x1, primitive.y1, primitive.x2, primitive.y2);
             else if(primitive.type == "triangle") primitive.obj = new Triangle(this.scene, primitive.x1, primitive.y1, primitive.z1, primitive.x2, primitive.y2, primitive.z2, primitive.x3, primitive.y3, primitive.z3);
             else if(primitive.type == "cylinder") primitive.obj = new Cylinder(this.scene, primitive.base, primitive.top, primitive.height, primitive.slices, primitive.stacks);
-            else if(primitive.type == "circle") primitive.obj = new Circle(this.scene, primitive.slices);
             else if(primitive.type == "sphere") primitive.obj = new Sphere(this.scene, primitive.radius, primitive.slices, primitive.stacks);
             else if(primitive.type == "torus") primitive.obj = new Torus(this.scene, primitive.inner, primitive.outer, primitive.slices, primitive.loops);
         
@@ -1057,35 +1046,41 @@ parseViews(viewsNode) {
             {
                 if(transformationIndex != COMP_TRANSF_INDEX) this.onXMLMinorError("tag <transformation> out of order");
 
-                if(grandChildren[transformationIndex].children.length == 0) return "tag <transformation> must have children";
-
-                // if transformationref
-                if(grandChildren[transformationIndex].children[0].nodeName == "transformationref")
+                if(grandChildren[transformationIndex].children.length != 0)
                 {
-                    if(grandChildren[transformationIndex].children.length != 1) return "tag <transformation> must have only one ref";
-
-                    let transformationrefId = this.reader.getString(grandChildren[transformationIndex].children[0], 'id');
-                    if(transformationrefId == null) return "no ID defined for transformationref";
-
-                    var k = 0;
-
-                    for(k; k < this.transformations.length; k++)
+                    // if transformationref
+                    if(grandChildren[transformationIndex].children[0].nodeName == "transformationref")
                     {
-                        if(this.transformations[k].id == transformationrefId)
+                        if(grandChildren[transformationIndex].children.length != 1) return "tag <transformation> must have only one ref";
+
+                        let transformationrefId = this.reader.getString(grandChildren[transformationIndex].children[0], 'id');
+                        if(transformationrefId == null) return "no ID defined for transformationref";
+
+                        var k = 0;
+
+                        for(k; k < this.transformations.length; k++)
                         {
-                            this.components[i].matrix = this.transformations[k].matrix;
-                            break;
+                            if(this.transformations[k].id == transformationrefId)
+                            {
+                                this.components[i].matrix = this.transformations[k].matrix;
+                                break;
+                            }
                         }
+
+                        if(this.components[i].matrix == null) return "no matching transformation for tag <transformmationref> id = " + transformationrefId;
                     }
+                    else //if transformation defined "on the fly"
+                    {   
+                        var ret = this.parseTransformation(this.scene, grandChildren[transformationIndex].children, "undefined");
+                        
+                        if(ret != null) return ret;
 
-                    if(this.components[i].matrix == null) return "no matching transformation for tag <transformmationref> id = " + transformationrefId;
+                        this.components[i].matrix = this.scene.getMatrix();
+                    }
                 }
-                else //if transformation defined "on the fly"
+                else
                 {
-                    var ret = this.parseTransformation(this.scene, grandChildren[transformationIndex].children, "undefined");
-                    
-                    if(ret != null) return ret;
-
+                    this.scene.loadIdentity();
                     this.components[i].matrix = this.scene.getMatrix();
                 }
             }
@@ -1169,14 +1164,14 @@ parseViews(viewsNode) {
 
                     if(!idFound) return "no texture matches the reference tag <texture> id = " + textId;
                 
-                    let length_s = this.reader.getString(grandChildren[textureIndex], 'length_s');
+                    let length_s = this.reader.getFloat(grandChildren[textureIndex], 'length_s');
                     if(length_s == null) return "no length_s defined for texture";
                     this.components[i].texture.length_s = length_s;
 
-                    let length_t = this.reader.getString(grandChildren[textureIndex], 'length_t');
-                    if(length_t == null) return "no length_t defined for texture";
-                    this.components[i].texture.length_t = length_t;
 
+                    let length_t = this.reader.getFloat(grandChildren[textureIndex], 'length_t');
+                    if(length_t == null) return "no length_t defined for texture";
+                    this.components[i].texture.length_t = length_t;                    
                 }
             }
             else
@@ -1309,18 +1304,33 @@ parseViews(viewsNode) {
 
     displayPrimitive(prim, mat, text)
     {
-        if(mat.id != "none")
+        if(mat == null)
         {
-            if(text.txt.id != "none")
-                mat.mat.setTexture(text.txt.text);
-
-            mat.mat.apply();
+            var def = new CGFappearance(this.scene);
+            def.setEmission(0.0,0.0,0.0,1.0);
+            def.setAmbient(0.0,0.2,0.0,1.0);
+            def.setDiffuse(0.0,0.2,0.0,1.0);
+            def.setSpecular(0.0,0.2,0.0,1.0);
+            def.setShininess(1.0);
+            def.apply();
         }
+        else
+        {
+            if(mat.id != "none")
+            {
+                if(text.txt.id != "none")
+                {
+                    mat.mat.setTexture(text.txt.text);   
+                }
+                
+                mat.mat.apply();
+            }
 
-        if(prim.type == "rectangle")
-            prim.obj.updateTexCoords(text.length_s, text.length_t);
-        else if(prim.type == "triangle")
-            prim.obj.updateTexCoords(text.length_s, text.length_t);
+            if(prim.type == "rectangle" || prim.type == "triangle")
+            {
+                prim.obj.updateTexCoords(text.length_s, text.length_t);
+            }
+        }
     
         prim.obj.display();
     }
