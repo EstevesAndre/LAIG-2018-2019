@@ -48,10 +48,10 @@ class Rectangle extends CGFobject
 	updateTexCoords(s,t)
 	{
 		this.texCoords = [
-			0, Math.abs((this.y2 - this.y1)/ t),
+			0, Math.abs(this.y2 - this.y1)/ t,
 			0, 0,
-			Math.abs((this.x2 - this.x1) / s), 0,
-			Math.abs((this.x2 - this.x1) / s), Math.abs((this.y2 - this.y1)/ t)
+			Math.abs(this.x2 - this.x1) / s, 0,
+			Math.abs(this.x2 - this.x1) / s, Math.abs(this.y2 - this.y1)/ t
 		];
 
 		this.updateTexCoordsGLBuffers();

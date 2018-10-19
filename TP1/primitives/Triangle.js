@@ -60,12 +60,12 @@ class Triangle extends CGFobject
         this.c = Math.sqrt( vector32[0]*vector32[0] + vector32[1]*vector32[1] + vector32[2]*vector32[2]);
     
         this.cos_beta = (+this.a*this.a - this.b*this.b + this.c*this.c) / (2*this.a*this.c);
-        this.sin_beta = Math.sqrt( this.a*this.a - (this.a*this.cos_beta)*(this.a*this.cos_beta) ) / this.a;
+        this.sin_beta = Math.sqrt( this.a*this.a - (this.a*this.cos_beta)*(this.a*this.cos_beta)) / this.a;
 
         let normal = vec3.create();
         vec3.cross(normal, vector21, vector32);
         vec3.normalize(normal, normal);
-        
+    
 		this.normals = [
             normal[0], normal[1], normal[2],
             normal[0], normal[1], normal[2],
@@ -73,18 +73,19 @@ class Triangle extends CGFobject
         ];			
               
         this.updateTexCoords(1,1);
+
+        this.primitiveType=this.scene.gl.TRIANGLES;
         
-		this.primitiveType=this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
     };
     
     updateTexCoords(s,t)
 	{
 		this.texCoords = [
-            this.c / s - this.a * this.cos_beta, t - this.a * this.sin_beta,
-            0, t,
-            this.c / s, t
-        ];        
+            (this.c - this.a * this.cos_beta)/s, (t - this.a * this.sin_beta) / t,
+            0, 1,
+            this.c / s, 1
+        ];
 
 		this.updateTexCoordsGLBuffers();
 	};
