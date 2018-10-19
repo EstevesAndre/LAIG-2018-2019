@@ -66,7 +66,7 @@ class XMLscene extends CGFscene {
 
                 if(light.type == "spot")
                 {
-                    this.lights[i].setSpotCutOff(light.angle * 180 / Math.PI);
+                    this.lights[i].setSpotCutOff(light.angle);
                     this.lights[i].setSpotExponent(light.exponent);
                     this.lights[i].setSpotDirection(light.target.x - light.location.x, light.target.y - light.location.y, light.target.z - light.location.z);
                 }
@@ -105,7 +105,7 @@ class XMLscene extends CGFscene {
 
         var d = this.graph.defaultView;
         if(this.graph.defaultView.type == "perspective")
-            this.camera = new CGFcamera(d.angle, d.near, d.far, d.from, d.to);
+            this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
         else
             this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
         this.interface.setActiveCamera(this.camera);
@@ -158,7 +158,7 @@ class XMLscene extends CGFscene {
                     return element.id == cc;
                 });
                 if(d.type == "perspective")
-                    this.camera = new CGFcamera(d.angle, d.near, d.far, d.from, d.to);
+                    this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
                 else
                     this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
                 this.interface.setActiveCamera(this.camera);
