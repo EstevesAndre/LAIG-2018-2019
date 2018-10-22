@@ -64,5 +64,20 @@ class Torus extends CGFobject
         
 		this.primitiveType=this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
+    };
+    
+    updateTexCoords(s,t)
+	{
+        this.texCoords = [];
+        
+        for(let i = 0; i <= this.loops; i++)
+        {
+            for(let j = 0; j <= this.slices; j++)
+            {
+                this.texCoords.push(s * j / this.slices, t * i / this.loops);
+            }
+        }
+
+		this.updateTexCoordsGLBuffers();
 	};
 };
