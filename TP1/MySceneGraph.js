@@ -39,6 +39,13 @@ class MySceneGraph {
 
         this.referenceLength = 1.0;
 
+        this.def = new CGFappearance(this.scene);
+        this.def.setEmission(0.0,0.0,0.0,1.0);
+        this.def.setAmbient(0.0,0.2,0.0,1.0);
+        this.def.setDiffuse(0.0,0.2,0.0,1.0);
+        this.def.setSpecular(0.0,0.2,0.0,1.0);
+        this.def.setShininess(1.0);
+
         // File reading 
         this.reader = new CGFXMLreader();
 
@@ -1304,15 +1311,19 @@ parseViews(viewsNode) {
 
     displayPrimitive(prim, mat, text)
     {
-        if(mat == null)
+        if(mat == null || mat.id == "none")
         {
-            var def = new CGFappearance(this.scene);
-            def.setEmission(0.0,0.0,0.0,1.0);
-            def.setAmbient(0.0,0.2,0.0,1.0);
-            def.setDiffuse(0.0,0.2,0.0,1.0);
-            def.setSpecular(0.0,0.2,0.0,1.0);
-            def.setShininess(1.0);
-            def.apply();
+            
+            if(text.txt.id != "none")
+            {
+                this.def.setTexture(text.txt.text);   
+            }
+            else
+            {
+                this.def.setTexture(null);
+            }
+
+            this.def.apply();
         }
         else
         {
@@ -1321,6 +1332,10 @@ parseViews(viewsNode) {
                 if(text.txt.id != "none")
                 {
                     mat.mat.setTexture(text.txt.text);   
+                }
+                else
+                {
+                    mat.mat.setTexture(null);
                 }
                 
                 mat.mat.apply();
