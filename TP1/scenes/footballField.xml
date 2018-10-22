@@ -78,6 +78,10 @@
         <texture id="semiTorus" file="scenes/images/boxCircle.jpg" />
         <texture id="standsT" file="scenes/images/stands.jpg" />
         <texture id="news" file="scenes/images/champions.jpeg" />
+        <texture id="buildingWall" file="scenes/images/buildingWall.jpg" />
+        <texture id="pavement" file="scenes/images/pavement2.jpg" />           
+        <texture id="leaves" file="scenes/images/leaves.jpg" />
+        <texture id="log" file="scenes/images/log.jpg" />     
     </textures>
 
     <materials>
@@ -121,6 +125,13 @@
             <ambient r="0.9" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="wall" shininess="2.0" >            
+            <emission r="0.4" g="0.4" b="0.4" a="1.0" />
+            <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="0.4" g="0.4" b="0.4" a="1.0" />
         </material>
 
     </materials>
@@ -225,6 +236,24 @@
             <texture id="none" length_s="1.0" length_t="1.0" />
 
             <children>
+                <componentref id="buildings" />
+                <componentref id="stadium" />
+                <componentref id="trees" />
+            </children>
+        </component>
+
+        <component id="stadium">
+            <transformation>
+                <translate x="0.0" y="1.5" z="0.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
                 <componentref id="goalLeft" />
                 <componentref id="goalRight" />
                 <componentref id="field" />    
@@ -242,6 +271,7 @@
                 <componentref id="barriers" />
             </children>
         </component>
+
         
         <component id="football">
             <transformation>
@@ -563,7 +593,7 @@
                 <material id="field" />
             </materials>
 
-            <texture id="blue" length_s="10.0" length_t="10.0" />
+            <texture id="blue" length_s="2.0" length_t="12.0" />
 
             <children>
                 <primitiveref id="torus" />
@@ -581,7 +611,7 @@
                 <material id="field" />
             </materials>
 
-            <texture id="stadium" length_s="1.0" length_t="1.0" />
+            <texture id="stadium" length_s="2.0" length_t="10.0" />
 
             <children>
                 <primitiveref id="torus" />
@@ -1519,6 +1549,345 @@
                 <componentref id="barrierRight" />
                 <componentref id="barrierUp" />
                 <componentref id="barrierDown" />
+            </children>
+        </component>
+
+        <component id="treeBranch">
+            <transformation>
+                <scale x="2.0" y="2.0" z="2.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />>
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="football" />
+            </children>
+        </component>
+
+        <component id="treeBranch1">
+            <transformation>
+                <translate x="0.0" y="2.0" z="0.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />>
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="treeBranch" />
+            </children>
+        </component>
+
+        <component id="treeBranch2">
+            <transformation>
+                <translate x="0.3" y="1.8" z="0.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />>
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="treeBranch" />
+            </children>
+        </component>
+
+        <component id="treeBranch3">
+            <transformation>
+                <translate x="0.0" y="1.6" z="-0.3" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />>
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="treeBranch" />
+            </children>
+        </component>
+
+        <component id="treeBranch4">
+            <transformation>
+                <translate x="-0.3" y="1.6" z="-0.0" />
+            </transformation>
+
+            <materials>
+                <material id="ground" />>
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="treeBranch" />
+            </children>
+        </component>
+
+        <component id="treeBranch5">
+            <transformation>
+                <translate x="0.0" y="1.5" z="0.3" />
+            </transformation>
+
+            <materials>
+                <material id="ground" />>
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="treeBranch" />
+            </children>
+        </component>
+
+        <component id="treeBranch6">
+            <transformation>
+                <translate x="0.3" y="1.5" z="0.0" />
+            </transformation>
+
+            <materials>
+                <material id="ground" />>
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="treeBranch" />
+            </children>
+        </component>
+
+        <component id="treeTop">
+            <transformation>
+            </transformation>
+
+            <materials>
+                <material id="field" />>
+            </materials>
+
+            <texture id="leaves" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="treeBranch1" />
+                <componentref id="treeBranch2" />
+                <componentref id="treeBranch3" />
+                <componentref id="treeBranch4" />
+                <componentref id="treeBranch5" />
+                <componentref id="treeBranch6" />
+            </children>
+        </component>
+
+        <component id="treeLog">
+            <transformation>
+                <scale x="0.3" y="1.3" z="0.3" />
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+
+            <materials>
+                <material id="ground" />>
+            </materials>
+
+            <texture id="log" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="arc" />
+            </children>
+        </component>
+
+        <component id="tree">
+            <transformation>
+            </transformation>
+
+            <materials>
+                <material id="none" />>
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="treeLog" />
+                <componentref id="treeTop" />
+            </children>
+        </component> 
+        
+        <component id="tree1">
+            <transformation>
+                <translate x="0.0" y="0.0" z="20.0"/>
+            </transformation>
+
+            <materials>
+                <material id="none" />>
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="tree" />
+            </children>
+        </component> 
+
+        <component id="tree2">
+            <transformation>
+                <translate x="0.0" y="0.0" z="-20.0"/>
+            </transformation>
+
+            <materials>
+                <material id="none" />>
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="tree" />
+            </children>
+        </component> 
+
+        <component id="tree3">
+            <transformation>
+                <translate x="10.0" y="0.0" z="15.0"/>
+            </transformation>
+
+            <materials>
+                <material id="none" />>
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="tree" />
+            </children>
+        </component> 
+
+        <component id="trees">
+            <transformation>
+                <translate x="0.0" y="0.1" z="0.0" />
+            </transformation>
+
+            <materials>
+                <material id="none" />>
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="tree1" />
+                <componentref id="tree2" />
+                <componentref id="tree3" />
+            </children>
+        </component> 
+
+        <component id="building1">     
+            <transformation>
+                <translate x="-20.0" y="10.0" z="0.0" />
+                <rotate axis="z" angle="90" />
+                <scale x="20.0" y="4.0" z="4.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="building2">     
+            <transformation>
+                <translate x="-20.0" y="10.0" z="10.0" />
+                <rotate axis="z" angle="90" />
+                <scale x="20.0" y="4.0" z="4.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="building3">     
+            <transformation>
+                <translate x="-20.0" y="10.0" z="-10.0" />
+                <rotate axis="z" angle="90" />
+                <scale x="20.0" y="4.0" z="4.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="building4">     
+            <transformation>
+                <translate x="-15.0" y="10.0" z="20.0" />
+                <rotate axis="z" angle="90" />
+                <scale x="20.0" y="4.0" z="4.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="cityFloor">     
+            <transformation>
+                <scale x="200.0" y="0.1" z="200.0" />
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="pavement" length_s="0.04" length_t="0.04" />
+
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="buildings">     
+            <transformation>
+                <translate x="0.0" y="0.1" z="0.0" />
+            </transformation>
+
+            <materials>
+                <material id="wall" />
+            </materials>
+
+            <texture id="buildingWall" length_s="0.5" length_t="0.5" />
+
+            <children>
+                <componentref id="building1" />
+                <componentref id="building2" />
+                <componentref id="building3" />
+                <componentref id="building4" />
+                <componentref id="cityFloor" />
             </children>
         </component>
 

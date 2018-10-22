@@ -1341,7 +1341,7 @@ parseViews(viewsNode) {
                 mat.mat.apply();
             }
 
-            if(prim.type == "rectangle" || prim.type == "triangle")
+            if(prim.type == "rectangle" || prim.type == "triangle" || prim.type == "torus")
             {
                 prim.obj.updateTexCoords(text.length_s, text.length_t);
             }
