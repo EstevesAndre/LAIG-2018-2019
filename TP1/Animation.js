@@ -12,11 +12,6 @@ class Animation
         return this.timeElapsed;
     };
 
-    setTime(newTime) // miliseconds
-    {
-        this.time = newTime;
-    };
-
     decreaseTime(delta) // miliseconds
     {
         this.timeElapsed += delta;
@@ -27,4 +22,14 @@ class Animation
         return this.timeElapsed > this.time;
     }
 
+    update()
+    {
+        
+    };
+
+    apply()
+    {
+
+    };
+    
 };

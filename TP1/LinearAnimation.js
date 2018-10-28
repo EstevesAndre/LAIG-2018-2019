@@ -17,4 +17,13 @@ class LinearAnimation extends Animation
         return this.controlPoints[this.index];
     };
 
+    update()
+    {
+        
+    };
+
+    apply()
+    {
+
+    };
 };

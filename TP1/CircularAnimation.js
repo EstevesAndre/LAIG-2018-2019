@@ -28,24 +28,15 @@ class CircularAnimation extends Animation
     {
         return this.rotationAngle;
     };
-
-    setCenter(newCenter)
+  
+    update()
     {
-        this.center = newCenter;
+        
     };
 
-    setRadius(newRadius)
+    apply()
     {
-        this.radius = newRadius;
+
     };
 
-    setInitialAngle(newInitialAngle)
-    {
-        this.initialAngle = newInitialAngle;
-    };
-
-    setRotationAngle(newRotationAngle)
-    {
-        this.rotationAngle = newRotationAngle;
-    };
 };
