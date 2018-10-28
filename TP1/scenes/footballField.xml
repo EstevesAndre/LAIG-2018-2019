@@ -267,6 +267,10 @@
              <transformation>
             </transformation>
 
+            <animations>  
+                <animationref id="test2" />
+            </animations>
+
             <materials>
                 <material id="ground" />
             </materials>

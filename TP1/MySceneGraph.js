@@ -1352,30 +1352,38 @@ class MySceneGraph {
 
             grandChildren = children[i].children;
 
-            if(grandChildren.length != 4) return "invalid number of child tags for component with ID = " + componentId;
+            if(grandChildren.length == 5) 
+            {
+                var COMP_ANIM_INDEX = 1;
+                var COMP_MAT_INDEX = 2;
+                var COMP_TEXT_INDEX = 3;
+                var COMP_CHLD_INDEX = 4;
+            }
+            else if(grandChildren.length != 4) return "invalid number of child tags for component with ID = " + componentId;
 
             var nodeNames = [];            
             for(var j = 0; j < grandChildren.length; j++) nodeNames.push(grandChildren[j].nodeName);
 
             // Gets indices of each element.    
             var transformationIndex = nodeNames.indexOf("transformation");
+            var animationsIndex = nodeNames.indexOf("animations");
             var materialsIndex = nodeNames.indexOf("materials");
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
             if(transformationIndex != -1)
             {
-                if(transformationIndex != COMP_TRANSF_INDEX) this.onXMLMinorError("tag <transformation> out of order");
+                if(transformationIndex != COMP_TRANSF_INDEX) this.onXMLMinorError("tag <transformation> out of order for component with ID = " + componentId);
 
                 if(grandChildren[transformationIndex].children.length != 0)
                 {
                     // if transformationref
                     if(grandChildren[transformationIndex].children[0].nodeName == "transformationref")
                     {
-                        if(grandChildren[transformationIndex].children.length != 1) return "tag <transformation> must have only one ref";
+                        if(grandChildren[transformationIndex].children.length != 1) return "tag <transformation> must have only one ref, component with ID = " + componentId;
 
                         let transformationrefId = this.reader.getString(grandChildren[transformationIndex].children[0], 'id');
-                        if(transformationrefId == null) return "no ID defined for transformationref";
+                        if(transformationrefId == null) return "no ID defined for transformationref, component with ID = " + componentId;
 
                         var k = 0;
 
@@ -1388,7 +1396,7 @@ class MySceneGraph {
                             }
                         }
 
-                        if(this.components[i].matrix == null) return "no matching transformation for tag <transformmationref> id = " + transformationrefId;
+                        if(this.components[i].matrix == null) return "no matching transformation for tag <transformmationref> id = " + transformationrefId + ", component with ID = " + componentId;
                     }
                     else //if transformation defined "on the fly"
                     {   
@@ -1408,20 +1416,56 @@ class MySceneGraph {
             else
                 return "unable to find transformation tag for component ID = " + componentId;
 
+            if(grandChildren.length == 5 && animationsIndex != -1)
+            {
+                this.components[i].animation = new Object();
+
+                if(animationsIndex != COMP_ANIM_INDEX) this.onXMLMinorError("tag <animations> out of order");
+                
+                if(grandChildren[animationsIndex].children.length == 1) 
+                {
+                    if(grandChildren[animationsIndex].children[0].nodeName != "animationref") return "children <" + grandChildren[animationsIndex].children[0].nodeName + "> not allowed for tag animation, component with ID = " + componentId;
+                    
+                    let animId = this.reader.getString(grandChildren[animationsIndex].children[0], 'id');
+                    if(animId == null || animId == "") return "no ID defined for animation, component with ID = " + componentId;
+                    else
+                    {
+                        var l = 0;
+                        var idFound = false;
+
+                        for(l; l < this.animations.length; l++)
+                        {
+                            if(this.animations[l].id == animId)
+                            {
+                                this.components[i].animation = this.animations[l];
+                                idFound = true;
+                                break;
+                            }
+                        }
+
+                        if(!idFound) return "no animation matches the reference tag <animation> id = " + animId + ", component with ID = " + componentId;
+                    }
+                }
+                else if(grandChildren[animationsIndex].children.length == 0) this.components[i].animation = null;
+                else return "wrong number of animations child tags, component with ID = " + componentId;
+            }
+            else if(grandChildren.length == 5)
+                return "unable to find animations tag for component ID = " + componentId;
+
             if(materialsIndex != -1)
             {
                 this.components[i].materials = [];
 
-                if(materialsIndex != COMP_MAT_INDEX) this.onXMLMinorError("tag <materials> out of order");
+                if(materialsIndex != COMP_MAT_INDEX) this.onXMLMinorError("tag <materials> out of order for component with ID = " + componentId);
 
-                if(grandChildren[materialsIndex].children.length == 0) return "tag <materials> must have children";
+                if(grandChildren[materialsIndex].children.length == 0) return "tag <materials> must have children, component with ID = " + componentId;
 
                 var k = 0;
 
                 for(k; k < grandChildren[materialsIndex].children.length; k++)
                 {
                     let matId = this.reader.getString(grandChildren[materialsIndex].children[k], 'id');
-                    if(matId == null) return "no ID defined for material";
+                    if(matId == null) return "no ID defined for material, component with ID = " + componentId;
 
                     // inheritance
                     if(matId == "inherit" || matId == "none")
@@ -1445,7 +1489,7 @@ class MySceneGraph {
                         }
                     }
 
-                    if(!idFound) return "no material matches the reference tag <material> id = " + matId;
+                    if(!idFound) return "no material matches the reference tag <material> id = " + matId + ", component with ID = " + componentId;
                 }
             }
             else   
@@ -1455,12 +1499,12 @@ class MySceneGraph {
             {
                 this.components[i].texture = new Object();
 
-                if(textureIndex != COMP_TEXT_INDEX) this.onXMLMinorError("tag <texture> out of order");
+                if(textureIndex != COMP_TEXT_INDEX) this.onXMLMinorError("tag <texture> out of order for component with ID = " + componentId);
 
-                if(grandChildren[textureIndex].children.length != 0) return "no children allowed for tag texture";
+                if(grandChildren[textureIndex].children.length != 0) return "no children allowed for tag texture, component with ID = " + componentId;
 
                 let textId = this.reader.getString(grandChildren[textureIndex], 'id');
-                if(textId == null) return "no ID defined for texture";
+                if(textId == null) return "no ID defined for texture, component with ID = " + componentId;
 
                 if(textId == "inherit" || textId == "none")
                 {
@@ -1483,15 +1527,15 @@ class MySceneGraph {
                         }
                     }
 
-                    if(!idFound) return "no texture matches the reference tag <texture> id = " + textId;
+                    if(!idFound) return "no texture matches the reference tag <texture> id = " + textId + ", component with ID = " + componentId;
                 
                     let length_s = this.reader.getFloat(grandChildren[textureIndex], 'length_s');
-                    if(length_s == null) return "no length_s defined for texture";
+                    if(length_s == null) return "no length_s defined for texture, component with ID = " + componentId;
                     this.components[i].texture.length_s = length_s;
 
 
                     let length_t = this.reader.getFloat(grandChildren[textureIndex], 'length_t');
-                    if(length_t == null) return "no length_t defined for texture";
+                    if(length_t == null) return "no length_t defined for texture, component with ID = " + componentId;
                     this.components[i].texture.length_t = length_t;                    
                 }
             }
@@ -1513,7 +1557,7 @@ class MySceneGraph {
                     {
                         var l = 0;
                         let id = this.reader.getString(grandChildren[childrenIndex].children[k], 'id');
-                        if(id == null) return "no ID defined for componentref";
+                        if(id == null) return "no ID defined for componentref, component with ID = " + componentId;
 
                         var componentFound = false;
 
@@ -1527,14 +1571,14 @@ class MySceneGraph {
                             }
                         }
 
-                        if(!componentFound) return "no component matches the reference tag <componentref> id = " + id;
+                        if(!componentFound) return "no component matches the reference tag <componentref> id = " + id + ", component with ID = " + componentId;
 
                     }
                     else if (grandChildren[childrenIndex].children[k].nodeName == "primitiveref")
                     {
                         var l = 0;
                         let id = this.reader.getString(grandChildren[childrenIndex].children[k], 'id');
-                        if(id == null) return "no ID defined for primitiveref";
+                        if(id == null) return "no ID defined for primitiveref, component with ID = " + componentId;
 
                         var primitiveFound = false;
 
@@ -1548,10 +1592,10 @@ class MySceneGraph {
                             }
                         }
 
-                        if(!primitiveFound) return "no primitive matches the reference tag <primitiveref> id = " + id;
+                        if(!primitiveFound) return "no primitive matches the reference tag <primitiveref> id = " + id + ", component with ID = " + componentId;
                     }
                     else
-                        return "unexpected child tag of <children> - <"+ grandChildren[childrenIndex].nodeName + ">";
+                        return "unexpected child tag of <children> - <"+ grandChildren[childrenIndex].nodeName + ">, component with ID = " + componentId;
                 }
             }
             else
