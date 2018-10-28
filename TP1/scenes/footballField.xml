@@ -245,7 +245,9 @@
         
         <plane id="test1" npartsU="5" npartsV="8" />
 
-        <patch id="test2" npointsU="5" npointsV="5" npartsU="5" npartsV="5" >
+        <patch id="test2" npointsU="2" npointsV="2" npartsU="5" npartsV="5" >
+            <controlPoint xx="2.0" yy="2.0" zz="7.0" />
+            <controlPoint xx="2.0" yy="4.0" zz="2.0" />
             <controlPoint xx="2.0" yy="2.0" zz="7.0" />
             <controlPoint xx="2.0" yy="4.0" zz="2.0" />
         </patch>
