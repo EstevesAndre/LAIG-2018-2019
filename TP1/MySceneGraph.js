@@ -8,8 +8,9 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATIONS_INDEX = 7;
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -181,6 +182,18 @@ class MySceneGraph {
             if ((error = this.parseTransformations(nodes[index])) != null) return error;
         }
 
+        // <animations>
+        var index;
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else 
+        {
+            if (index != ANIMATIONS_INDEX) this.onXMLMinorError("tag <animations> out of order");
+
+            //Parse animations block
+            if ((error = this.parseAnimations(nodes[index])) != null) return error;
+        }
+
         // <primitives>
         var index;
         if ((index = nodeNames.indexOf("primitives")) == -1)
@@ -233,112 +246,112 @@ class MySceneGraph {
     }
 
     /**
- * Parses the <views> block. 
- * @param {views block element} viewsNode
- */
-parseViews(viewsNode) {
+     * Parses the <views> block. 
+     * @param {views block element} viewsNode
+     */
+    parseViews(viewsNode) {
 
-    this.views = [];
-    this.defaultView;
-    var viewsId = [];
+        this.views = [];
+        this.defaultView;
+        var viewsId = [];
 
-    if(viewsNode.nodeName != "views") return "invalid tag, <view> - <" + viewsNode.nodeName + ">";
+        if(viewsNode.nodeName != "views") return "invalid tag, <view> - <" + viewsNode.nodeName + ">";
 
-    var viewDefault = this.reader.getString(viewsNode,'default');
-    if(viewDefault == null) return "no Default name for view";
+        var viewDefault = this.reader.getString(viewsNode,'default');
+        if(viewDefault == null) return "no Default name for view";
 
-    var children = viewsNode.children;
+        var children = viewsNode.children;
 
-    if(children.length == 0) return "Scene must have at least one view";
+        if(children.length == 0) return "Scene must have at least one view";
 
-    var defaultFound = false;
+        var defaultFound = false;
 
-    for(var i = 0; i < children.length; i++)
-    {
-        var view = new Object();
-
-        if(children[i].nodeName != "perspective" && children[i].nodeName != "ortho") return "invalid child tag, must be \"perspective\" or \"ortho\" on views tag";
-        view.type = children[i].nodeName;
-
-        let viewId = this.reader.getString(children[i], 'id');
-        if(viewId == null) return "no ID defined for " + children[i].nodeName + " view";
-        view.id = viewId;
-
-        // Checks for repeated IDs.
-        if (viewsId[viewId] != null) return "ID must be unique for each view (conflict: ID = " + viewId + ")";
-
-        var isDefaultView = false;
-
-        if(viewId == viewDefault)
+        for(var i = 0; i < children.length; i++)
         {
-            defaultFound = true;
-            isDefaultView = true;
+            var view = new Object();
+
+            if(children[i].nodeName != "perspective" && children[i].nodeName != "ortho") return "invalid child tag, must be \"perspective\" or \"ortho\" on views tag";
+            view.type = children[i].nodeName;
+
+            let viewId = this.reader.getString(children[i], 'id');
+            if(viewId == null) return "no ID defined for " + children[i].nodeName + " view";
+            view.id = viewId;
+
+            // Checks for repeated IDs.
+            if (viewsId[viewId] != null) return "ID must be unique for each view (conflict: ID = " + viewId + ")";
+
+            var isDefaultView = false;
+
+            if(viewId == viewDefault)
+            {
+                defaultFound = true;
+                isDefaultView = true;
+            }
+
+            let viewNear = this.reader.getFloat(children[i], 'near');
+            if(!(viewNear != null && !isNaN(viewNear))) return "unable to parse near component of the " + children[i].nodeName + " view with ID = " + viewId;
+            view.near = viewNear;
+            
+            let viewFar = this.reader.getFloat(children[i], 'far');
+            if(!(viewFar != null && !isNaN(viewFar))) return "unable to parse far component of the " + children[i].nodeName + " view with ID = " + viewId;
+            view.far = viewFar;
+            
+            if(children[i].nodeName == "ortho")
+            {
+                let viewLeft = this.reader.getFloat(children[i], 'left');
+                if(!(viewLeft != null && !isNaN(viewLeft))) return "unable to parse left component of the " + children[i].nodeName + " view with ID = " + viewId;
+                view.left = viewLeft;
+
+                let viewRight = this.reader.getFloat(children[i], 'right');
+                if(!(viewRight != null && !isNaN(viewRight))) return "unable to parse right component of the " + children[i].nodeName + " view with ID = " + viewId;
+                view.right = viewRight;
+
+                let viewTop = this.reader.getFloat(children[i], 'top');
+                if(!(viewTop != null && !isNaN(viewTop))) return "unable to parse top component of the " + children[i].nodeName + " view with ID = " + viewId;
+                view.top = viewTop;
+
+                let viewBottom = this.reader.getFloat(children[i], 'bottom');
+                if(!(viewBottom != null && !isNaN(viewBottom))) return "unable to parse bottom component of the " + children[i].nodeName + " view with ID = " + viewId;
+                view.bottom = viewBottom;
+            }
+            else
+            {
+                let viewAngle = this.reader.getFloat(children[i], 'angle');
+                if(!(viewAngle != null && !isNaN(viewAngle))) return "unable to parse angle component of the " + children[i].nodeName + " view with ID = " + viewId;
+                view.angle = viewAngle;
+            }
+            
+            var grandChildren = children[i].children;
+            
+            if(grandChildren.length != 2) return "no \"from\" and \"to\" tags defined";
+
+            var fromPos = [];
+            var toPos = [];
+
+            if(grandChildren[0].nodeName == "from") this.parseXYZw(grandChildren,fromPos,0,"perspective","from","none");
+            else return "wrong tag to perspective view for ID = " + viewId + ", must be \"from\"";
+            
+            if(grandChildren[1].nodeName == "to") this.parseXYZw(grandChildren,toPos,1,"perspective","to","none");
+            else return "wrong tag to perspective view for ID = " + viewId + ", must be \"to\"";
+
+            view.from = vec3.fromValues(fromPos[0],fromPos[1], fromPos[2]);
+            view.to = vec3.fromValues(toPos[0],toPos[1], toPos[2]);
+
+            viewsId[viewId] = viewId;            
+            this.views.push(view);
+
+            if(isDefaultView)
+            {
+                this.defaultView = view;
+            }
         }
-
-        let viewNear = this.reader.getFloat(children[i], 'near');
-        if(!(viewNear != null && !isNaN(viewNear))) return "unable to parse near component of the " + children[i].nodeName + " view with ID = " + viewId;
-        view.near = viewNear;
         
-        let viewFar = this.reader.getFloat(children[i], 'far');
-        if(!(viewFar != null && !isNaN(viewFar))) return "unable to parse far component of the " + children[i].nodeName + " view with ID = " + viewId;
-        view.far = viewFar;
+        if(!defaultFound) return "default view with ID = " + viewDefault + " not found";
         
-        if(children[i].nodeName == "ortho")
-        {
-            let viewLeft = this.reader.getFloat(children[i], 'left');
-            if(!(viewLeft != null && !isNaN(viewLeft))) return "unable to parse left component of the " + children[i].nodeName + " view with ID = " + viewId;
-            view.left = viewLeft;
+        console.log("Parsed views");        
 
-            let viewRight = this.reader.getFloat(children[i], 'right');
-            if(!(viewRight != null && !isNaN(viewRight))) return "unable to parse right component of the " + children[i].nodeName + " view with ID = " + viewId;
-            view.right = viewRight;
-
-            let viewTop = this.reader.getFloat(children[i], 'top');
-            if(!(viewTop != null && !isNaN(viewTop))) return "unable to parse top component of the " + children[i].nodeName + " view with ID = " + viewId;
-            view.top = viewTop;
-
-            let viewBottom = this.reader.getFloat(children[i], 'bottom');
-            if(!(viewBottom != null && !isNaN(viewBottom))) return "unable to parse bottom component of the " + children[i].nodeName + " view with ID = " + viewId;
-            view.bottom = viewBottom;
-        }
-        else
-        {
-            let viewAngle = this.reader.getFloat(children[i], 'angle');
-            if(!(viewAngle != null && !isNaN(viewAngle))) return "unable to parse angle component of the " + children[i].nodeName + " view with ID = " + viewId;
-            view.angle = viewAngle;
-        }
-        
-        var grandChildren = children[i].children;
-        
-        if(grandChildren.length != 2) return "no \"from\" and \"to\" tags defined";
-
-        var fromPos = [];
-        var toPos = [];
-
-        if(grandChildren[0].nodeName == "from") this.parseXYZw(grandChildren,fromPos,0,"perspective","from","none");
-        else return "wrong tag to perspective view for ID = " + viewId + ", must be \"from\"";
-        
-        if(grandChildren[1].nodeName == "to") this.parseXYZw(grandChildren,toPos,1,"perspective","to","none");
-        else return "wrong tag to perspective view for ID = " + viewId + ", must be \"to\"";
-
-        view.from = vec3.fromValues(fromPos[0],fromPos[1], fromPos[2]);
-        view.to = vec3.fromValues(toPos[0],toPos[1], toPos[2]);
-
-        viewsId[viewId] = viewId;            
-        this.views.push(view);
-
-        if(isDefaultView)
-        {
-            this.defaultView = view;
-        }
+        return null;
     }
-    
-    if(!defaultFound) return "default view with ID = " + viewDefault + " not found";
-    
-    console.log("Parsed views");        
-
-    return null;
-}
 
      /**
      * Parses the <ambient> block. 
@@ -769,6 +782,129 @@ parseViews(viewsNode) {
     }
 
      /**
+     * Parses the <animations> block. 
+     * @param {animations block element} animationsNode
+     */ 
+    parseAnimations(animationsNode) {
+
+        var children = animationsNode.children;
+
+        this.animations = [];
+        
+        var animationsId = [];      
+        var grandChildren = [];
+
+        for(var i = 0; i < children.length; i++)
+        {
+            var animation = new Object();
+
+            // verifies if it is a possible child tag for animation
+            if (children[i].nodeName != "linear" &&
+                children[i].nodeName != "circular"
+                )
+            {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">. Must be \"linear\" or \"circular\"");
+                continue;
+            }
+
+            //get id of the current animation
+            let animationId = this.reader.getString(children[i],'id');
+            if(animationId == null || animationId == "") return "no ID defined for animation";
+            animation.id = animationId;
+
+            if(animationsId[animationId] != null) return "ID must be unique for each animation (conflict: ID = " + animationId + ")";
+
+            // gets span tag
+            let span = this.reader.getFloat(children[i],'span');
+            if(!(span != null && !isNaN(span))) return "unable to parse span value of the animation with ID = " + animationId;
+            else if(span < 0) return "invalid value for span tag, it must be greater than 0, animation with ID = " + animationId;
+            else animation.span = span;
+
+            if(children[i].nodeName == "circular")
+            {
+                // gets the center of the circular animation
+                let center = [];
+                center = this.reader.getString(children[i], 'center').split(" ").map(Number);
+                if(center.length != 3) return "wrong number of center tag of the animation with ID = " + animationId;
+
+                for(let i = 0; i < center.length; i++)
+                {
+                    if(!(center[i] != null && !isNaN(center[i]))) return "unable to parse center[" + (i == 0 ? "x" : (i == 1 ? "y" : "z") ) + "] value of the animation with ID = " + animationId;
+                }
+                animation.center = center;
+
+                // gets the radius of the animation
+                let radius = this.reader.getFloat(children[i],'radius');
+                if(!(radius != null && !isNaN(radius))) return "unable to parse radius value of the animation with ID = " + animationId;
+                else if(radius <= 0) return "wrong value for the radius, it must be greater than 0, animation with ID = " + animationId;
+                else animation.radius = radius;
+
+                // gets the start angle of the animation
+                let startang = this.reader.getFloat(children[i],'startang');
+                if(!(startang != null && !isNaN(startang))) return "unable to parse startang value of the animation with ID = " + animationId;
+                else animation.startang = startang;
+                
+                if(startang > 0 && startang < 2*Math.PI) this.onXMLMinorError("reinforce that start angle is in Degrees, animation with ID = " + animationId);
+                if(startang < 0 || startang > 360) this.onXMLMinorError("startangle must be between [0,360], animation with ID = " + animationId);
+                
+                // gets the rotation angle of the animation
+                let rotang = this.reader.getFloat(children[i],'startang');
+                if(!(rotang != null && !isNaN(rotang))) return "unable to parse rotang value of the animation with ID = " + animationId;
+                else animation.rotang = rotang;
+                
+                if(startang > 0 && startang < 2*Math.PI) this.onXMLMinorError("reinforce that start angle is in Degrees, animation with ID = " + animationId);
+                if(startang < 0 || startang > 360) this.onXMLMinorError("startangle must be between [0,360], animation with ID = " + animationId);
+            }
+            else
+            {
+                grandChildren = children[i].children;
+                
+                var numControlPoints = 0;
+                var controlPoints = [];
+                var controlPoint = [];
+
+                for(let i = 0; i < grandChildren.length; i++)
+                {
+                    if(grandChildren[i].nodeName != "controlPoint")
+                    {
+                        this.onXMLMinorError("wrong child tag <" + grandChildren[i].nodeName + "> for linear animation with ID = " + animationId);
+                        continue;
+                    }
+                    
+                    controlPoint = [];
+
+                    var xx = this.reader.getFloat(grandChildren[i],'xx');
+                    if(!(xx != null && !isNaN(xx))) return "unable to parse xx value of the controlPoint[" + (i + 1) + "], animation with ID = " + animationId;
+                    else controlPoint[0] = xx;
+
+                    var yy = this.reader.getFloat(grandChildren[i],'yy');
+                    if(!(yy != null && !isNaN(yy))) return "unable to parse yy value of the controlPoint[" + (i + 1) + "], animation with ID = " + animationId;
+                    else controlPoint[1] = yy;
+
+                    var zz = this.reader.getFloat(grandChildren[i],'zz');
+                    if(!(zz != null && !isNaN(zz))) return "unable to parse zz value of the controlPoint[" + (i + 1) + "], animation with ID = " + animationId;
+                    else controlPoint[2] = zz;
+                    
+                    controlPoints.push(controlPoint);
+                    numControlPoints++;
+                }
+
+                if(numControlPoints < 2)
+                    return "invalid number of control points (CP), linear animations must have more than 2 CP, animation with ID = " + animationId;
+
+                animation.controlPoints = controlPoints;
+            }
+            
+            this.animations.push(animation);
+            animationsId[animationId] = animationId;
+        }
+
+        console.log("Parsed animations");
+
+        return null;
+    }
+
+     /**
      * Parses the <primitives> block. 
      * @param {primitives block element} primitivesNode
      */ 
@@ -779,7 +915,7 @@ parseViews(viewsNode) {
         this.primitives = [];
         
         var primitivesId = [];
-        var numPrimitives = 0;        
+        var numPrimitives = 0;     
         var grandChildren = [];
 
         for(var i = 0; i < children.length; i++)
@@ -787,9 +923,16 @@ parseViews(viewsNode) {
             var primitive = new Object();
 
             // verifies if it is primitive.
-            if (children[i].nodeName != "primitive")
+            if (children[i].nodeName != "primitive" && 
+                children[i].nodeName != "plane" && 
+                children[i].nodeName != "patch" && 
+                children[i].nodeName != "vehicle" && 
+                children[i].nodeName != "cylinder2" && 
+                children[i].nodeName != "terrain" && 
+                children[i].nodeName != "water"
+                )
             {
-                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">. Must be \"primitive\".");
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">. Must be \"primitive\", \"plane\", \"patch\", \"vehicle\", \"cylinder2\", \"terrain\" or \"water\",");
                 continue;
             }
 
