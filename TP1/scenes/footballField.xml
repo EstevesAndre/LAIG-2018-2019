@@ -1,7 +1,7 @@
 <yas>
     <scene root="root" axis_length="1.0" />
 
-     <views default="Side">
+     <views default="CityView">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
             <from x="0.0" y="0.0" z="0.0" />
             <to x="0.0" y="0.0" z="10.0" />
@@ -16,6 +16,11 @@
             <from x="5.0" y="40.0" z="0.0" />
             <to x="0.0" y="0.0" z="0.0" />
         </perspective>
+
+        <perspective id="CityView" near="0.1" far="500" angle="23">
+            <from x="120.0" y="80.0" z="120.0" />
+            <to x="0.0" y="0.0" z="0.0" />
+        </perspective>
     </views>
 
     <ambient>        
@@ -24,36 +29,44 @@
     </ambient>
 
     <lights>
-        <spot id="leftCorner1" enabled="1" angle="10" exponent="2.0">            
-            <location x="-6.0" y="8.0" z="-10.0" w="1.0" />
+        <spot id="leftCorner1" enabled="1" angle="10" exponent="40.0">            
+            <location x="-6.0" y="12.0" z="-10.0" w="1.0" />
             <target x="0.0" y="0.0" z="0.0" />
-            <ambient r="1.0" g="0.5" b="1.0" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="1.0" b="0.5" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
         </spot>
 
-        <spot id="leftCorner2" enabled="1" angle="10" exponent="2.0">            
-            <location x="6.0" y="8.0" z="-10.0" w="1.0" />
-            <target x="0.0" y="0.0" z="0.0" />
-            <ambient r="0.5" g="1.0" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        <spot id="leftCorner1Test" enabled="1" angle="30" exponent="40">
+            <location x="30" y="0.5" z="3" w="1" />
+            <target x="5" y="2" z="0" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
         </spot>
 
-        <spot id="rightCorner1" enabled="1" angle="10" exponent="2.0">            
-            <location x="-6.0" y="8.0" z="10.0" w="1.0" />
+        <spot id="leftCorner2" enabled="1" angle="30" exponent="40.0">            
+            <location x="6.0" y="12.0" z="-10.0" w="1.0" />
             <target x="0.0" y="0.0" z="0.0" />
-            <ambient r="0.5" g="0.5" b="1.0" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
         </spot>
 
-        <spot id="rightCorner2" enabled="1" angle="10" exponent="2.0">            
-            <location x="6.0" y="8.0" z="10.0" w="1.0" />            
+        <spot id="rightCorner1" enabled="1" angle="30" exponent="40.0">            
+            <location x="-6.0" y="12.0" z="10.0" w="1.0" />
             <target x="0.0" y="0.0" z="0.0" />
-            <ambient r="0.5" g="0.5" b="1.0" a="1.0" />
-            <diffuse r="0.5" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="0.5" b="0.5" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </spot>
+
+        <spot id="rightCorner2" enabled="1" angle="30" exponent="40.0">            
+            <location x="6.0" y="12.0" z="10.0" w="1.0" />            
+            <target x="0.0" y="0.0" z="0.0" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
         </spot>
 
         <omni id="center" enabled="1">            
@@ -219,8 +232,7 @@
 
         <primitive id="face">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
-        </primitive>        
-
+        </primitive>
     </primitives>
 
     <components>
@@ -1701,6 +1713,7 @@
             </children>
         </component>
 
+        <!-- Credits to: Mariana Costa -->
         <component id="tree">
             <transformation>
             </transformation>
@@ -1893,4 +1906,4 @@
 
     </components>
 
-</yas>
+</yas>  
