@@ -807,6 +807,8 @@ class MySceneGraph {
                 continue;
             }
 
+            animation.type = children[i].nodeName;
+
             //get id of the current animation
             let animationId = this.reader.getString(children[i],'id');
             if(animationId == null || animationId == "") return "no ID defined for animation";
@@ -854,6 +856,8 @@ class MySceneGraph {
                 
                 if(startang > 0 && startang < 2*Math.PI) this.onXMLMinorError("reinforce that start angle is in Degrees, animation with ID = " + animationId);
                 if(startang < 0 || startang > 360) this.onXMLMinorError("startangle must be between [0,360], animation with ID = " + animationId);
+            
+
             }
             else
             {
@@ -895,6 +899,15 @@ class MySceneGraph {
                 animation.controlPoints = controlPoints;
             }
             
+            if(animation.type == "linear")
+            {
+               animation.anim = new LinearAnimation(animation.span,animation.controlPoints);
+            }
+            else
+            {
+                animation.anim = new CircularAnimation(animation.span, animation.center, animation.radius, animation.startang,animation.rotang);
+            }
+
             this.animations.push(animation);
             animationsId[animationId] = animationId;
         }
@@ -1418,36 +1431,39 @@ class MySceneGraph {
 
             if(grandChildren.length == 5 && animationsIndex != -1)
             {
-                this.components[i].animation = new Object();
+                this.components[i].animations = [];
 
                 if(animationsIndex != COMP_ANIM_INDEX) this.onXMLMinorError("tag <animations> out of order");
                 
-                if(grandChildren[animationsIndex].children.length == 1) 
+                if(grandChildren[animationsIndex].children.length >= 1) 
                 {
-                    if(grandChildren[animationsIndex].children[0].nodeName != "animationref") return "children <" + grandChildren[animationsIndex].children[0].nodeName + "> not allowed for tag animation, component with ID = " + componentId;
-                    
-                    let animId = this.reader.getString(grandChildren[animationsIndex].children[0], 'id');
-                    if(animId == null || animId == "") return "no ID defined for animation, component with ID = " + componentId;
-                    else
+                    for(let c = 0; c < grandChildren[animationsIndex].children.length; c++)
                     {
-                        var l = 0;
-                        var idFound = false;
-
-                        for(l; l < this.animations.length; l++)
+                        if(grandChildren[animationsIndex].children[c].nodeName != "animationref") return "children <" + grandChildren[animationsIndex].children[c].nodeName + "> not allowed for tag animation, component with ID = " + componentId;
+                        
+                        let animId = this.reader.getString(grandChildren[animationsIndex].children[c], 'id');
+                        if(animId == null || animId == "") return "no ID defined for animation, component with ID = " + componentId;
+                        else
                         {
-                            if(this.animations[l].id == animId)
-                            {
-                                this.components[i].animation = this.animations[l];
-                                idFound = true;
-                                break;
-                            }
-                        }
+                            var l = 0;
+                            var idFound = false;
 
-                        if(!idFound) return "no animation matches the reference tag <animation> id = " + animId + ", component with ID = " + componentId;
+                            for(l; l < this.animations.length; l++)
+                            {
+                                if(this.animations[l].id == animId)
+                                {
+                                    this.components[i].animations[c] = Object.create(this.animations[l].anim);
+                                    
+                                    idFound = true;
+                                    break;
+                                }
+                            }
+
+                            if(!idFound) return "no animation matches the reference tag <animation> id = " + animId + ", component with ID = " + componentId;
+                        }
                     }
                 }
                 else if(grandChildren[animationsIndex].children.length == 0) this.components[i].animation = null;
-                else return "wrong number of animations child tags, component with ID = " + componentId;
             }
             else if(grandChildren.length == 5)
                 return "unable to find animations tag for component ID = " + componentId;
@@ -1656,6 +1672,22 @@ class MySceneGraph {
         }
 
         this.scene.multMatrix(comp.matrix);        
+
+        if(comp.animations != null)
+        {
+            for(let i = 0; i < comp.animations.length; i++)
+            {
+                if(comp.animations[i].isAnimationOver())
+                    continue;
+
+                comp.animations[i].apply(this.scene);
+                break;
+            }
+
+            if(comp.animations[comp.animations.length-1].isAnimationOver())
+                comp.animations[comp.animations.length-1].applyLast(this.scene);
+        }
+        
         var k = 0;
 
         for(k; k < comp.children.length; k++)

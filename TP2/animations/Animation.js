@@ -5,6 +5,7 @@ class Animation
     {
         this.time = time;
         this.timeElapsed = 0.0;
+        this.angRotation = 0.0;
     };
 
     getTime() // miliseconds
@@ -22,14 +23,9 @@ class Animation
         return this.timeElapsed > this.time;
     }
 
-    update()
+    update(currTime)
     {
-        
-    };
-
-    apply()
-    {
-
+        this.timeElapsed += currTime;
     };
     
 };

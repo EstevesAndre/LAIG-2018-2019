@@ -170,9 +170,10 @@
     <animations>
         <circular id="test" span="2.0" center="1.0 2.0 3.423" radius="5.0" startang="50.0" rotang="90.0" />
         
-        <linear id="test2" span="2.0">
-            <controlPoint xx="2.0" yy="2.0" zz="7.0" />
-            <controlPoint xx="2.0" yy="4.0" zz="2.0" />
+        <linear id="test2" span="5.0">
+            <controlPoint xx="0.0" yy="0.0" zz="0.0" />
+            <controlPoint xx="0.0" yy="0.0" zz="7.0" />
+            <controlPoint xx="4.0" yy="4.0" zz="7.0" />
         </linear>
     </animations>
 
@@ -266,10 +267,6 @@
         <component id="root">
              <transformation>
             </transformation>
-
-            <animations>  
-                <animationref id="test2" />
-            </animations>
 
             <materials>
                 <material id="ground" />
@@ -1813,6 +1810,10 @@
                 <translate x="0.0" y="0.1" z="0.0" />
             </transformation>
 
+            <animations>  
+                <animationref id="test2" />
+            </animations>
+            
             <materials>
                 <material id="none" />>
             </materials>
@@ -1832,6 +1833,10 @@
                 <rotate axis="z" angle="90" />
                 <scale x="20.0" y="4.0" z="4.0" />
             </transformation>
+            
+            <animations>  
+                <animationref id="test2" />
+            </animations> 
 
             <materials>
                 <material id="inherit" />
