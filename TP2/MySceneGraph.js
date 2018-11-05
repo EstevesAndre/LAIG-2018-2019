@@ -834,7 +834,7 @@ class MySceneGraph {
                     if(!(center[i] != null && !isNaN(center[i]))) return "unable to parse center[" + (i == 0 ? "x" : (i == 1 ? "y" : "z") ) + "] value of the animation with ID = " + animationId;
                 }
                 animation.center = center;
-
+                console.log("SADSAD");
                 // gets the radius of the animation
                 let radius = this.reader.getFloat(children[i],'radius');
                 if(!(radius != null && !isNaN(radius))) return "unable to parse radius value of the animation with ID = " + animationId;
@@ -846,18 +846,16 @@ class MySceneGraph {
                 if(!(startang != null && !isNaN(startang))) return "unable to parse startang value of the animation with ID = " + animationId;
                 else animation.startang = startang;
                 
-                if(startang > 0 && startang < 2*Math.PI) this.onXMLMinorError("reinforce that start angle is in Degrees, animation with ID = " + animationId);
+                if(startang > 0 && startang < 2*Math.PI) this.onXMLMinorError("reinforce that startangle is in Degrees, animation with ID = " + animationId);
                 if(startang < 0 || startang > 360) this.onXMLMinorError("startangle must be between [0,360], animation with ID = " + animationId);
-                
+
                 // gets the rotation angle of the animation
-                let rotang = this.reader.getFloat(children[i],'startang');
+                let rotang = this.reader.getFloat(children[i],'rotang');
                 if(!(rotang != null && !isNaN(rotang))) return "unable to parse rotang value of the animation with ID = " + animationId;
                 else animation.rotang = rotang;
                 
-                if(startang > 0 && startang < 2*Math.PI) this.onXMLMinorError("reinforce that start angle is in Degrees, animation with ID = " + animationId);
-                if(startang < 0 || startang > 360) this.onXMLMinorError("startangle must be between [0,360], animation with ID = " + animationId);
-            
-
+                if(rotang > 0 && rotang < 2*Math.PI) this.onXMLMinorError("reinforce that rotang is in Degrees, animation with ID = " + animationId);
+                if(rotang < 0 || rotang > 360) this.onXMLMinorError("rotang must be between [0,360], animation with ID = " + animationId);
             }
             else
             {
@@ -1687,7 +1685,7 @@ class MySceneGraph {
             if(comp.animations[comp.animations.length-1].isAnimationOver())
                 comp.animations[comp.animations.length-1].applyLast(this.scene);
         }
-        
+
         var k = 0;
 
         for(k; k < comp.children.length; k++)

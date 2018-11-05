@@ -1812,6 +1812,7 @@
 
             <animations>  
                 <animationref id="test2" />
+                <animationref id="test" />
             </animations>
             
             <materials>
