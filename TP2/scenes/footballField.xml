@@ -94,7 +94,8 @@
         <texture id="buildingWall" file="scenes/images/buildingWall.jpg" />
         <texture id="pavement" file="scenes/images/pavement2.jpg" />           
         <texture id="leaves" file="scenes/images/leaves.jpg" />
-        <texture id="log" file="scenes/images/log.jpg" />     
+        <texture id="log" file="scenes/images/log.jpg" />  
+        <texture id="matrix" file="scenes/images/texture.jpg" />   
     </textures>
 
     <materials>
@@ -244,7 +245,7 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>        
         
-        <plane id="test1" npartsU="5" npartsV="8" />
+        <plane id="test1" npartsU="50" npartsV="50" />
 
         <patch id="test2" npointsU="2" npointsV="2" npartsU="5" npartsV="5" >
             <controlPoint xx="2.0" yy="2.0" zz="7.0" />
@@ -264,6 +265,21 @@
 
     <components>
         
+        <component id="cras">
+             <transformation>
+            </transformation>
+
+            <materials>
+                <material id="ground" />
+            </materials>
+
+            <texture id="matrix" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="test1"/>
+            </children>
+        </component>
+
         <component id="root">
              <transformation>
             </transformation>

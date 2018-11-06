@@ -1283,7 +1283,7 @@ class MySceneGraph {
             else if(primitive.type == "cylinder") primitive.obj = new Cylinder(this.scene, primitive.base, primitive.top, primitive.height, primitive.slices, primitive.stacks);
             else if(primitive.type == "sphere") primitive.obj = new Sphere(this.scene, primitive.radius, primitive.slices, primitive.stacks);
             else if(primitive.type == "torus") primitive.obj = new Torus(this.scene, primitive.inner, primitive.outer, primitive.slices, primitive.loops);
-            else if(primitive.type == "plane") primitive.obj;
+            else if(primitive.type == "plane") primitive.obj = new Plane(this.scene, primitive.npartsU, primitive.npartsV);
             else if(primitive.type == "patch") primitive.obj;
             else if(primitive.type == "vehicle") primitive.obj;
             else if(primitive.type == "cylinder2") primitive.obj;

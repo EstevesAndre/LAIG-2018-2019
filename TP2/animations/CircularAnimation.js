@@ -7,7 +7,7 @@ class CircularAnimation extends Animation
         super(time);
         this.center = center;
         this.radius = radius;
-        console.log(initialAngle,rotationAngle,radius);
+        
         this.initialAngle = initialAngle * DEGREE_TO_RAD;
         this.rotationAngle = rotationAngle * DEGREE_TO_RAD;
 
