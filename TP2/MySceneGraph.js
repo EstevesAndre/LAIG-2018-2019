@@ -1245,9 +1245,9 @@ class MySceneGraph {
             else if(children[i].nodeName == "terrain")
             {
                 // idtexture
-                var idTexture = this.reader.getString(children[i],'idtexture');
-                if(idTexture == null || idTexture == "") return "unable to parse idTexture of the terrain primitive for ID = " + primitiveId;
-                else primitive.idTexture = idTexture;
+                var idtexture = this.reader.getString(children[i],'idtexture');
+                if(idtexture == null || idtexture == "") return "unable to parse idtexture of the terrain primitive for ID = " + primitiveId;
+                else primitive.idtexture = idtexture;
 
                 // idheightmap
                 var idheightmap = this.reader.getString(children[i],'idheightmap');
@@ -1268,9 +1268,9 @@ class MySceneGraph {
             else if(children[i].nodeName == "water")
             {
                 // idtexture
-                var idTexture = this.reader.getString(children[i],'idtexture');
-                if(idTexture == null || idTexture == "") return "unable to parse idTexture of the terrain primitive for ID = " + primitiveId;
-                else primitive.idTexture = idTexture;
+                var idtexture = this.reader.getString(children[i],'idtexture');
+                if(idtexture == null || idtexture == "") return "unable to parse idtexture of the terrain primitive for ID = " + primitiveId;
+                else primitive.idtexture = idtexture;
 
                 // idwavemap
                 var idwavemap = this.reader.getString(children[i],'idwavemap');
@@ -1301,10 +1301,10 @@ class MySceneGraph {
             else if(primitive.type == "torus") primitive.obj = new Torus(this.scene, primitive.inner, primitive.outer, primitive.slices, primitive.loops);
             else if(primitive.type == "plane") primitive.obj = new Plane(this.scene, primitive.npartsU, primitive.npartsV);
             else if(primitive.type == "patch") primitive.obj = new Patch(this.scene, primitive.npointsU, primitive.npointsV, primitive.npartsV, primitive.npartsV, primitive.controlPoints);
-            else if(primitive.type == "vehicle") primitive.obj;
+            else if(primitive.type == "vehicle") primitive.obj = new Vehicle(this.scene);
             else if(primitive.type == "cylinder2") primitive.obj = new Cylinder2(this.scene, primitive.base, primitive.top, primitive.height, primitive.slices, primitive.stacks);
-            else if(primitive.type == "terrain") primitive.obj;
-            else if(primitive.type == "water") primitive.obj;
+            else if(primitive.type == "terrain") primitive.obj = new Terrain(this.scene, primitive.idtexture, primitive.idheightmap, primitive.parts, primitive.heightscale);
+            else if(primitive.type == "water") primitive.obj = new Water(this.scene, primitive.idtexture, primitive.idwavemap, primitive.parts, primitive.heightscale, primitive.texscale);
             
 
             this.primitives.push(primitive);
