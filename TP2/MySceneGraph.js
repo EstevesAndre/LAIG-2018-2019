@@ -834,7 +834,7 @@ class MySceneGraph {
                     if(!(center[i] != null && !isNaN(center[i]))) return "unable to parse center[" + (i == 0 ? "x" : (i == 1 ? "y" : "z") ) + "] value of the animation with ID = " + animationId;
                 }
                 animation.center = center;
-                console.log("SADSAD");
+                
                 // gets the radius of the animation
                 let radius = this.reader.getFloat(children[i],'radius');
                 if(!(radius != null && !isNaN(radius))) return "unable to parse radius value of the animation with ID = " + animationId;
@@ -945,16 +945,15 @@ class MySceneGraph {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">. Must be \"primitive\", \"plane\", \"patch\", \"vehicle\", \"cylinder2\", \"terrain\" or \"water\",");
                 continue;
             }
+            
+            // get id of the current primitive
+            var primitiveId = this.reader.getString(children[i],'id');
+            if(primitiveId == null || primitiveId == "") return "no ID defined for primitive";
+            
+            primitive.id = primitiveId;
 
-            if(children[i].nodeName != "cylinder2")
-            {
-                // get id of the current primitive
-                var primitiveId = this.reader.getString(children[i],'id');
-                if(primitiveId == null || primitiveId == "") return "no ID defined for primitive";
-                primitive.id = primitiveId;
-
-                if(primitivesId[primitiveId] != null) return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
-            }
+            if(primitivesId[primitiveId] != null) return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
+        
 
             if(children[i].nodeName == "primitive")
             {
@@ -1188,14 +1187,31 @@ class MySceneGraph {
                     var zz = this.reader.getFloat(grandChildren[i],'zz');
                     if(!(zz != null && !isNaN(zz))) return "unable to parse zz value of the controlPoint[" + (i + 1) + "], patch primitive with ID = " + primitiveId;
                     else controlPoint[2] = zz;
-                    
+
+                    controlPoint[3] = 1.0;
+
                     controlPoints.push(controlPoint);
                     numControlPoints++;                
                 }
 
                 if(numControlPoints != npointsU * npointsV) return "wrong number of correct control points of Patch primitive for ID = " + primitiveId;
                 
-                primitive.controlPoints = controlPoints;
+                var cp = [];
+                var cpV = [];
+                let counter = 0;
+
+                for(let i = 0; i < npointsU; i++)
+                {
+                    cpV = [];
+                    for(let j = 0; j < npointsV; j++)
+                    {
+                        cpV.push(controlPoints[counter]);
+                        counter++;
+                    }
+                    cp.push(cpV);
+                }
+                
+                primitive.controlPoints = cp;
             }
             else if(children[i].nodeName == "cylinder2")
             {
@@ -1284,9 +1300,9 @@ class MySceneGraph {
             else if(primitive.type == "sphere") primitive.obj = new Sphere(this.scene, primitive.radius, primitive.slices, primitive.stacks);
             else if(primitive.type == "torus") primitive.obj = new Torus(this.scene, primitive.inner, primitive.outer, primitive.slices, primitive.loops);
             else if(primitive.type == "plane") primitive.obj = new Plane(this.scene, primitive.npartsU, primitive.npartsV);
-            else if(primitive.type == "patch") primitive.obj;
+            else if(primitive.type == "patch") primitive.obj = new Patch(this.scene, primitive.npointsU, primitive.npointsV, primitive.npartsV, primitive.npartsV, primitive.controlPoints);
             else if(primitive.type == "vehicle") primitive.obj;
-            else if(primitive.type == "cylinder2") primitive.obj;
+            else if(primitive.type == "cylinder2") primitive.obj = new Cylinder2(this.scene, primitive.base, primitive.top, primitive.height, primitive.slices, primitive.stacks);
             else if(primitive.type == "terrain") primitive.obj;
             else if(primitive.type == "water") primitive.obj;
             

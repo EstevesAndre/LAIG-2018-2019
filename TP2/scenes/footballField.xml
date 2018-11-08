@@ -1,5 +1,5 @@
 <yas>
-    <scene root="root" axis_length="1.0" />
+    <scene root="cras" axis_length="1.0" />
 
      <views default="CityView">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
@@ -245,18 +245,20 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>        
         
-        <plane id="test1" npartsU="50" npartsV="50" />
+        <plane id="test1" npartsU="4" npartsV="4" />
 
-        <patch id="test2" npointsU="2" npointsV="2" npartsU="5" npartsV="5" >
-            <controlPoint xx="2.0" yy="2.0" zz="7.0" />
-            <controlPoint xx="2.0" yy="4.0" zz="2.0" />
-            <controlPoint xx="2.0" yy="2.0" zz="7.0" />
-            <controlPoint xx="2.0" yy="4.0" zz="2.0" />
+        <patch id="test2" npointsU="3" npointsV="2" npartsU="15" npartsV="15" >
+            <controlPoint xx="-1.5" yy="-1.5" zz="0.0" />
+            <controlPoint xx="-1.5" yy="1.5" zz="0.0" />
+            <controlPoint xx="0.0" yy="-1.5" zz="3.0" />
+            <controlPoint xx="0.0" yy="1.5" zz="3.0" />
+            <controlPoint xx="1.5" yy="-1.5" zz="0.0" />
+            <controlPoint xx="1.5" yy="1.5" zz="0.0" />
         </patch>
 
         <vehicle id="test3" />
 
-        <cylinder2 base="2.0" top="1.0" height="5.0" slices="8" stacks="8" />
+        <cylinder2 id="test6" base="1.0" top="1.0" height="4.0" slices="10" stacks="10" />
 
         <terrain id="test4" idtexture="texture" idheightmap="idk" parts="5" heightscale="6.0" />
 
@@ -276,7 +278,8 @@
             <texture id="matrix" length_s="1.0" length_t="1.0" />
 
             <children>
-                <primitiveref id="test1"/>
+                <primitiveref id="test6"/>
+                
             </children>
         </component>
 
