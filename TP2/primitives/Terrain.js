@@ -16,7 +16,7 @@ class Terrain extends CGFobject {
         this.texture = new CGFtexture(this.scene, this.idtexture);
         this.height = new CGFtexture(this.scene, this.idheightmap);
 
-        this.wing_outter = new Plane(this.scene, 20,20);
+        this.wing_outter = new Plane(this.scene, 50,50);
     };
 
     display()
