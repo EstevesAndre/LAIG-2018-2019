@@ -95,7 +95,7 @@ class Vehicle extends CGFobject
     
     display()
     {
-       /* this.scene.pushMatrix();            
+        this.scene.pushMatrix();            
             this.scene.translate(2,0,2); 
             this.scene.rotate(Math.PI, 0,1,0); 
             this.displayWing();
@@ -137,9 +137,9 @@ class Vehicle extends CGFobject
         this.scene.pushMatrix();
             this.scene.scale(0.75,1,2);
             this.scene.rotate(Math.PI/2.0,1,0,0);
-            //this.torus.display();
+            // this.torus.display();
         this.scene.popMatrix();
-        */
+        
         this.scene.pushMatrix();
             this.body.display();
         this.scene.popMatrix();

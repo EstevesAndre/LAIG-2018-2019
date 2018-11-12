@@ -1,5 +1,5 @@
 <yas>
-    <scene root="cras" axis_length="1.0" />
+    <scene root="as" axis_length="1.0" />
 
      <views default="aux">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
@@ -265,7 +265,7 @@
 
         <cylinder2 id="test6" base="1.0" top="1.0" height="4.0" slices="10" stacks="10" />
 
-        <terrain id="test4" idtexture="texture" idheightmap="idk" parts="5" heightscale="6.0" />
+        <terrain id="test4" idtexture="scenes/images/terrain.jpg" idheightmap="scenes/images/heightMap.jpg" parts="5" heightscale="6.0" />
 
         <water id="test5" idtexture="idk2" idwavemap="idkeither" parts="5" heightscale="6.0" texscale="2.0" />
     </primitives>
@@ -285,6 +285,21 @@
             <children>
                 <primitiveref id="test3"/>
                                 
+            </children>
+        </component>
+        
+        <component id="as">
+             <transformation>
+            </transformation>
+
+            <materials>
+                <material id="ground" />
+            </materials>
+
+            <texture id="matrix" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="test4"/>                                
             </children>
         </component>
 
