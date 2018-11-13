@@ -889,9 +889,7 @@ class MySceneGraph {
                     
                     controlPoints.push(controlPoint);
                     numControlPoints++;
-                    console.log(xx, yy, zz, controlPoints);
                 }
-                console.log(controlPoints);
 
                 if(numControlPoints < 2)
                     return "invalid number of control points (CP), linear animations must have more than 2 CP, animation with ID = " + animationId;

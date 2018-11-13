@@ -263,7 +263,7 @@
 
         <vehicle id="test3" />
 
-        <cylinder2 id="test6" base="1.0" top="1.0" height="4.0" slices="10" stacks="10" />
+        <cylinder2 id="test6" base="1.0" top="2.0" height="2.0" slices="8" stacks="6" />
 
         <terrain id="test4" idtexture="scenes/images/terrain.jpg" idheightmap="scenes/images/heightMap.jpg" parts="5" heightscale="6.0" />
 
@@ -299,7 +299,7 @@
             <texture id="matrix" length_s="1.0" length_t="1.0" />
 
             <children>
-                <primitiveref id="test4"/>                                
+                <primitiveref id="test6"/>                                
             </children>
         </component>
 
