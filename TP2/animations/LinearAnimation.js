@@ -4,24 +4,11 @@ class LinearAnimation extends Animation
     {
         super(time);
         this.controlPoints = controlPoints;
-        this.index = 0;
-
         this.totalDistance = 0.0;
         this.distancePerVec = [];
         this.timeAtControlPoint = [];
-        this.speed = 0.0;
         this.rotationAngles = [];
         this.updateVariables();
-    };
-
-    getControlPoints()
-    {
-        return this.controlPoints;
-    };
-
-    getCurrentControlPoint()
-    {
-        return this.controlPoints[this.index];
     };
 
     updateVariables()
@@ -38,9 +25,7 @@ class LinearAnimation extends Animation
             this.distancePerVec[i] = distance;
             this.totalDistance += distance;
         }
-
-        this.speed = this.totalDistance / this.time;
-
+        
         this.timeAtControlPoint[0] = 0;
 
         for(i = 1; i < this.controlPoints.length; i++)

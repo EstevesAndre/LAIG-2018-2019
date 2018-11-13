@@ -17,31 +17,37 @@ class Cylinder2 extends CGFobject
     
     createNurbs()
     {
-        var angle = (2* Math.PI) / this.slices;
-
         var controlvertexes = [];
-        var controlPointsV = [];
 
-        for(let k = 0; k <= 1; k++)
-        {
-            controlPointsV = [];			
+        controlvertexes.push([
+            [ this.base,        0.0, 0.0, 1.0],
+            [ this.base, -this.base, 0.0, 1.0],            
+            [       0.0, -this.base, 0.0, 1.0],
+            [-this.base, -this.base, 0.0, 1.0],
+            [-this.base,        0.0, 0.0, 1.0],
+            [-this.base,  this.base, 0.0, 1.0],
+            [      0.0,   this.base, 0.0, 1.0],
+            [ this.base,  this.base, 0.0, 1.0],
+            [ this.base,        0.0, 0.0, 1.0]
+        ]);
 
-            for(let i = 0; i <= this.slices; i++)
-            {
-                controlPointsV.push(
-                    [   
-                        Math.cos(i * angle) * (k == 0 ? this.base : this.top), 
-                        Math.sin(-i * angle) * (k == 0 ? this.base : this.top),
-                        (k == 0 ? 0 : this.height),
-                        1
-                    ]);
-            }           
-            controlvertexes.push(controlPointsV);
-        }
+        controlvertexes.push([
+            [ this.base,        0.0, this.height, 1.0],
+            [ this.base, -this.base, this.height, 1.0],            
+            [       0.0, -this.base, this.height, 1.0],
+            [-this.base, -this.base, this.height, 1.0],
+            [-this.base,        0.0, this.height, 1.0],
+            [-this.base,  this.base, this.height, 1.0],
+            [      0.0,   this.base, this.height, 1.0],
+            [ this.base,  this.base, this.height, 1.0],
+            [ this.base,        0.0, this.height, 1.0]
+        ]);
 
-		var nurbsSurface = new CGFnurbsSurface(1, this.slices, controlvertexes);
+
+        console.log(controlvertexes);
+		var nurbsSurface = new CGFnurbsSurface(1, 8, controlvertexes);
         
-        this.cylinder2 = new CGFnurbsObject(this.scene, this.stacks, this.slices, nurbsSurface);
+        this.cylinder2 = new CGFnurbsObject(this.scene, this.slices, this.stacks, nurbsSurface);
     };
 
     display()
