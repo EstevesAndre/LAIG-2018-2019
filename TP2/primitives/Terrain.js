@@ -24,9 +24,8 @@ class Terrain extends CGFobject {
         this.scene.setActiveShader(this.shader);
         this.texture.bind(1);
         this.height.bind(2);
-        this.scene.scale(10,10,10,1);
+        this.scene.scale(20,20,20,1);
         this.wing_outter.display();
-
         this.scene.setActiveShader(this.scene.defaultShader);
     };
 };
