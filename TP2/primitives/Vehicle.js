@@ -52,38 +52,111 @@ class Vehicle extends CGFobject
         );
         
         this.body = this.makeSurface
-            (6, 5, 4, 2,
+            (6,4, 2,2,
             [
                 [
-                    [0.5, -0.5,  1.0, 1],
-                    [0.6, -0.5, -0.5, 1],
-                    [0.5, -0.5, -1.0, 1]
+                    [-0.5, 0.0,  1.0, 1.0],
+                    [-0.5, 0.7, -0.25, 1.0],
+                    [-0.5, 0.4, -2.0, 1.0]
                 ],
                 [
-                    [0.5, 0.5,  1.0, 1],
-                    [0.6, 0.5, -0.5, 1],
-                    [0.5, 0.5, -1.0, 1]
+                    [0.0, -0.5,  2.5, 1.0],
+                    [0.0, 0.9,  0.5, 1.0],
+                    [0.0, 0.4, -2.5, 1.0]
                 ],
                 [
-                    [-0.5, 0.5,  1.0, 1],
-                    [-0.6, 0.5, -0.5, 1],
-                    [-0.5, 0.5, -1.0, 1]
+                    [0.5, 0.0,  1.0, 1.0],
+                    [0.5, 0.7, -0.25, 1.0],
+                    [0.5, 0.4, -2.0, 1.0]
+                ]
+            ]
+        );
+
+        this.bodySideRight = this.makeSurface
+            (6,4, 2,2,
+            [
+                [
+                    [0.5, 0.0,   1.0, 1.0],
+                    [0.5, 0.7, -0.25, 1.0],
+                    [0.5, 0.4,  -2.0, 1.0]
                 ],
                 [
-                    [-0.5, -0.5,  1.0, 1],
-                    [-0.6, -0.5, -0.5, 1],
-                    -[0.5, -0.5, -1.0, 1]
+                    [0.5, 0.0,   1.0, 1.0],
+                    [1.2, -0.3, -0.25, 1.0],
+                    [0.5, 0.4,  -2.0, 1.0]
                 ],
                 [
-                    [0.5, -0.5,  1.0, 1],
-                    [0.6, -0.5, -0.5, 1],
-                    [0.5, -0.5, -1.0, 1]
+                    [0.5, 0.0,  1.0, 1.0],
+                    [0.5, -1.0, -0.25, 1.0],
+                    [0.5, 0.4, -2.0, 1.0]
+                ]
+            ]
+        );
+
+        this.bodySideLeft = this.makeSurface
+            (6,4, 2,2,
+            [
+                [
+                    [-0.5, 0.4,  -2.0, 1.0],
+                    [-0.5, 0.7, -0.25, 1.0],
+                    [-0.5, 0.0,   1.0, 1.0]
+                ],
+                [
+                    [-0.5, 0.4,  -2.0, 1.0],
+                    [-1.2, -0.3, -0.25, 1.0],
+                    [-0.5, 0.0,   1.0, 1.0]
+                ],
+                [
+                    [-0.5, 0.4, -2.0, 1.0],
+                    [-0.5, -1.0, -0.25, 1.0],
+                    [-0.5, 0.0,  1.0, 1.0]
+                ]
+            ]
+        );
+
+        this.bodyDown = this.makeSurface
+            (6,4, 2,2,
+            [
+                [
+                    [-0.5, 0.4, -2.0, 1.0],
+                    [-0.5, -1.0, -0.25, 1.0],
+                    [-0.5, -0.0,  1.0, 1.0]
+                ],
+                [
+                    [0.0, 0.4, -2.5, 1.0],
+                    [0.0, -1.2,  0.5, 1.0],
+                    [0.0, -0.5,  2.5, 1.0]
+                ],
+                [
+                    [0.5, 0.4, -2.0, 1.0],
+                    [0.5, -1.0, -0.25, 1.0],
+                    [0.5, 0.0,  1.0, 1.0]
+                ]
+            ]
+        );
+
+        this.window = this.makeSurface
+            (6,4, 2,2,
+            [
+                [
+                    [-0.5, 0.0,  1.0, 1.0],
+                    [-0.5, 0.6, 0.25, 1.0],
+                    [-0.5, 0.8, -0.5, 1.0]
+                ],
+                [
+                    [0.0, 0.2,  1.5, 1.0],
+                    [0.0, 1.0,  0.5, 1.0],
+                    [0.0, 1.0, -1.0, 1.0]
+                ],
+                [
+                    [0.5, 0.0,  1.0, 1.0],
+                    [0.5, 0.6, 0.25, 1.0],
+                    [0.5, 0.8, -0.5, 1.0]
                 ]
             ]
         );
 
         this.side_connector = new Cylinder2(this.scene, 0.2, 0.4, 0.7, 32, 3);
-        this.torus = new Torus(this.scene, 0.75, 1, 60,60);
     };
 
     makeSurface(npartsU, npartsV, degree1, degree2, controlvertexes) {
@@ -96,52 +169,63 @@ class Vehicle extends CGFobject
     display()
     {
         this.scene.pushMatrix();            
-            this.scene.translate(2,0,2); 
+            this.scene.translate(2.25,0,1.5); 
             this.scene.rotate(Math.PI, 0,1,0); 
-            this.displayWing();
-        this.scene.popMatrix();
-        
-        this.scene.pushMatrix();       
-            this.scene.translate(-2,0,2);  
-            this.displayWing();
-        this.scene.popMatrix();
-        
-        this.scene.pushMatrix();            
-            this.scene.translate(2,0.5,-2);
-            this.scene.rotate(Math.PI, 0,1,0);
-            this.scene.scale(1.3,1.3,1.3);
-            this.displayWing();
-        this.scene.popMatrix();
-        
-        this.scene.pushMatrix();         
-            this.scene.translate(-2,0.5,-2);
-            this.scene.scale(1.3,1.3,1.3);
             this.displayWing();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-            this.scene.translate(1.25,0,2.0);
+            this.scene.translate(1.5,0,1.5);
             this.scene.rotate(-Math.PI/2.0, 0,1,0);
             this.scene.scale(1,0.15,1);
             this.side_connector.display();
         this.scene.popMatrix();
-
+        
+        this.scene.pushMatrix();       
+            this.scene.translate(-2.25,0,1.5);  
+            this.displayWing();
+        this.scene.popMatrix();
+                
         this.scene.pushMatrix();
-            this.scene.translate(-1.25,0,2.0);
+            this.scene.translate(-1.5,0,1.5);
             this.scene.rotate(Math.PI/2.0, 0,1,0);
             this.scene.scale(1,0.15,1);
             this.side_connector.display();
         this.scene.popMatrix();
-        
+
+        this.scene.pushMatrix();            
+            this.scene.translate(2.7,0.7,-2.5);
+            this.scene.rotate(Math.PI, 0,1,0);
+            this.scene.scale(1.3,1.3,1.3);
+            this.displayWing();
+        this.scene.popMatrix();
 
         this.scene.pushMatrix();
-            this.scene.scale(0.75,1,2);
-            this.scene.rotate(Math.PI/2.0,1,0,0);
-            // this.torus.display();
+            this.scene.translate(1.7,0.7,-2.5);
+            this.scene.rotate(-Math.PI/2.0, 0,1,0);
+            this.scene.scale(1.3,0.195,1.3);
+            this.side_connector.display();
+        this.scene.popMatrix();
+        
+        this.scene.pushMatrix();         
+            this.scene.translate(-2.7,0.7,-2.5);
+            this.scene.scale(1.3,1.3,1.3);
+            this.displayWing();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+            this.scene.translate(-1.7,0.7,-2.5);
+            this.scene.rotate(Math.PI/2.0, 0,1,0);
+            this.scene.scale(1.3,0.195,1.3);
+            this.side_connector.display();
         this.scene.popMatrix();
         
         this.scene.pushMatrix();
+            this.scene.scale(2.0,2.0,2.0);
             this.body.display();
+            this.bodyDown.display();
+            this.bodySideRight.display();
+            this.bodySideLeft.display();
         this.scene.popMatrix();
         
         this.scene.pushMatrix();

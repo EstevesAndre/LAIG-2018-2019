@@ -1,5 +1,5 @@
 <yas>
-    <scene root="as" axis_length="1.0" />
+    <scene root="cras" axis_length="1.0" />
 
      <views default="aux">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
@@ -265,7 +265,7 @@
 
         <cylinder2 id="test6" base="1.0" top="2.0" height="2.0" slices="8" stacks="6" />
 
-        <terrain id="test4" idtexture="scenes/images/terrain.jpg" idheightmap="scenes/images/heightMap.jpg" parts="5" heightscale="6.0" />
+        <terrain id="terrain" idtexture="scenes/images/terrain.jpg" idheightmap="scenes/images/heightMap.jpg" parts="5" heightscale="6.0" />
 
         <water id="test5" idtexture="idk2" idwavemap="idkeither" parts="5" heightscale="6.0" texscale="2.0" />
     </primitives>
@@ -288,7 +288,7 @@
             </children>
         </component>
         
-        <component id="as">
+        <component id="wild">
              <transformation>
             </transformation>
 
@@ -299,7 +299,26 @@
             <texture id="matrix" length_s="1.0" length_t="1.0" />
 
             <children>
-                <primitiveref id="test6"/>                                
+                <componentref id="stadiumWild"/> 
+                <primitiveref id="terrain"/>                              
+            </children>
+        </component>
+
+        <component id="stadiumWild">
+             <transformation>
+                <translate x="0.5" y="0.0" z="6.0" />
+                <rotate axis="y" angle="90"/>
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transformation>
+
+            <materials>
+                <material id="ground" />
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <componentref id="stadium" />
             </children>
         </component>
 
