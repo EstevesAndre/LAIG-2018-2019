@@ -1,5 +1,5 @@
 <yas>
-    <scene root="wild" axis_length="1.0" />
+    <scene root="cras" axis_length="1.0" />
 
      <views default="aux">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        

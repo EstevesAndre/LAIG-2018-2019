@@ -155,7 +155,7 @@ class Vehicle extends CGFobject
         this.bodyTexture.setSpecular(0.7,0.7,0.7,1);
         
         this.windowTexture = new CGFappearance(this.scene);
-        this.windowTexture.loadTexture("scenes/images/window.jpg");
+        this.windowTexture.loadTexture("scenes/images/top.jpg");
         this.windowTexture.setAmbient(0.25,0.25,0.25,1);
         this.windowTexture.setSpecular(0.7,0.7,0.7,1);
     };
