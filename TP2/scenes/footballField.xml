@@ -1,5 +1,5 @@
 <yas>
-    <scene root="wild" axis_length="1.0" />
+    <scene root="cras" axis_length="1.0" />
 
      <views default="aux">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
@@ -252,24 +252,36 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>        
         
-        <plane id="test1" npartsU="4" npartsV="4" />
+        <primitive id="test1">
+            <plane npartsU="4" npartsV="4" />
+        </primitive>
 
-        <patch id="test2" npointsU="3" npointsV="2" npartsU="15" npartsV="15" >
-            <controlPoint xx="-1.5" yy="-1.5" zz="0.0" />
-            <controlPoint xx="-1.5" yy="1.5" zz="0.0" />
-            <controlPoint xx="0.0" yy="-1.5" zz="3.0" />
-            <controlPoint xx="0.0" yy="1.5" zz="3.0" />
-            <controlPoint xx="1.5" yy="-1.5" zz="0.0" />
-            <controlPoint xx="1.5" yy="1.5" zz="0.0" />
-        </patch>
+        <primitive id="test2">
+            <patch npointsU="3" npointsV="2" npartsU="15" npartsV="15" >
+                <controlPoint xx="-1.5" yy="-1.5" zz="0.0" />
+                <controlPoint xx="-1.5" yy="1.5" zz="0.0" />
+                <controlPoint xx="0.0" yy="-1.5" zz="3.0" />
+                <controlPoint xx="0.0" yy="1.5" zz="3.0" />
+                <controlPoint xx="1.5" yy="-1.5" zz="0.0" />
+                <controlPoint xx="1.5" yy="1.5" zz="0.0" />
+            </patch>
+        </primitive>
 
-        <vehicle id="test3" />
+        <primitive id="test3">
+            <vehicle />
+        </primitive>
 
-        <cylinder2 id="test6" base="1.0" top="2.0" height="2.0" slices="8" stacks="6" />
-
-        <terrain id="terrain" idtexture="terrain" idheightmap="heightmap" parts="50" heightscale="0.2" />
-
-        <water id="test5" idtexture="terrain" idwavemap="heightmap" parts="5" heightscale="6.0" texscale="2.0" />
+        <primitive id="test6">
+            <cylinder2 base="1.0" top="2.0" height="2.0" slices="8" stacks="6" />
+        </primitive>
+        
+        <primitive id="terrain">
+            <terrain idtexture="terrain" idheightmap="heightmap" parts="50" heightscale="0.2" />
+        </primitive>
+        
+        <primitive id="test5">
+             <water idtexture="terrain" idwavemap="heightmap" parts="5" heightscale="6.0" texscale="2.0" />
+        </primitive>
     </primitives>
 
     <components>
