@@ -1247,12 +1247,46 @@ class MySceneGraph {
                 // idtexture
                 var idtexture = this.reader.getString(children[i],'idtexture');
                 if(idtexture == null || idtexture == "") return "unable to parse idtexture of the terrain primitive for ID = " + primitiveId;
-                else primitive.idtexture = idtexture;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == idtexture)
+                        {
+                            primitive.idtexture = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference idtexture, primitive with ID = " + primitiveId;
+                
+                }
 
                 // idheightmap
                 var idheightmap = this.reader.getString(children[i],'idheightmap');
                 if(idheightmap == null || idheightmap == "") return "unable to parse idheightmap of the terrain primitive for ID = " + primitiveId;
-                else primitive.idheightmap = idheightmap;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == idheightmap)
+                        {
+                            primitive.idheightmap = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference idheightmap, primmitive with ID = " + primitiveId;
+                
+                }
 
                 // parts
                 var parts = this.reader.getFloat(children[i],'parts');
@@ -1270,12 +1304,46 @@ class MySceneGraph {
                 // idtexture
                 var idtexture = this.reader.getString(children[i],'idtexture');
                 if(idtexture == null || idtexture == "") return "unable to parse idtexture of the terrain primitive for ID = " + primitiveId;
-                else primitive.idtexture = idtexture;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == idtexture)
+                        {
+                            primitive.idtexture = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference idtexture, primitive with ID = " + primitiveId;
+                
+                }
 
                 // idwavemap
                 var idwavemap = this.reader.getString(children[i],'idwavemap');
                 if(idwavemap == null || idwavemap == "") return "unable to parse idwavemap of the terrain primitive for ID = " + primitiveId;
-                else primitive.idwavemap = idwavemap;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == idtexture)
+                        {
+                            primitive.idwavemap = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference idwavemap, primitive with ID = " + primitiveId;
+                
+                }
 
                 // parts
                 var parts = this.reader.getFloat(children[i],'parts');
@@ -1715,6 +1783,12 @@ class MySceneGraph {
 
     displayPrimitive(prim, mat, text)
     {
+        if(prim.type == "terrain")
+        {
+            prim.obj.display();
+            return;
+        }
+
         if(mat == null || mat.id == "none")
         {
             

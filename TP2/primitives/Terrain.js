@@ -1,11 +1,13 @@
 class Terrain extends CGFobject {
 
-    constructor(scene, idtexture, idheightmap, parts, heightscale)
+    constructor(scene, texture, heightmap, parts, heightscale)
     {
         super(scene);
 
-        this.idtexture = idtexture;
-        this.idheightmap = idheightmap;
+        console.log(texture);
+
+        this.texture = texture;
+        this.heightmap = heightmap;
         this.parts = parts;
         this.heightscale = heightscale;
         
@@ -14,9 +16,6 @@ class Terrain extends CGFobject {
         this.shader.setUniformsValues({height: 2});
         this.shader.setUniformsValues({scale: heightscale});
         
-        this.texture = new CGFtexture(this.scene, this.idtexture);
-        this.height = new CGFtexture(this.scene, this.idheightmap);
-        console.log(parts);
         this.plane = new Plane(this.scene, parts,parts);
     };
 
@@ -24,7 +23,7 @@ class Terrain extends CGFobject {
     {
         this.scene.setActiveShader(this.shader);
         this.texture.bind(1);
-        this.height.bind(2);
+        this.heightmap.bind(2);
         this.plane.display();
         this.scene.setActiveShader(this.scene.defaultShader);
     };
