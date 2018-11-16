@@ -272,7 +272,7 @@
         </primitive>
 
         <primitive id="test6">
-            <cylinder2 base="1.0" top="2.0" height="2.0" slices="8" stacks="6" />
+            <cylinder2 base="1.0" top="2.0" height="2.0" slices="20" stacks="20" />
         </primitive>
         
         <primitive id="terrain">
@@ -297,7 +297,7 @@
             <texture id="matrix" length_s="1.0" length_t="1.0" />
 
             <children>
-                <primitiveref id="test3"/>
+                <primitiveref id="test6"/>
                                 
             </children>
         </component>
