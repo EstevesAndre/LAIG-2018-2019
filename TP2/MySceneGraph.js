@@ -1787,7 +1787,7 @@ class MySceneGraph {
 
     displayPrimitive(prim, mat, text)
     {
-        if(prim.type == "terrain")
+        if(prim.type == "terrain" || prim.type == "water")
         {
             prim.obj.display();
             return;

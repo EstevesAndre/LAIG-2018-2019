@@ -11,9 +11,9 @@ class Terrain extends CGFobject {
         this.parts = parts;
         this.heightscale = heightscale;
         
-        this.shader = new CGFshader(this.scene.gl, "shaders/vertexShader.vert", "shaders/fragShader.frag");
-        this.shader.setUniformsValues({text: 1});
-        this.shader.setUniformsValues({height: 2});
+        this.shader = new CGFshader(this.scene.gl, "shaders/terrainVertShader.vert", "shaders/terrainFragShader.frag");
+        this.shader.setUniformsValues({text: 0});
+        this.shader.setUniformsValues({height: 1});
         this.shader.setUniformsValues({scale: heightscale});
         
         this.plane = new Plane(this.scene, parts,parts);
@@ -22,8 +22,8 @@ class Terrain extends CGFobject {
     display()
     {
         this.scene.setActiveShader(this.shader);
-        this.texture.bind(1);
-        this.heightmap.bind(2);
+        this.texture.bind(0);
+        this.heightmap.bind(1);
         this.plane.display();
         this.scene.setActiveShader(this.scene.defaultShader);
     };

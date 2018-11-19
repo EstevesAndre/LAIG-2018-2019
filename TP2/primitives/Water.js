@@ -4,15 +4,24 @@ class Water extends CGFobject
     {
         super(scene);
 
-        this.idtexture = idtexture;
-        this.idwavemap = idwavemap;
-        this.parts = parts;
-        this.heightscale = heightscale;
-        this.texscale = texscale;
+        this.texture = idtexture;
+        this.wavemap = idwavemap;
+        
+        this.shader = new CGFshader(this.scene.gl, "shaders/waterVertShader.vert", "shaders/waterFragShader.frag");
+        this.shader.setUniformsValues({text: 0});
+        this.shader.setUniformsValues({height: 1});
+        this.shader.setUniformsValues({heightscale: heightscale});
+        this.shader.setUniformsValues({texscale: texscale});
+        
+        this.plane = new Plane(this.scene, parts,parts);
     };
 
     display()
     {
-
+        this.scene.setActiveShader(this.shader);
+        this.texture.bind(0);
+        this.wavemap.bind(1);
+        this.plane.display();
+        this.scene.setActiveShader(this.scene.defaultShader);
     };
 };

@@ -1,5 +1,5 @@
 <yas>
-    <scene root="cras" axis_length="1.0" />
+    <scene root="wild" axis_length="1.0" />
 
      <views default="aux">
         <ortho id="Ortho" near="0.1" far="500" left="-30.0" right="30.0" top="30.0" bottom="-30.0">        
@@ -276,11 +276,11 @@
         </primitive>
         
         <primitive id="terrain">
-            <terrain idtexture="terrain" idheightmap="heightmap" parts="50" heightscale="0.2" />
+            <terrain idtexture="terrain" idheightmap="heightmap" parts="50" heightscale="5.0" />
         </primitive>
         
-        <primitive id="test5">
-             <water idtexture="terrain" idwavemap="heightmap" parts="5" heightscale="6.0" texscale="2.0" />
+        <primitive id="water">
+             <water idtexture="terrain" idwavemap="heightmap" parts="50" heightscale="2.0" texscale="2.0" />
         </primitive>
     </primitives>
 
@@ -314,13 +314,14 @@
 
             <children>
                 <componentref id="stadiumWild"/> 
-                <componentref id="terrain"/>                              
+                <!-- <componentref id="terrain"/>     -->
+                <componentref id="water" />                         
             </children>
         </component>
 
         <component id="terrain">
              <transformation>
-                <scale x="20" y="20" z="20" />
+                <scale x="20" y="1" z="20" />
             </transformation>
 
             <materials>
@@ -331,6 +332,22 @@
 
             <children>
                 <primitiveref id="terrain"/>                              
+            </children>
+        </component>
+
+           <component id="water">
+             <transformation>
+                <scale x="20" y="1" z="20" />
+            </transformation>
+
+            <materials>
+                <material id="ground" />
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="water"/>                              
             </children>
         </component>
 

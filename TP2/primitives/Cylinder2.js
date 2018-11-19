@@ -17,16 +17,17 @@ class Cylinder2 extends CGFobject
     
     createNurbs()
     {
+        let a=Math.sqrt(2);
         var controlvertexes = [];
         controlvertexes.push(
             [
                 [0.0, -this.base, 0.0, 1.0],
                 [-this.base, -this.base, 0.0, Math.sqrt(2) / 2.0],
-                [-this.base, 0.0, 0.0, 1.0],
-                [-this.base, this.base, 0.0, Math.sqrt(2) / 2.0],
-                [0.0, this.base, 0.0, 1.0],
-                [this.base, this.base, 0.0, Math.sqrt(2) / 2.0],
-                [this.base, 0.0, 0.0, 1.0],
+                [-this.base*a, 0.0, 0.0, 1.0],
+                [-this.base*a, this.base*a, 0.0, Math.sqrt(2) / 2.0],
+                [         0.0, this.base*a, 0.0, 1.0],
+                [ this.base*a,   this.base*a, 0.0, Math.sqrt(2) / 2.0],
+                [this.base*a, 0.0, 0.0, 1.0],
                 [this.base, -this.base, 0.0, Math.sqrt(2) / 2.0],
                 [0.0, -this.base, 0.0, 1.0]                
             ],
