@@ -5,8 +5,9 @@ precision highp float;
 varying vec2 vTextureCoord;
 uniform sampler2D text;
 uniform float texscale;
+uniform float offset;
 
 void main()
 {
-    gl_FragColor = texture2D(text, vTextureCoord*texscale);    
+    gl_FragColor = texture2D(text, vTextureCoord*texscale + offset);    
 }

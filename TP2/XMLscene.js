@@ -218,5 +218,11 @@ class XMLscene extends CGFscene {
                 break;
             }
         }
+
+        for(let i = 0; i < this.graph.primitives.length; i++)
+        {
+            if(this.graph.primitives[i].type == "water")
+                this.graph.primitives[i].obj.update(this.deltaTime);
+        }
     }
 }

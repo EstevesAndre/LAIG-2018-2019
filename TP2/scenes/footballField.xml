@@ -103,6 +103,8 @@
         <texture id="matrix" file="scenes/images/texture.jpg" /> 
         <texture id="terrain" file="scenes/images/terrain.jpg" />  
         <texture id="heightmap" file="scenes/images/heightmap.jpg" /> 
+        <texture id="water" file="scenes/images/water.png" />  
+        <texture id="water_height" file="scenes/images/water_height.jpg" /> 
     </textures>
 
     <materials>
@@ -280,7 +282,7 @@
         </primitive>
         
         <primitive id="water">
-             <water idtexture="terrain" idwavemap="heightmap" parts="50" heightscale="2.0" texscale="2.0" />
+             <water idtexture="water" idwavemap="water_height" parts="100" heightscale="0.5" texscale="1.0" />
         </primitive>
     </primitives>
 
@@ -314,7 +316,7 @@
 
             <children>
                 <componentref id="stadiumWild"/> 
-                <!-- <componentref id="terrain"/>     -->
+                <componentref id="terrain"/>
                 <componentref id="water" />                         
             </children>
         </component>
