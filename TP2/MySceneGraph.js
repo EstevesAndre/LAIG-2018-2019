@@ -838,7 +838,7 @@ class MySceneGraph {
                 // gets the radius of the animation
                 let radius = this.reader.getFloat(children[i],'radius');
                 if(!(radius != null && !isNaN(radius))) return "unable to parse radius value of the animation with ID = " + animationId;
-                else if(radius <= 0) return "wrong value for the radius, it must be greater than 0, animation with ID = " + animationId;
+                else if(radius < 0) return "wrong value for the radius, it must be greater than 0, animation with ID = " + animationId;
                 else animation.radius = radius;
 
                 // gets the start angle of the animation
@@ -867,7 +867,7 @@ class MySceneGraph {
 
                 for(let i = 0; i < grandChildren.length; i++)
                 {
-                    if(grandChildren[i].nodeName != "controlPoint")
+                    if(grandChildren[i].nodeName != "controlpoint")
                     {
                         this.onXMLMinorError("wrong child tag <" + grandChildren[i].nodeName + "> for linear animation with ID = " + animationId);
                         continue;
@@ -876,15 +876,15 @@ class MySceneGraph {
                     controlPoint = [];
 
                     var xx = this.reader.getFloat(grandChildren[i],'xx');
-                    if(!(xx != null && !isNaN(xx))) return "unable to parse xx value of the controlPoint[" + (i + 1) + "], animation with ID = " + animationId;
+                    if(!(xx != null && !isNaN(xx))) return "unable to parse xx value of the controlpoint[" + (i + 1) + "], animation with ID = " + animationId;
                     else controlPoint[0] = xx;
 
                     var yy = this.reader.getFloat(grandChildren[i],'yy');
-                    if(!(yy != null && !isNaN(yy))) return "unable to parse yy value of the controlPoint[" + (i + 1) + "], animation with ID = " + animationId;
+                    if(!(yy != null && !isNaN(yy))) return "unable to parse yy value of the controlpoint[" + (i + 1) + "], animation with ID = " + animationId;
                     else controlPoint[1] = yy;
 
                     var zz = this.reader.getFloat(grandChildren[i],'zz');
-                    if(!(zz != null && !isNaN(zz))) return "unable to parse zz value of the controlPoint[" + (i + 1) + "], animation with ID = " + animationId;
+                    if(!(zz != null && !isNaN(zz))) return "unable to parse zz value of the controlpoint[" + (i + 1) + "], animation with ID = " + animationId;
                     else controlPoint[2] = zz;
                     
                     controlPoints.push(controlPoint);

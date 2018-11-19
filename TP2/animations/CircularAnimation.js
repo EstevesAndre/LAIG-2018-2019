@@ -8,7 +8,7 @@ class CircularAnimation extends Animation
         this.center = center;
         this.radius = radius;
         
-        this.initialAngle = initialAngle * DEGREE_TO_RAD;
+        this.initialAngle = (initialAngle + 90.0) * DEGREE_TO_RAD;
         this.rotationAngle = rotationAngle * DEGREE_TO_RAD;
 
         if(this.rotationAngle > 0) this.angularSpeed = this.rotationAngle / this.time;

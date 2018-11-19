@@ -34,7 +34,7 @@ class Water extends CGFobject
     {
         this.time += time;
 
-        if(this.time >= 50)
+        if(this.time >= 70)
         {
             this.time = 0;
             this.offset += (1 / this.parts);
