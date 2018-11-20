@@ -7,10 +7,20 @@
             <to x="0.0" y="0.0" z="10.0" />
         </ortho>
         
-        <perspective id="Isle" near="0.1" far="500" angle="23">
+        <perspective id="Zoom" near="0.1" far="500" angle="23">
             <from x="15.0" y="15.0" z="15.0" />
             <to x="0.0" y="0.0" z="0.0" />
-        </perspective>        
+        </perspective>
+
+        <perspective id="Isle" near="0.1" far="500" angle="23">
+            <from x="30.0" y="30.0" z="30.0" />
+            <to x="0.0" y="0.0" z="0.0" />
+        </perspective>
+
+        <perspective id="Stadium" near="0.1" far="500" angle="23">
+            <from x="-8.5" y="4.0" z="18.0" />
+            <to x="-8.5" y="0.0" z="3.0" />
+        </perspective>                      
     </views>
 
     <ambient>        
@@ -87,9 +97,9 @@
         <texture id="log" file="scenes/images/log.jpg" />  
         <texture id="matrix" file="scenes/images/texture.jpg" /> 
         <texture id="terrain" file="scenes/images/terrain.jpg" />  
-        <texture id="heightmap" file="scenes/images/heightmap.png" /> 
+        <texture id="heightmap" file="scenes/images/heightmapStadium.png" /> 
         <texture id="water" file="scenes/images/water.png" />  
-        <texture id="water_height" file="scenes/images/water_height.jpg" /> 
+        <texture id="water_height" file="scenes/images/water_height.png" /> 
     </textures>
 
     <materials>
@@ -304,9 +314,9 @@
 
         <component id="stadiumWild">
              <transformation>
-                <translate x="-8.0" y="0.75" z="9.0" />
+                <translate x="-8.7" y="0.85" z="8.8" />
                 <rotate axis="y" angle="90"/>
-                <scale x="0.05" y="0.05" z="0.05" />
+                <scale x="0.04" y="0.04" z="0.04" />
             </transformation>
 
             <materials>
