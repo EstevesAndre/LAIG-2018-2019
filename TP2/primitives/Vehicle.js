@@ -142,21 +142,21 @@ class Vehicle extends CGFobject
         
         this.blackTexture = new CGFappearance(this.scene);
         this.blackTexture.loadTexture("scenes/images/black.jpg");
-        this.blackTexture.setAmbient(0.75,0.75,0.75,1);
+        this.blackTexture.setAmbient(1,1,1,1);
 
         this.metalTexture = new CGFappearance(this.scene);
         this.metalTexture.loadTexture("scenes/images/propeller.png");
-        this.metalTexture.setAmbient(0.25,0.25,0.25,1);
+        this.blackTexture.setAmbient(1,1,1,1);
         this.metalTexture.setSpecular(0.7,0.7,0.7,1);
 
         this.bodyTexture = new CGFappearance(this.scene);
         this.bodyTexture.loadTexture("scenes/images/vehiclebody.jpg");
-        this.bodyTexture.setAmbient(0.5,0.5,0.5,1);
+        this.blackTexture.setAmbient(1,1,1,1);
         this.bodyTexture.setSpecular(0.7,0.7,0.7,1);
         
         this.windowTexture = new CGFappearance(this.scene);
         this.windowTexture.loadTexture("scenes/images/top.jpg");
-        this.windowTexture.setAmbient(0.25,0.25,0.25,1);
+        this.blackTexture.setAmbient(1,1,1,1);
         this.windowTexture.setSpecular(0.7,0.7,0.7,1);
     };
 

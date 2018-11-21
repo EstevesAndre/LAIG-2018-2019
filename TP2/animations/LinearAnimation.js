@@ -22,6 +22,12 @@ class LinearAnimation extends Animation
                 Math.pow(this.controlPoints[i+1][2] - this.controlPoints[i][2],2)
             );
             this.rotationAngles[i] = Math.atan((this.controlPoints[i+1][0] - this.controlPoints[i][0])/(this.controlPoints[i+1][2]-this.controlPoints[i][2]));
+            
+            if(this.controlPoints[i+1][2] < this.controlPoints[i][2])
+                this.rotationAngles[i] += Math.PI;
+            else if((this.controlPoints[i+1][2] == this.controlPoints[i][2]) && (this.controlPoints[i+1][0] == this.controlPoints[i][0]))
+                (i == 0 ? this.rotationAngles[i] = 0 : this.rotationAngles[i] = this.rotationAngles[i-1]);
+
             this.distancePerVec[i] = distance;
             this.totalDistance += distance;
         }
@@ -30,7 +36,9 @@ class LinearAnimation extends Animation
 
         for(i = 1; i < this.controlPoints.length; i++)
         {
-            this.timeAtControlPoint[i] =  this.timeAtControlPoint[i-1] + (this.distancePerVec[i-1] / this.totalDistance) * this.time;
+            (this.totalDistance != 0 ? 
+                this.timeAtControlPoint[i] =  this.timeAtControlPoint[i-1] + (this.distancePerVec[i-1] / this.totalDistance) * this.time :
+                this.timeAtControlPoint[i] =  this.timeAtControlPoint[i-1] + this.time / (this.controlPoints.length - 1));
         }
         
     }
