@@ -4,12 +4,8 @@ class Terrain extends CGFobject {
     {
         super(scene);
 
-        console.log(texture);
-
         this.texture = texture;
         this.heightmap = heightmap;
-        this.parts = parts;
-        this.heightscale = heightscale;
         
         this.shader = new CGFshader(this.scene.gl, "shaders/terrainVertShader.vert", "shaders/terrainFragShader.frag");
         this.shader.setUniformsValues({text: 0});

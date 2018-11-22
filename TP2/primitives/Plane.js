@@ -3,9 +3,6 @@ class Plane extends CGFobject {
     constructor(scene, npartsU, npartsV)
     {
         super(scene);
-
-        this.npartsU = npartsU;
-        this.npartsV = npartsV;
         
         var nurbsSurface = new CGFnurbsSurface(
             1, 
@@ -23,7 +20,7 @@ class Plane extends CGFobject {
             ]
         );
 
-        this.plane = new CGFnurbsObject(this.scene, this.npartsU, this.npartsV, nurbsSurface); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it);
+        this.plane = new CGFnurbsObject(this.scene, npartsU, npartsV, nurbsSurface); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it);
     };
 
     display()
