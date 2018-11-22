@@ -239,9 +239,11 @@ class Vehicle extends CGFobject
             this.blackTexture.apply();
             this.displaySupportBars();
         this.scene.popMatrix();
-        
-        // Need to be changed
-        this.wing_angRot += 0.1;
+    };
+
+    updateWingMove()
+    {
+        this.wing_angRot += 0.6;
         this.wing_angRot %= 2*Math.PI;
     };
 
