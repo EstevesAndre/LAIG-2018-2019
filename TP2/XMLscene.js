@@ -213,7 +213,12 @@ class XMLscene extends CGFscene {
             {
                 if(this.graph.components[i].animations[j].isAnimationOver())
                     continue;
-                
+
+                if(this.graph.components[i].id == 'vehicleAnim' && this.graph.components[i].children[0].type == 'vehicle')
+                {
+                    this.graph.components[i].children[0].obj.updateWingMove();
+                }
+
                 this.graph.components[i].animations[j].update(this.deltaTime / 1000);
                 break;
             }
