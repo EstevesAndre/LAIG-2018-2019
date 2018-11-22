@@ -847,15 +847,13 @@ class MySceneGraph {
                 else animation.startang = startang;
                 
                 if(startang > 0 && startang < 2*Math.PI) this.onXMLMinorError("reinforce that startangle is in Degrees, animation with ID = " + animationId);
-                if(startang < 0 || startang > 360) this.onXMLMinorError("startangle must be between [0,360], animation with ID = " + animationId);
-
+                
                 // gets the rotation angle of the animation
                 let rotang = this.reader.getFloat(children[i],'rotang');
                 if(!(rotang != null && !isNaN(rotang))) return "unable to parse rotang value of the animation with ID = " + animationId;
                 else animation.rotang = rotang;
                 
                 if(rotang > 0 && rotang < 2*Math.PI) this.onXMLMinorError("reinforce that rotang is in Degrees, animation with ID = " + animationId);
-                if(rotang < 0 || rotang > 360) this.onXMLMinorError("rotang must be between [0,360], animation with ID = " + animationId);
             }
             else
             {
