@@ -247,8 +247,7 @@
         </primitive>
     </primitives>
 
-    <components>
-            
+    <components>            
         <component id="wild">
             <transformation>
             </transformation>
