@@ -8,11 +8,12 @@ class CircularAnimation extends Animation
         this.center = center;
         this.radius = radius;
         
-        this.initialAngle = (initialAngle + 90.0) * DEGREE_TO_RAD;
+        this.initialAngle = (initialAngle + 90) * DEGREE_TO_RAD;
         this.rotationAngle = rotationAngle * DEGREE_TO_RAD;
-
-        if(this.rotationAngle > 0) this.angularSpeed = this.rotationAngle / this.time;
-        else this.angularSpeed = - this.rotationAngle / this.time;
+    
+        this.angularSpeed = this.rotationAngle / this.time;
+        if(this.rotationAngle > 0) this.initialRotAngle = Math.PI/2.0;
+        else this.initialRotAngle = -Math.PI/2.0;
     };
     
     apply(scene)
@@ -22,7 +23,7 @@ class CircularAnimation extends Animation
         scene.translate(this.center[0],this.center[1],this.center[2]);
         scene.rotate(angRotation,0,1,0);
         scene.translate(0,0,this.radius);
-        scene.rotate(Math.PI/2.0,0,1,0);
+        scene.rotate(this.initialRotAngle, 0,1,0);
     };
 
     applyLast(scene)
@@ -30,7 +31,7 @@ class CircularAnimation extends Animation
         scene.translate(this.center[0],this.center[1],this.center[2]);
         scene.rotate(this.initialAngle + this.rotationAngle,0,1,0);
         scene.translate(0,0,this.radius);
-        scene.rotate(Math.PI/2.0,0,1,0);
+        scene.rotate(this.initialRotAngle, 0,1,0);
     }
 
 };
