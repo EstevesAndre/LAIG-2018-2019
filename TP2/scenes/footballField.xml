@@ -56,12 +56,7 @@
         <texture id="stadium" file="scenes/images/stadium.jpg" />
         <texture id="semiTorus" file="scenes/images/boxCircle.jpg" />
         <texture id="standsT" file="scenes/images/stands.jpg" />
-        <texture id="news" file="scenes/images/champions.jpeg" />
-        <texture id="buildingWall" file="scenes/images/buildingWall.jpg" />
-        <texture id="pavement" file="scenes/images/pavement2.jpg" />           
-        <texture id="leaves" file="scenes/images/leaves.jpg" />
-        <texture id="log" file="scenes/images/log.jpg" />  
-        <texture id="matrix" file="scenes/images/texture.jpg" /> 
+        <texture id="news" file="scenes/images/champions.jpeg" />  
         <texture id="terrain" file="scenes/images/terrain.jpg" />  
         <texture id="heightmap" file="scenes/images/heightmapStadium.png" /> 
         <texture id="water" file="scenes/images/water.png" />  
@@ -139,14 +134,6 @@
     </transformations>
 
     <animations>
-        <circular id="test" span="2.0" center="1.0 2.0 3.423" radius="5.0" startang="50.0" rotang="90.0" />
-        
-        <linear id="test2" span="5.0">
-            <controlpoint xx="0.0" yy="0.0" zz="0.0" />
-            <controlpoint xx="0.0" yy="0.0" zz="7.0" />
-            <controlpoint xx="4.0" yy="4.0" zz="7.0" />
-        </linear>
-
         <linear id="wait" span="4.0">
             <controlpoint xx="0.0" yy="0.0" zz="0.0" />
             <controlpoint xx="0.0" yy="0.0" zz="0.0" />
@@ -160,13 +147,18 @@
             <controlpoint xx="-70.0" yy="6.0" zz="25.0" />          
         </linear>
         
-        <circular id="circularAboveField" span="3" center="-70.0 6.0 40.0" radius="15.0" startang="90.0" rotang="180.0" />
+        <circular id="circularAboveField" span="2.5" center="-70.0 6.0 40.0" radius="15.0" startang="90.0" rotang="180.0" />
 
-        <linear id="fieldToHelipad" span="5.0">
+        <circular id="circularEndPart" span="2.0" center="-25.0 10.0 30.0" radius="25.0" startang="-90.0" rotang="90.0" />
+
+        <linear id="fieldToEndPart" span="2.2">
             <controlpoint xx="-70.0" yy="6.0" zz="55.0" />
-            <controlpoint xx="-10.0" yy="10.0" zz="55.0" />
-            <controlpoint xx="0.0" yy="10.0" zz="0.0" />
-            <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+            <controlpoint xx="-25.0" yy="10.0" zz="55.0" />
+        </linear>
+
+        <linear id="endPartToHelipad" span="2.0">
+            <controlpoint xx="0.0" yy="10.0" zz="30.0" />
+            <controlpoint xx="0.0" yy="0.0" zz="-1.0" />
         </linear>
     
     </animations>
@@ -262,7 +254,7 @@
             </transformation>
 
             <materials>
-                <material id="ground" />
+                <material id="inherit" />
             </materials>
 
             <texture id="none" length_s="1.0" length_t="1.0" />
@@ -281,7 +273,7 @@
             </transformation>
 
             <materials>
-                <material id="ground" />
+                <material id="inherit" />
             </materials>
 
             <texture id="none" length_s="1.0" length_t="1.0" />
@@ -298,10 +290,10 @@
             </transformation>
 
             <materials>
-                <material id="ground" />
+                <material id="inherit" />
             </materials>
 
-            <texture id="helipad" length_s="1.0" length_t="1.0" />
+            <texture id="none" length_s="1.0" length_t="1.0" />
 
             <children>
                 <componentref id="helipadPos" />
@@ -315,7 +307,7 @@
             </transformation>
 
             <materials>
-                <material id="ground" />
+                <material id="inherit" />
             </materials>
 
             <texture id="helipad" length_s="1.0" length_t="1.0" />
@@ -335,11 +327,13 @@
                 <animationref id="wait"/>
                 <animationref id="helipadToField"/>
                 <animationref id="circularAboveField"/>
-                <animationref id="fieldToHelipad"/>     
+                <animationref id="fieldToEndPart"/>
+                <animationref id="circularEndPart"/>
+                <animationref id="endPartToHelipad"/>
             </animations>
 
             <materials>
-                <material id="ground" />
+                <material id="inherit" />
             </materials>
 
             <texture id="none" length_s="1.0" length_t="1.0" />
@@ -355,7 +349,7 @@
             </transformation>
 
             <materials>
-                <material id="ground" />
+                <material id="inherit" />
             </materials>
 
             <texture id="none" length_s="1.0" length_t="1.0" />
@@ -373,7 +367,7 @@
             </transformation>
 
             <materials>
-                <material id="ground" />
+                <material id="inherit" />
             </materials>
 
             <texture id="none" length_s="1.0" length_t="1.0" />
@@ -383,8 +377,7 @@
             </children>
         </component>
 
-<!-- STADIUM -->
-
+    <!-- STADIUM -->
         <component id="stadium">
             <transformation>
                 <translate x="0.0" y="1.5" z="0.0" />
@@ -464,7 +457,7 @@
             </children>
         </component>
 
-<!-- GOAL INITIAL COMPONENTS -->
+    <!-- GOAL INITIAL COMPONENTS -->
         <component id="goal">
             <transformation>
                 <scale x="0.7" y="0.55" z="0.7" />
@@ -689,7 +682,7 @@
                 <primitiveref id="goalBack" />
             </children>
         </component>
-<!-- END GOAL DEFINITION -->
+    <!-- END GOAL DEFINITION -->
 
         <component id="goalLeft">
             <transformation>
@@ -1572,9 +1565,9 @@
             </children>
         </component>
 
-<!-- END OF STADIUM -->
+    <!-- END OF STADIUM -->
 
-<!-- CUBE FACES -->
+    <!-- CUBE FACES -->
         <component id="faceLeft">     
             <transformation>
                 <translate x="0.0" y="0.0" z="0.5" /> 
@@ -1695,248 +1688,7 @@
                 <componentref id="faceFront" />
             </children>
         </component>
-
-<!-- END OF CUBE -->
-
-<!-- TREES -->
-        <component id="treeBranch">
-            <transformation>
-                <scale x="2.0" y="2.0" z="2.0" />
-            </transformation>
-
-            <materials>
-                <material id="inherit" />>
-            </materials>
-
-            <texture id="inherit" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <primitiveref id="football" />
-            </children>
-        </component>
-
-        <component id="treeBranch1">
-            <transformation>
-                <translate x="0.0" y="2.0" z="0.0" />
-            </transformation>
-
-            <materials>
-                <material id="inherit" />>
-            </materials>
-
-            <texture id="inherit" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="treeBranch" />
-            </children>
-        </component>
-
-        <component id="treeBranch2">
-            <transformation>
-                <translate x="0.3" y="1.8" z="0.0" />
-            </transformation>
-
-            <materials>
-                <material id="inherit" />>
-            </materials>
-
-            <texture id="inherit" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="treeBranch" />
-            </children>
-        </component>
-
-        <component id="treeBranch3">
-            <transformation>
-                <translate x="0.0" y="1.6" z="-0.3" />
-            </transformation>
-
-            <materials>
-                <material id="inherit" />>
-            </materials>
-
-            <texture id="inherit" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="treeBranch" />
-            </children>
-        </component>
-
-        <component id="treeBranch4">
-            <transformation>
-                <translate x="-0.3" y="1.6" z="-0.0" />
-            </transformation>
-
-            <materials>
-                <material id="ground" />>
-            </materials>
-
-            <texture id="inherit" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="treeBranch" />
-            </children>
-        </component>
-
-        <component id="treeBranch5">
-            <transformation>
-                <translate x="0.0" y="1.5" z="0.3" />
-            </transformation>
-
-            <materials>
-                <material id="ground" />>
-            </materials>
-
-            <texture id="inherit" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="treeBranch" />
-            </children>
-        </component>
-
-        <component id="treeBranch6">
-            <transformation>
-                <translate x="0.3" y="1.5" z="0.0" />
-            </transformation>
-
-            <materials>
-                <material id="ground" />>
-            </materials>
-
-            <texture id="inherit" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="treeBranch" />
-            </children>
-        </component>
-
-        <component id="treeTop">
-            <transformation>
-            </transformation>
-
-            <materials>
-                <material id="field" />>
-            </materials>
-
-            <texture id="leaves" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="treeBranch1" />
-                <componentref id="treeBranch2" />
-                <componentref id="treeBranch3" />
-                <componentref id="treeBranch4" />
-                <componentref id="treeBranch5" />
-                <componentref id="treeBranch6" />
-            </children>
-        </component>
-
-        <component id="treeLog">
-            <transformation>
-                <scale x="0.3" y="1.3" z="0.3" />
-                <rotate axis="x" angle="-90"/>
-            </transformation>
-
-            <materials>
-                <material id="ground" />>
-            </materials>
-
-            <texture id="log" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <primitiveref id="arc" />
-            </children>
-        </component>
-
-        <!-- Credits to: Mariana Costa -->
-        <component id="tree">
-            <transformation>
-            </transformation>
-
-            <materials>
-                <material id="none" />>
-            </materials>
-
-            <texture id="none" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="treeLog" />
-                <componentref id="treeTop" />
-            </children>
-        </component> 
-        
-        <component id="tree1">
-            <transformation>
-                <translate x="0.0" y="0.0" z="20.0"/>
-            </transformation>
-
-            <materials>
-                <material id="none" />>
-            </materials>
-
-            <texture id="none" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="tree" />
-            </children>
-        </component> 
-
-        <component id="tree2">
-            <transformation>
-                <translate x="0.0" y="0.0" z="-20.0"/>
-            </transformation>
-
-            <materials>
-                <material id="none" />>
-            </materials>
-
-            <texture id="none" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="tree" />
-            </children>
-        </component> 
-
-        <component id="tree3">
-            <transformation>
-                <translate x="10.0" y="0.0" z="15.0"/>
-            </transformation>
-
-            <materials>
-                <material id="none" />>
-            </materials>
-
-            <texture id="none" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="tree" />
-            </children>
-        </component> 
-
-        <component id="trees">
-            <transformation>
-                <translate x="0.0" y="0.1" z="0.0" />
-            </transformation>
-
-            <animations>  
-                <animationref id="test2" />
-                <animationref id="test" />
-            </animations>
-            
-            <materials>
-                <material id="none" />>
-            </materials>
-
-            <texture id="none" length_s="1.0" length_t="1.0" />
-
-            <children>
-                <componentref id="tree1" />
-                <componentref id="tree2" />
-                <componentref id="tree3" />
-            </children>
-        </component> 
-
-<!-- END OF TREES -->
+    <!-- END OF CUBE -->
 
     </components>
 
