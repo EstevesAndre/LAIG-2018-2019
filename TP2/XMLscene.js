@@ -206,20 +206,22 @@ class XMLscene extends CGFscene {
         if(this.deltaTime > 1000) return;
         
         for(let i = 0; i < this.graph.components.length; i++)
-        {              
-            if(this.graph.components[i].animations == null) continue;
+        {      
+            var node = this.graph.components[i]; 
 
-            for(let j = 0; j < this.graph.components[i].animations.length; j++)
+            if(node.animations == null) continue;
+
+            for(let j = 0; j < node.animations.length; j++)
             {
-                if(this.graph.components[i].animations[j].isAnimationOver())
+                if(node.animations[j].isAnimationOver())
                     continue;
 
-                if(this.graph.components[i].id == 'vehicleAnim' && this.graph.components[i].children[0].type == 'vehicle')
+                if(node.id == 'vehicleAnim' && node.children[0].type == 'vehicle')
                 {
-                    this.graph.components[i].children[0].obj.updateWingMove();
+                    node.children[0].obj.updateWingMove();
                 }
 
-                this.graph.components[i].animations[j].update(this.deltaTime / 1000);
+                node.animations[j].update(this.deltaTime / 1000);
                 break;
             }
         }
