@@ -1112,7 +1112,7 @@ class MySceneGraph {
                 }
                 // PLANE
                 else if(grandChildren[0].nodeName == "plane")
-                {                
+                {       
                     // npartsU
                     var npartsU = this.reader.getFloat(grandChildren[0],'npartsU');
                     if(!(npartsU != null && !isNaN(npartsU))) return "unable to parse npartsU of the Plane primitive for ID = " + primitiveId;                
@@ -1127,7 +1127,7 @@ class MySceneGraph {
                 }
                 //PATCH
                 else if(grandChildren[0].nodeName == "patch")
-                {                
+                {     
                     // npointsU
                     var npointsU = this.reader.getFloat(grandChildren[0],'npointsU');
                     if(!(npointsU != null && !isNaN(npointsU))) return "unable to parse npointsU of the Patch primitive for ID = " + primitiveId;                
