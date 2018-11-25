@@ -38,6 +38,7 @@ class Water extends CGFobject
         {
             this.time = 0;
             this.offset += (1 / this.parts);
+            this.offset %= this.parts;
             this.shader.setUniformsValues({offset: this.offset});
         }        
     }

@@ -1,8 +1,8 @@
-class Terrain extends CGFobject {
+class Terrain extends Plane {
 
     constructor(scene, texture, heightmap, parts, heightscale)
     {
-        super(scene);
+        super(scene,parts,parts);
 
         this.texture = texture;
         this.heightmap = heightmap;
@@ -11,8 +11,6 @@ class Terrain extends CGFobject {
         this.shader.setUniformsValues({text: 0});
         this.shader.setUniformsValues({height: 1});
         this.shader.setUniformsValues({scale: heightscale});
-        
-        this.plane = new Plane(this.scene, parts,parts);
     };
 
     display()

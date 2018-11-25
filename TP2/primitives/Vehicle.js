@@ -9,8 +9,9 @@ class Vehicle extends CGFobject
         this.wing_middle = new Cylinder(this.scene, 0.1, 0.1, 0.15, 6, 1);
         this.wing_part = new Cylinder2(this.scene, 0.1, 0.1, 1.0, 8, 4);
         this.wing_outter = new Torus(this.scene, 0.05, 1.0, 6, 32);
-        this.wing_propeller = this.makeSurface
-            (12, 6, 3, 6, 
+        
+        this.wing_propeller = new Patch
+            (this.scene, 4,7, 12,6,
             [
                 [
                     [0.0,  0.0, 0.0, 1 ],
@@ -50,9 +51,9 @@ class Vehicle extends CGFobject
                 ]
             ]
         );
-        
-        this.body = this.makeSurface
-            (12,8, 2,2,
+
+        this.body = new Patch
+            (this.scene,3,3, 12,8,
             [
                 [
                     [-0.5, 0.0,  1.0, 1.0],
@@ -69,11 +70,11 @@ class Vehicle extends CGFobject
                     [0.5, 0.7, -0.25, 1.0],
                     [0.5, 0.4, -2.0, 1.0]
                 ]
-            ]
+            ]                
         );
 
-        this.bodySideRight = this.makeSurface
-            (8,8, 2,2,
+        this.bodySideRight = new Patch
+            (this.scene, 3,3, 8,8,
             [
                 [
                     [0.5, 0.0,   1.0, 1.0],
@@ -93,8 +94,8 @@ class Vehicle extends CGFobject
             ]
         );
 
-        this.bodySideLeft = this.makeSurface
-            (8,8, 2,2,
+        this.bodySideLeft = new Patch
+            (this.scene, 3,3, 8,8,
             [
                 [
                     [-0.5, 0.4,  -2.0, 1.0],
@@ -114,8 +115,8 @@ class Vehicle extends CGFobject
             ]
         );
 
-        this.bodyDown = this.makeSurface
-            (12,8, 2,2,
+        this.bodyDown = new Patch
+            (this.scene, 3,3, 12,8,
             [
                 [
                     [-0.5, 0.4, -2.0, 1.0],
