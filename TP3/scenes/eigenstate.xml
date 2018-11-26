@@ -55,7 +55,7 @@
 
     <primitives>
         <primitive id="prim_Board">
-            <plane npartsU="5.0" npartsV="5.0" />
+            <board npartsX="5.0" npartsY="5.0" />
         </primitive>
     </primitives>
 
