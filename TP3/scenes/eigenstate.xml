@@ -1,0 +1,79 @@
+<yas>
+    <scene root="PLOG" axis_length="1.0" />
+
+     <views default="Board">
+        
+        <perspective id="Board" near="0.1" far="500" angle="23">
+            <from x="15.0" y="15.0" z="15.0" />
+            <to x="0.0" y="0.0" z="0.0" />
+        </perspective>                      
+    </views>
+
+    <ambient>        
+        <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+        <background r="0.4" g="0.5" b="0.8" a="1.0" />        
+    </ambient>
+
+    <lights>
+
+        <omni id="center" enabled="1">            
+            <location x="0.0" y="20.0" z="0.0" w="1.0" />
+            <ambient r="1.0" g="1.0" b="0.5" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="0.5" a="1.0" />
+            <specular r="1.0" g="1.0" b="0.5" a="1.0" />
+        </omni>
+
+    </lights>
+
+    <textures>
+        <texture id="white" file="images/worldmap.jpg" />
+    </textures>
+
+    <materials>
+        <material id="field" shininess="2.0">            
+            <emission r="0.5" g="0.5" b="0.5" a="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </material>
+
+    </materials>
+
+    <transformations>
+        <transformation id="footballT">
+            <translate x="1.5" y="0.25" z="3.0" />
+            <rotate axis="x" angle="90" />
+        </transformation>
+    </transformations>
+
+    <animations>
+        <linear id="wait" span="4.0">
+            <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+            <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+        </linear>   
+    </animations>
+
+    <primitives>
+        <primitive id="prim_Board">
+            <plane npartsU="5.0" npartsV="5.0" />
+        </primitive>
+    </primitives>
+
+    <components>            
+        <component id="PLOG">
+            <transformation>
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="prim_Board" />
+            </children>
+        </component>
+    </components>
+
+</yas>

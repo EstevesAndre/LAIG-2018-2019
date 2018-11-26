@@ -1,0 +1,8 @@
+1º scene
+
+    Sala,tipo escritorio, prateleiras, etc...
+    duas cadeiras, mesa
+    tabuleiro
+
+2º scene
+
