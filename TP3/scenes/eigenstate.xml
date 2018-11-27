@@ -28,7 +28,7 @@
         <texture id="floor" file="images/floor.jpg" />
         <texture id="wallpaper" file="images/wallpaper.jpg" />
         <texture id="ceiling" file="images/ceiling.jpg" />
-        <texture id="door" file="images/door.jpg" />
+        <texture id="door" file="images/door.png" />
         <texture id="painting" file="images/painting.jpg" />
         <texture id="wood" file="images/wood.jpg" />
         <texture id="darkwood" file="images/darkwood.jpg" />
