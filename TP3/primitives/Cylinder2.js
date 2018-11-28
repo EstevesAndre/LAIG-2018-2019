@@ -1,6 +1,12 @@
+/**
+ * Cylinder
+ * @param gl {WebGLRenderingContext}
+ * @constructor
+ */
+
 class Cylinder2 extends CGFobject
 {
-    constructor(scene, base, top, height, slices, stacks) 
+	constructor(scene, base, top, height, slices, stacks) 
 	{
 		super(scene);
 
@@ -10,46 +16,51 @@ class Cylinder2 extends CGFobject
         this.slices = slices;
         this.stacks = stacks;
 
-        this.cylinder = null;
 
-		this.createNurbs();
-    };
-    
-    createNurbs()
-    {
-        let a=Math.sqrt(2);
-        var controlvertexes = [];
-        controlvertexes.push(
-            [
-                [       0.0, -this.base, 0.0,                1.0],
-                [-this.base, -this.base, 0.0, Math.sqrt(2) / 2.0],
-                [-this.base,        0.0, 0.0,                1.0],
-                [-this.base,  this.base, 0.0, Math.sqrt(2) / 2.0],
-                [       0.0,  this.base, 0.0,                1.0],
-                [ this.base,  this.base, 0.0, Math.sqrt(2) / 2.0],
-                [ this.base,        0.0, 0.0,                1.0],
-                [ this.base, -this.base, 0.0, Math.sqrt(2) / 2.0],
-                [       0.0, -this.base, 0.0,                1.0]                
-            ],
-            [
-                [      0.0, -this.top, this.height,                1.0],
-                [-this.top, -this.top, this.height, Math.sqrt(2) / 2.0],
-                [-this.top,       0.0, this.height,                1.0],
-                [-this.top,  this.top, this.height, Math.sqrt(2) / 2.0],
-                [      0.0,  this.top, this.height,                1.0],
-                [ this.top,  this.top, this.height, Math.sqrt(2) / 2.0],
-                [ this.top,       0.0, this.height,                1.0],
-                [ this.top, -this.top, this.height, Math.sqrt(2) / 2.0],
-                [      0.0, -this.top, this.height,                1.0]                 
-            ]   
-        );
+		this.initBuffers();
+	};
 
-		var nurbsSurface = new CGFnurbsSurface(1, 8, controlvertexes);        
-        this.cylinder = new CGFnurbsObject(this.scene, this.slices, this.stacks, nurbsSurface);
+	initBuffers() 
+	{
+		this.vertices = [];
+        this.indices = [];
+        this.normals = [];
+        this.texCoords = [];
+
+        var angle = (2* Math.PI) / this.slices;
+		var division = this.height / this.stacks;		
+		var radiusStack = (this.top - this.base) / this.stacks;
+
+        // Here we do 1 division per iteration so it's k <= this.stacks.
+		// We actually do k + 1 divisions to have exactly the right number of stacks
+		for(let k = 0; k <= this.stacks; k++)
+		{
+			for(let i = 0; i <= this.slices; i++)
+			{
+				this.vertices.push(Math.cos(i * angle) * (this.base + radiusStack * k), 
+								   Math.sin(i * angle) * (this.base + radiusStack * k),
+								   k * division);
+				 
+				this.normals.push(Math.cos(i * angle),
+								  Math.sin(i * angle),
+								  0);
+			
+				// Place to texCoords				
+				this.texCoords.push(1-i/this.slices, k * division / this.height);
+				
+				if(k != 0 && i != 0)
+				{
+					this.indices.push((this.slices+1)*k + i - 1, 
+									  (this.slices+1)*(k-1) + i - 1, 
+									  (this.slices+1)*(k-1) + i);
+									  
+					this.indices.push((this.slices+1)*k + i - 1, 
+									  (this.slices+1)*(k-1) + i,
+									  (this.slices+1)*k + i);
+				}
+			}
+		}
+		
     };
 
-    display()
-    {
-        this.cylinder.display();
-    };
-}
+};
