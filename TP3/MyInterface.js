@@ -27,27 +27,26 @@ class MyInterface extends CGFinterface {
         return true;
     }
 
-    /**
-     * Adds a folder containing the IDs of the lights passed as parameter.
-     * @param {array} lights
-     */
-    addLightsGroup(lights) {
+    addLookGroup(graphs) {
 
-        var group = this.gui.addFolder("Lights");
+        var group = this.gui.addFolder("Look");
         group.open();
 
-        for (var key in lights) {
-            if (lights.hasOwnProperty(key)) {
-                this.scene.lightValues[key] = lights[key].id;
-                group.add(this.scene, 'Light_' + key + "_on");
+        var names = [];
+
+        for (var key in graphs) {
+            if (graphs.hasOwnProperty(key)) {
+                names[key] = graphs[key].name;
             }
         }
+
+        group.add(this.scene, 'Current_Graph', names);
     }
 
     addViewsGroup(views)
     {
-        var group = this.gui.addFolder("Cameras");
-        group.open();
+        this.group = this.gui.addFolder("Cameras");
+        this.group.open();
 
         var names = [];
 
@@ -57,7 +56,7 @@ class MyInterface extends CGFinterface {
             }
         }
 
-        group.add(this.scene, 'Current_Camera', names);
+        this.group.add(this.scene, 'Current_Camera', names);
     }
 
     initKeys()

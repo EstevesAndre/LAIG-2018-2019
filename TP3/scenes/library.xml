@@ -1,11 +1,15 @@
 <yas>
     <scene root="root" axis_length="1.0" />
 
-     <views default="Board">  
-        <perspective id="Board" near="0.1" far="500" angle="23">
+     <views default="Scene">  
+        <perspective id="Scene" near="0.1" far="500" angle="23">
             <from x="15.0" y="15.0" z="15.0" />
             <to x="0.0" y="0.0" z="0.0" />
-        </perspective>                      
+        </perspective>   
+        <perspective id="Board" near="0.1" far="500" angle="23">
+            <from x="5.0" y="10.0" z="0.0" />
+            <to x="-1.0" y="0.0" z="0.0" />
+        </perspective>                        
     </views>
 
     <ambient>        

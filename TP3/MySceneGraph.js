@@ -24,9 +24,10 @@ class MySceneGraph {
 
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
-        scene.graph = this;
 
         this.nodes = [];
+
+        this.name = filename.replace(/\.[^/.]+$/, "");
 
         this.idRoot = null;                    // The id of the root element.
         this.rootElem = new Object();
@@ -77,6 +78,7 @@ class MySceneGraph {
 
         this.loadedOk = true;
 
+        this.scene.graphs.push(this);
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.scene.onGraphLoaded();
     }

@@ -38,7 +38,8 @@ main=function()
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors
-	var myGraph = new MySceneGraph("library.xml", myScene);
+    var myGraph1 = new MySceneGraph("library.xml", myScene);
+	var myGraph2 = new MySceneGraph("conservatory.xml", myScene);
 	
 	// start
     app.run();

@@ -37,6 +37,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
+        this.graphs = [];
+
         this.setUpdatePeriod(1000/FRAMES);
     }
 
@@ -98,8 +100,9 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        //this.camera.near = this.graph.near;
-        //this.camera.far = this.graph.far;
+        if(this.graphs.length == 2) {        
+        this.graph = this.graphs[0];
+        this.Current_Graph = this.graph.name;
 
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
@@ -118,13 +121,13 @@ class XMLscene extends CGFscene {
         
         this.initLights();
 
-        // Adds lights group.
-        this.interface.addLightsGroup(this.graph.lights);
+        // Adds looks group.
+        this.interface.addLookGroup(this.graphs);
 
         // Adds views group.
         this.interface.addViewsGroup(this.graph.views);
 
-        this.sceneInited = true;
+        this.sceneInited = true;}
     }
 
 
@@ -165,6 +168,21 @@ class XMLscene extends CGFscene {
                 else
                     this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
                 this.interface.setActiveCamera(this.camera);
+            }
+
+            //changes graph if necessary
+            if(this.prev_graph != this.Current_Graph)
+            {
+                this.prev_graph = this.Current_Graph;
+                
+                for(var i = 0; i < this.graphs.length; i++)
+                {
+                    if(this.graphs[i].name == this.Current_Graph)
+                    {
+                        this.graph = this.graphs[i];
+                        this.initLights();
+                    }
+                }
             }
 
             var i = 0;
