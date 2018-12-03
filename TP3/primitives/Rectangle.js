@@ -15,6 +15,8 @@ class Rectangle extends CGFobject
         this.y1 = y1;
         this.y2 = y2;
 
+
+		
 		this.initBuffers();
 	};
 
@@ -39,7 +41,7 @@ class Rectangle extends CGFobject
 				0, 0, 1
 			];			
 					
-		this.updateTexCoords(1,1);
+		this.updateTexCoords(Math.abs(this.x2 - this.x1),Math.abs(this.y2 - this.y1));
 
 		this.primitiveType=this.scene.gl.TRIANGLES;
 		this.initGLBuffers();

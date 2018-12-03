@@ -20,6 +20,8 @@ serialInclude(['lib/CGF.js', 'XMLscene.js',
                 'primitives/Plane.js','primitives/Triangle.js',
                 'primitives/Terrain.js','primitives/Torus.js',
                 'primitives/Sphere.js','primitives/Patch.js',
+                'primitives/Board.js',
+                
 main=function()
 {
 	// Standard application, scene and interface setup

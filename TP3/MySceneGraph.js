@@ -946,423 +946,501 @@ class MySceneGraph {
 
             if(primitivesId[primitiveId] != null) return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
         
+            // Specification for the current primitive. Verifies if it is one of the primitives.
+            grandChildren = children[i].children;
 
-            if(children[i].nodeName == "primitive")
+            if(grandChildren.length != 1) return "there is more that one tag for this primitive with id = " + primitiveId;
+
+            if(grandChildren[0].nodeName != "rectangle" &&
+                grandChildren[0].nodeName != "triangle" &&
+                    grandChildren[0].nodeName != "cylinder" &&
+                        grandChildren[0].nodeName != "sphere" &&
+                            grandChildren[0].nodeName != "torus" && 
+                                grandChildren[0].nodeName != "plane" && 
+                                    grandChildren[0].nodeName != "patch" && 
+                                        grandChildren[0].nodeName != "vehicle" && 
+                                            grandChildren[0].nodeName != "cylinder2" && 
+                                                grandChildren[0].nodeName != "terrain" && 
+                                                    grandChildren[0].nodeName != "water" &&
+                                                        grandChildren[0].nodeName != "board")
             {
-                // Specification for the current primitive. Verifies if it is one of the primitives.
-                grandChildren = children[i].children;
+                this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + "> with ID = " + primitiveId);
+                continue;
+            }
+            
+            primitive.type = grandChildren[0].nodeName;
 
-                if(grandChildren.length != 1) return "there is more that one tag for this primitive with id = " + primitiveId;
+            // RECTANGLE
+            if(primitive.type == "rectangle")
+            {
+                // x1
+                var x1 = this.reader.getFloat(grandChildren[0],'x1');
+                if(!(x1 != null && !isNaN(x1))) return "unable to parse x1-coordinate of the rectangle primitive for ID = " + primitiveId;
+                else primitive.x1 = x1;
+                // y1
+                var y1 = this.reader.getFloat(grandChildren[0],'y1');
+                if(!(y1 != null && !isNaN(y1))) return "unable to parse y1-coordinate of the rectangle primitive for ID = " + primitiveId;
+                else primitive.y1 = y1;
 
-                if(grandChildren[0].nodeName != "rectangle" &&
-                    grandChildren[0].nodeName != "triangle" &&
-                        grandChildren[0].nodeName != "cylinder" &&
-                            grandChildren[0].nodeName != "sphere" &&
-                                grandChildren[0].nodeName != "torus" && 
-                                    grandChildren[0].nodeName != "plane" && 
-                                        grandChildren[0].nodeName != "patch" && 
-                                            grandChildren[0].nodeName != "vehicle" && 
-                                                grandChildren[0].nodeName != "cylinder2" && 
-                                                    grandChildren[0].nodeName != "terrain" && 
-                                                        grandChildren[0].nodeName != "water")
+                // x2
+                var x2 = this.reader.getFloat(grandChildren[0],'x2');
+                if(!(x2 != null && !isNaN(x2))) return "unable to parse x2-coordinate of the rectangle primitive for ID = " + primitiveId;
+                else primitive.x2 = x2;
+                // y2
+                var y2 = this.reader.getFloat(grandChildren[0],'y2');
+                if(!(y2 != null && !isNaN(y2))) return "unable to parse y2-coordinate of the rectangle primitive for ID = " + primitiveId;
+                else primitive.y2 = y2;
+            }
+            // TRIANGLE
+            else if(primitive.type == "triangle")
+            {
+                // x1
+                var x1 = this.reader.getFloat(grandChildren[0],'x1');
+                if(!(x1 != null && !isNaN(x1))) return "unable to parse x1-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.x1 = x1;
+                // y1
+                var y1 = this.reader.getFloat(grandChildren[0],'y1');
+                if(!(y1 != null && !isNaN(y1))) return "unable to parse y1-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.y1 = y1;
+                // z1
+                var z1 = this.reader.getFloat(grandChildren[0],'z1');
+                if(!(z1 != null && !isNaN(z1))) return "unable to parse z1-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.z1 = z1;
+
+                // x2
+                var x2 = this.reader.getFloat(grandChildren[0],'x2');
+                if(!(x2 != null && !isNaN(x2))) return "unable to parse x2-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.x2 = x2;
+                // y2
+                var y2 = this.reader.getFloat(grandChildren[0],'y2');
+                if(!(y2 != null && !isNaN(y2))) return "unable to parse y2-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.y2 = y2;
+                // z2
+                var z2 = this.reader.getFloat(grandChildren[0],'z2');
+                if(!(z2 != null && !isNaN(z2))) return "unable to parse z2-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.z2 = z2;
+
+                // x3
+                var x3 = this.reader.getFloat(grandChildren[0],'x3');
+                if(!(x3 != null && !isNaN(x3))) return "unable to parse x3-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.x3 = x3;
+                // y3
+                var y3 = this.reader.getFloat(grandChildren[0],'y3');
+                if(!(y3 != null && !isNaN(y3))) return "unable to parse y3-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.y3 = y3;
+                // z3
+                var z3 = this.reader.getFloat(grandChildren[0],'z3');
+                if(!(z3 != null && !isNaN(z3))) return "unable to parse z3-coordinate of the triangle primitive for ID = " + primitiveId;
+                else primitive.z3 = z3; 
+            }
+            // CYLINDER
+            else if(primitive.type == "cylinder")
+            {
+                // base
+                var base = this.reader.getFloat(grandChildren[0],'base');
+                if(!(base != null && !isNaN(base))) return "unable to parse base of the Cylinder primitive for ID = " + primitiveId;
+                else primitive.base = base;
+
+                // top
+                var top = this.reader.getFloat(grandChildren[0],'top');
+                if(!(top != null && !isNaN(top))) return "unable to parse top of the Cylinder primitive for ID = " + primitiveId;
+                else primitive.top = top;
+
+                // height
+                var height = this.reader.getFloat(grandChildren[0],'height');
+                if(!(height != null && !isNaN(height))) return "unable to parse height of the Cylinder primitive for ID = " + primitiveId;
+                else primitive.height = height;
+
+                // slices
+                var slices = this.reader.getFloat(grandChildren[0],'slices');
+                if(!(slices != null && !isNaN(slices))) return "unable to parse slices of the Cylinder primitive for ID = " + primitiveId;
+                else if(slices % 1 != 0) return "slices parameter of Cylinder must be an integer for ID = " + primitiveId;
+                else primitive.slices = slices;
+
+                // stacks
+                var stacks = this.reader.getFloat(grandChildren[0],'stacks');
+                if(!(stacks != null && !isNaN(stacks))) return "unable to parse stacks of the Cylinder primitive for ID = " + primitiveId;
+                else if(stacks % 1 != 0) return "stacks parameter of Cylinder must be an integer for ID = " + primitiveId;
+                else primitive.stacks = stacks;                
+            }
+            // SPHERE
+            else if(primitive.type == "sphere")
+            {
+                // radius
+                var radius = this.reader.getFloat(grandChildren[0],'radius');
+                if(!(radius != null && !isNaN(radius))) return "unable to parse radius of the Sphere primitive for ID = " + primitiveId;
+                else primitive.radius = radius;
+
+                // slices
+                var slices = this.reader.getFloat(grandChildren[0],'slices');
+                if(!(slices != null && !isNaN(slices))) return "unable to parse slices of the Sphere primitive for ID = " + primitiveId;
+                else if(slices % 1 != 0) return "slices parameter of Sphere must be an integer for ID = " + primitiveId;
+                else primitive.slices = slices;
+
+                // stacks
+                var stacks = this.reader.getFloat(grandChildren[0],'stacks');
+                if(!(stacks != null && !isNaN(stacks))) return "unable to parse stacks of the Sphere primitive for ID = " + primitiveId;
+                else if(stacks % 1 != 0) return "stacks parameter of Sphere must be an integer for ID = " + primitiveId;
+                else primitive.stacks = stacks;                
+            }
+            // TORUS
+            else if(primitive.type == "torus")
+            {
+                // inner
+                var inner = this.reader.getFloat(grandChildren[0],'inner');
+                if(!(inner != null && !isNaN(inner))) return "unable to parse inner of the Torus primitive for ID = " + primitiveId;
+                else primitive.inner = inner;
+
+                // outer
+                var outer = this.reader.getFloat(grandChildren[0],'outer');
+                if(!(outer != null && !isNaN(outer))) return "unable to parse inner of the Torus primitive for ID = " + primitiveId;
+                else primitive.outer = outer;
+
+                // slices
+                var slices = this.reader.getFloat(grandChildren[0],'slices');
+                if(!(slices != null && !isNaN(slices))) return "unable to parse slices of the Torus primitive for ID = " + primitiveId;
+                else if(slices % 1 != 0) return "slices parameter of Torus must be an integer for ID = " + primitiveId;
+                else primitive.slices = slices;
+
+                // loops
+                var loops = this.reader.getFloat(grandChildren[0],'loops');
+                if(!(loops != null && !isNaN(loops))) return "unable to parse loops of the Torus primitive for ID = " + primitiveId;
+                else if(loops % 1 != 0) return "loops parameter of Torus must be an integer for ID = " + primitiveId;
+                else primitive.loops = loops;
+            }
+            // PLANE
+            else if(primitive.type == "plane")
+            {       
+                // npartsU
+                var npartsU = this.reader.getFloat(grandChildren[0],'npartsU');
+                if(!(npartsU != null && !isNaN(npartsU))) return "unable to parse npartsU of the Plane primitive for ID = " + primitiveId;                
+                else if(npartsU % 1 != 0) return "npartsU parameter of Plane must be an integer for ID = " + primitiveId;
+                else primitive.npartsU = npartsU;
+                
+                // npartsV
+                var npartsV = this.reader.getFloat(grandChildren[0],'npartsV');
+                if(!(npartsV != null && !isNaN(npartsV))) return "unable to parse npartsV of the Plane primitive for ID = " + primitiveId;                
+                else if(npartsV % 1 != 0) return "npartsV parameter of Plane must be an integer for ID = " + primitiveId;
+                else primitive.npartsV = npartsV;
+            }
+            //PATCH
+            else if(primitive.type == "patch")
+            {     
+                // npointsU
+                var npointsU = this.reader.getFloat(grandChildren[0],'npointsU');
+                if(!(npointsU != null && !isNaN(npointsU))) return "unable to parse npointsU of the Patch primitive for ID = " + primitiveId;                
+                else if(npointsU % 1 != 0) return "npointsU parameter of Patch must be an integer for ID = " + primitiveId;
+                else if(npointsU <= 0) return "npointsU parameter of Patch must be greater than 1 for ID = " + primitiveId;
+                else primitive.npointsU = npointsU;
+                
+                // npointsV
+                var npointsV = this.reader.getFloat(grandChildren[0],'npointsV');
+                if(!(npointsV != null && !isNaN(npointsV))) return "unable to parse npointsV of the Patch primitive for ID = " + primitiveId;                
+                else if(npointsV % 1 != 0) return "npointsV parameter of Patch must be an integer for ID = " + primitiveId;
+                else if(npointsV <= 0) return "npointsV parameter of Patch must be greater than 1 for ID = " + primitiveId;
+                else primitive.npointsV = npointsV;
+
+                // npartsU
+                var npartsU = this.reader.getFloat(grandChildren[0],'npartsU');
+                if(!(npartsU != null && !isNaN(npartsU))) return "unable to parse npartsU of the Patch primitive for ID = " + primitiveId;                
+                else if(npartsU % 1 != 0) return "npartsU parameter of Patch must be an integer for ID = " + primitiveId;
+                else primitive.npartsU = npartsU;
+                
+                // npartsV
+                var npartsV = this.reader.getFloat(grandChildren[0],'npartsV');
+                if(!(npartsV != null && !isNaN(npartsV))) return "unable to parse npartsV of the Patch primitive for ID = " + primitiveId;                
+                else if(npartsV % 1 != 0) return "npartsV parameter of Patch must be an integer for ID = " + primitiveId;
+                else primitive.npartsV = npartsV;
+
+                grandChildren = grandChildren[0].children;
+
+                if(grandChildren.length != npointsU * npointsV) return "wrong number of control points of Patch primitive for ID = " + primitiveId;
+                
+                var numControlPoints = 0;
+                var controlPoints = [];
+                var controlPoint = [];    
+
+                for(let i = 0; i < grandChildren.length; i++)
                 {
-                    this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + "> with ID = " + primitiveId);
-                    continue;
+                    if(grandChildren[i].nodeName != "controlPoint")
+                    {
+                        this.onXMLMinorError("wrong child tag <" + grandChildren[i].nodeName + "> for patch primitive with ID = " + primitiveId);
+                        continue;
+                    }
+                    
+                    controlPoint = [];
+
+                    var xx = this.reader.getFloat(grandChildren[i],'xx');
+                    if(!(xx != null && !isNaN(xx))) return "unable to parse xx value of the controlPoint[" + (i + 1) + "], patch primitive with ID = " + primitiveId;
+                    else controlPoint[0] = xx;
+
+                    var yy = this.reader.getFloat(grandChildren[i],'yy');
+                    if(!(yy != null && !isNaN(yy))) return "unable to parse yy value of the controlPoint[" + (i + 1) + "], patch primitive with ID = " + primitiveId;
+                    else controlPoint[1] = yy;
+
+                    var zz = this.reader.getFloat(grandChildren[i],'zz');
+                    if(!(zz != null && !isNaN(zz))) return "unable to parse zz value of the controlPoint[" + (i + 1) + "], patch primitive with ID = " + primitiveId;
+                    else controlPoint[2] = zz;
+
+                    controlPoint[3] = 1.0;
+
+                    controlPoints.push(controlPoint);
+                    numControlPoints++;                
+                }
+
+                if(numControlPoints != npointsU * npointsV) return "wrong number of correct control points of Patch primitive for ID = " + primitiveId;
+                
+                var cp = [];
+                var cpV = [];
+                let counter = 0;
+
+                for(let i = 0; i < npointsU; i++)
+                {
+                    cpV = [];
+                    for(let j = 0; j < npointsV; j++)
+                    {
+                        cpV.push(controlPoints[counter]);
+                        counter++;
+                    }
+                    cp.push(cpV);
                 }
                 
-                primitive.type = grandChildren[0].nodeName;
-
-                // RECTANGLE
-                if(grandChildren[0].nodeName == "rectangle")
-                {
-                    // x1
-                    var x1 = this.reader.getFloat(grandChildren[0],'x1');
-                    if(!(x1 != null && !isNaN(x1))) return "unable to parse x1-coordinate of the rectangle primitive for ID = " + primitiveId;
-                    else primitive.x1 = x1;
-                    // y1
-                    var y1 = this.reader.getFloat(grandChildren[0],'y1');
-                    if(!(y1 != null && !isNaN(y1))) return "unable to parse y1-coordinate of the rectangle primitive for ID = " + primitiveId;
-                    else primitive.y1 = y1;
-
-                    // x2
-                    var x2 = this.reader.getFloat(grandChildren[0],'x2');
-                    if(!(x2 != null && !isNaN(x2))) return "unable to parse x2-coordinate of the rectangle primitive for ID = " + primitiveId;
-                    else primitive.x2 = x2;
-                    // y2
-                    var y2 = this.reader.getFloat(grandChildren[0],'y2');
-                    if(!(y2 != null && !isNaN(y2))) return "unable to parse y2-coordinate of the rectangle primitive for ID = " + primitiveId;
-                    else primitive.y2 = y2;
-                }
-                // TRIANGLE
-                else if(grandChildren[0].nodeName == "triangle")
-                {
-                    // x1
-                    var x1 = this.reader.getFloat(grandChildren[0],'x1');
-                    if(!(x1 != null && !isNaN(x1))) return "unable to parse x1-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.x1 = x1;
-                    // y1
-                    var y1 = this.reader.getFloat(grandChildren[0],'y1');
-                    if(!(y1 != null && !isNaN(y1))) return "unable to parse y1-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.y1 = y1;
-                    // z1
-                    var z1 = this.reader.getFloat(grandChildren[0],'z1');
-                    if(!(z1 != null && !isNaN(z1))) return "unable to parse z1-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.z1 = z1;
-
-                    // x2
-                    var x2 = this.reader.getFloat(grandChildren[0],'x2');
-                    if(!(x2 != null && !isNaN(x2))) return "unable to parse x2-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.x2 = x2;
-                    // y2
-                    var y2 = this.reader.getFloat(grandChildren[0],'y2');
-                    if(!(y2 != null && !isNaN(y2))) return "unable to parse y2-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.y2 = y2;
-                    // z2
-                    var z2 = this.reader.getFloat(grandChildren[0],'z2');
-                    if(!(z2 != null && !isNaN(z2))) return "unable to parse z2-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.z2 = z2;
-
-                    // x3
-                    var x3 = this.reader.getFloat(grandChildren[0],'x3');
-                    if(!(x3 != null && !isNaN(x3))) return "unable to parse x3-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.x3 = x3;
-                    // y3
-                    var y3 = this.reader.getFloat(grandChildren[0],'y3');
-                    if(!(y3 != null && !isNaN(y3))) return "unable to parse y3-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.y3 = y3;
-                    // z3
-                    var z3 = this.reader.getFloat(grandChildren[0],'z3');
-                    if(!(z3 != null && !isNaN(z3))) return "unable to parse z3-coordinate of the triangle primitive for ID = " + primitiveId;
-                    else primitive.z3 = z3; 
-                }
-                // CYLINDER
-                else if(grandChildren[0].nodeName == "cylinder")
-                {
-                    // base
-                    var base = this.reader.getFloat(grandChildren[0],'base');
-                    if(!(base != null && !isNaN(base))) return "unable to parse base of the Cylinder primitive for ID = " + primitiveId;
-                    else primitive.base = base;
-
-                    // top
-                    var top = this.reader.getFloat(grandChildren[0],'top');
-                    if(!(top != null && !isNaN(top))) return "unable to parse top of the Cylinder primitive for ID = " + primitiveId;
-                    else primitive.top = top;
-
-                    // height
-                    var height = this.reader.getFloat(grandChildren[0],'height');
-                    if(!(height != null && !isNaN(height))) return "unable to parse height of the Cylinder primitive for ID = " + primitiveId;
-                    else primitive.height = height;
-
-                    // slices
-                    var slices = this.reader.getFloat(grandChildren[0],'slices');
-                    if(!(slices != null && !isNaN(slices))) return "unable to parse slices of the Cylinder primitive for ID = " + primitiveId;
-                    else if(slices % 1 != 0) return "slices parameter of Cylinder must be an integer for ID = " + primitiveId;
-                    else primitive.slices = slices;
-
-                    // stacks
-                    var stacks = this.reader.getFloat(grandChildren[0],'stacks');
-                    if(!(stacks != null && !isNaN(stacks))) return "unable to parse stacks of the Cylinder primitive for ID = " + primitiveId;
-                    else if(stacks % 1 != 0) return "stacks parameter of Cylinder must be an integer for ID = " + primitiveId;
-                    else primitive.stacks = stacks;                
-                }
-                // SPHERE
-                else if(grandChildren[0].nodeName == "sphere")
-                {
-                    // radius
-                    var radius = this.reader.getFloat(grandChildren[0],'radius');
-                    if(!(radius != null && !isNaN(radius))) return "unable to parse radius of the Sphere primitive for ID = " + primitiveId;
-                    else primitive.radius = radius;
-
-                    // slices
-                    var slices = this.reader.getFloat(grandChildren[0],'slices');
-                    if(!(slices != null && !isNaN(slices))) return "unable to parse slices of the Sphere primitive for ID = " + primitiveId;
-                    else if(slices % 1 != 0) return "slices parameter of Sphere must be an integer for ID = " + primitiveId;
-                    else primitive.slices = slices;
-
-                    // stacks
-                    var stacks = this.reader.getFloat(grandChildren[0],'stacks');
-                    if(!(stacks != null && !isNaN(stacks))) return "unable to parse stacks of the Sphere primitive for ID = " + primitiveId;
-                    else if(stacks % 1 != 0) return "stacks parameter of Sphere must be an integer for ID = " + primitiveId;
-                    else primitive.stacks = stacks;                
-                }
-                // TORUS
-                else if(grandChildren[0].nodeName == "torus")
-                {
-                    // inner
-                    var inner = this.reader.getFloat(grandChildren[0],'inner');
-                    if(!(inner != null && !isNaN(inner))) return "unable to parse inner of the Torus primitive for ID = " + primitiveId;
-                    else primitive.inner = inner;
-
-                    // outer
-                    var outer = this.reader.getFloat(grandChildren[0],'outer');
-                    if(!(outer != null && !isNaN(outer))) return "unable to parse inner of the Torus primitive for ID = " + primitiveId;
-                    else primitive.outer = outer;
-
-                    // slices
-                    var slices = this.reader.getFloat(grandChildren[0],'slices');
-                    if(!(slices != null && !isNaN(slices))) return "unable to parse slices of the Torus primitive for ID = " + primitiveId;
-                    else if(slices % 1 != 0) return "slices parameter of Torus must be an integer for ID = " + primitiveId;
-                    else primitive.slices = slices;
-
-                    // loops
-                    var loops = this.reader.getFloat(grandChildren[0],'loops');
-                    if(!(loops != null && !isNaN(loops))) return "unable to parse loops of the Torus primitive for ID = " + primitiveId;
-                    else if(loops % 1 != 0) return "loops parameter of Torus must be an integer for ID = " + primitiveId;
-                    else primitive.loops = loops;
-                }
-                // PLANE
-                else if(grandChildren[0].nodeName == "plane")
-                {       
-                    // npartsU
-                    var npartsU = this.reader.getFloat(grandChildren[0],'npartsU');
-                    if(!(npartsU != null && !isNaN(npartsU))) return "unable to parse npartsU of the Plane primitive for ID = " + primitiveId;                
-                    else if(npartsU % 1 != 0) return "npartsU parameter of Plane must be an integer for ID = " + primitiveId;
-                    else primitive.npartsU = npartsU;
+                primitive.controlPoints = cp;
+            }
+            //CYLINDER2
+            else if(primitive.type == "cylinder2")
+            {
+                // base
+                var base = this.reader.getFloat(grandChildren[0],'base');
+                if(!(base != null && !isNaN(base))) return "unable to parse base of the Cylinder2";
+                else primitive.base = base;
+                
+                // top
+                var top = this.reader.getFloat(grandChildren[0],'top');
+                if(!(top != null && !isNaN(top))) return "unable to parse top of the Cylinder2";
+                else primitive.top = top;
+                
+                // height
+                var height = this.reader.getFloat(grandChildren[0],'height');
+                if(!(height != null && !isNaN(height))) return "unable to parse height of the Cylinder2";
+                else primitive.height = height;
                     
-                    // npartsV
-                    var npartsV = this.reader.getFloat(grandChildren[0],'npartsV');
-                    if(!(npartsV != null && !isNaN(npartsV))) return "unable to parse npartsV of the Plane primitive for ID = " + primitiveId;                
-                    else if(npartsV % 1 != 0) return "npartsV parameter of Plane must be an integer for ID = " + primitiveId;
-                    else primitive.npartsV = npartsV;
-                }
-                //PATCH
-                else if(grandChildren[0].nodeName == "patch")
-                {     
-                    // npointsU
-                    var npointsU = this.reader.getFloat(grandChildren[0],'npointsU');
-                    if(!(npointsU != null && !isNaN(npointsU))) return "unable to parse npointsU of the Patch primitive for ID = " + primitiveId;                
-                    else if(npointsU % 1 != 0) return "npointsU parameter of Patch must be an integer for ID = " + primitiveId;
-                    else if(npointsU <= 0) return "npointsU parameter of Patch must be greater than 1 for ID = " + primitiveId;
-                    else primitive.npointsU = npointsU;
-                    
-                    // npointsV
-                    var npointsV = this.reader.getFloat(grandChildren[0],'npointsV');
-                    if(!(npointsV != null && !isNaN(npointsV))) return "unable to parse npointsV of the Patch primitive for ID = " + primitiveId;                
-                    else if(npointsV % 1 != 0) return "npointsV parameter of Patch must be an integer for ID = " + primitiveId;
-                    else if(npointsV <= 0) return "npointsV parameter of Patch must be greater than 1 for ID = " + primitiveId;
-                    else primitive.npointsV = npointsV;
-    
-                    // npartsU
-                    var npartsU = this.reader.getFloat(grandChildren[0],'npartsU');
-                    if(!(npartsU != null && !isNaN(npartsU))) return "unable to parse npartsU of the Patch primitive for ID = " + primitiveId;                
-                    else if(npartsU % 1 != 0) return "npartsU parameter of Patch must be an integer for ID = " + primitiveId;
-                    else primitive.npartsU = npartsU;
-                    
-                    // npartsV
-                    var npartsV = this.reader.getFloat(grandChildren[0],'npartsV');
-                    if(!(npartsV != null && !isNaN(npartsV))) return "unable to parse npartsV of the Patch primitive for ID = " + primitiveId;                
-                    else if(npartsV % 1 != 0) return "npartsV parameter of Patch must be an integer for ID = " + primitiveId;
-                    else primitive.npartsV = npartsV;
-    
-                    grandChildren = grandChildren[0].children;
-    
-                    if(grandChildren.length != npointsU * npointsV) return "wrong number of control points of Patch primitive for ID = " + primitiveId;
-                    
-                    var numControlPoints = 0;
-                    var controlPoints = [];
-                    var controlPoint = [];    
-    
-                    for(let i = 0; i < grandChildren.length; i++)
+                // slices
+                var slices = this.reader.getFloat(grandChildren[0],'slices');
+                if(!(slices != null && !isNaN(slices))) return "unable to parse slices of the Cylinder2 primitive";                
+                else if(slices % 1 != 0) return "slices parameter of Plane must be an integer";
+                else primitive.slices = slices;
+                
+                // stacks
+                var stacks = this.reader.getFloat(grandChildren[0],'stacks');
+                if(!(stacks != null && !isNaN(stacks))) return "unable to parse stacks of the Cylinder2 primitive";                
+                else if(stacks % 1 != 0) return "stacks parameter of Cylinder2 must be an integer";
+                else primitive.stacks = stacks;
+            }
+            // TERRAIN
+            else if(primitive.type == "terrain")
+            {
+                // idtexture
+                var idtexture = this.reader.getString(grandChildren[0],'idtexture');
+                if(idtexture == null || idtexture == "") return "unable to parse idtexture of the terrain primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
                     {
-                        if(grandChildren[i].nodeName != "controlPoint")
+                        if(this.textures[l].id == idtexture)
                         {
-                            this.onXMLMinorError("wrong child tag <" + grandChildren[i].nodeName + "> for patch primitive with ID = " + primitiveId);
-                            continue;
+                            primitive.idtexture = this.textures[l].text;
+                            idFound = true;
+                            break;
                         }
-                        
-                        controlPoint = [];
-    
-                        var xx = this.reader.getFloat(grandChildren[i],'xx');
-                        if(!(xx != null && !isNaN(xx))) return "unable to parse xx value of the controlPoint[" + (i + 1) + "], patch primitive with ID = " + primitiveId;
-                        else controlPoint[0] = xx;
-    
-                        var yy = this.reader.getFloat(grandChildren[i],'yy');
-                        if(!(yy != null && !isNaN(yy))) return "unable to parse yy value of the controlPoint[" + (i + 1) + "], patch primitive with ID = " + primitiveId;
-                        else controlPoint[1] = yy;
-    
-                        var zz = this.reader.getFloat(grandChildren[i],'zz');
-                        if(!(zz != null && !isNaN(zz))) return "unable to parse zz value of the controlPoint[" + (i + 1) + "], patch primitive with ID = " + primitiveId;
-                        else controlPoint[2] = zz;
-    
-                        controlPoint[3] = 1.0;
-    
-                        controlPoints.push(controlPoint);
-                        numControlPoints++;                
-                    }
-    
-                    if(numControlPoints != npointsU * npointsV) return "wrong number of correct control points of Patch primitive for ID = " + primitiveId;
-                    
-                    var cp = [];
-                    var cpV = [];
-                    let counter = 0;
-    
-                    for(let i = 0; i < npointsU; i++)
-                    {
-                        cpV = [];
-                        for(let j = 0; j < npointsV; j++)
-                        {
-                            cpV.push(controlPoints[counter]);
-                            counter++;
-                        }
-                        cp.push(cpV);
-                    }
-                    
-                    primitive.controlPoints = cp;
-                }
-                //CYLINDER2
-                else if(grandChildren[0].nodeName == "cylinder2")
-                {
-                    // base
-                    var base = this.reader.getFloat(grandChildren[0],'base');
-                    if(!(base != null && !isNaN(base))) return "unable to parse base of the Cylinder2";
-                    else primitive.base = base;
-                    
-                    // top
-                    var top = this.reader.getFloat(grandChildren[0],'top');
-                    if(!(top != null && !isNaN(top))) return "unable to parse top of the Cylinder2";
-                    else primitive.top = top;
-                    
-                    // height
-                    var height = this.reader.getFloat(grandChildren[0],'height');
-                    if(!(height != null && !isNaN(height))) return "unable to parse height of the Cylinder2";
-                    else primitive.height = height;
-                     
-                    // slices
-                    var slices = this.reader.getFloat(grandChildren[0],'slices');
-                    if(!(slices != null && !isNaN(slices))) return "unable to parse slices of the Cylinder2 primitive";                
-                    else if(slices % 1 != 0) return "slices parameter of Plane must be an integer";
-                    else primitive.slices = slices;
-                    
-                    // stacks
-                    var stacks = this.reader.getFloat(grandChildren[0],'stacks');
-                    if(!(stacks != null && !isNaN(stacks))) return "unable to parse stacks of the Cylinder2 primitive";                
-                    else if(stacks % 1 != 0) return "stacks parameter of Cylinder2 must be an integer";
-                    else primitive.stacks = stacks;
-                }
-                // TERRAIN
-                else if(grandChildren[0].nodeName == "terrain")
-                {
-                    // idtexture
-                    var idtexture = this.reader.getString(grandChildren[0],'idtexture');
-                    if(idtexture == null || idtexture == "") return "unable to parse idtexture of the terrain primitive for ID = " + primitiveId;
-                    else
-                    {
-                        var l = 0;
-                        var idFound = false;
-    
-                        for(l; l < this.textures.length; l++)
-                        {
-                            if(this.textures[l].id == idtexture)
-                            {
-                                primitive.idtexture = this.textures[l].text;
-                                idFound = true;
-                                break;
-                            }
-                        }
-    
-                        if(!idFound) return "no texture matches the reference idtexture, primitive with ID = " + primitiveId;
-                    
-                    }
-    
-                    // idheightmap
-                    var idheightmap = this.reader.getString(grandChildren[0],'idheightmap');
-                    if(idheightmap == null || idheightmap == "") return "unable to parse idheightmap of the terrain primitive for ID = " + primitiveId;
-                    else
-                    {
-                        var l = 0;
-                        var idFound = false;
-    
-                        for(l; l < this.textures.length; l++)
-                        {
-                            if(this.textures[l].id == idheightmap)
-                            {
-                                primitive.idheightmap = this.textures[l].text;
-                                idFound = true;
-                                break;
-                            }
-                        }
-    
-                        if(!idFound) return "no texture matches the reference idheightmap, primmitive with ID = " + primitiveId;
-                    
-                    }
-    
-                    // parts
-                    var parts = this.reader.getFloat(grandChildren[0],'parts');
-                    if(!(parts != null && !isNaN(parts))) return "unable to parse parts of the terrain primitive for ID = " + primitiveId;               
-                    else if(parts % 1 != 0) return "parts parameter of Cylinder2 must be an integer";
-                    else primitive.parts = parts;
-    
-                    // heightscale
-                    var heightscale = this.reader.getFloat(grandChildren[0],'heightscale');
-                    if(!(heightscale != null && !isNaN(heightscale))) return "unable to parse heightscale of the terrain primitive for ID = " + primitiveId;               
-                    else primitive.heightscale = heightscale;
-                }
-                // WATER
-                else if(grandChildren[0].nodeName == "water")
-                {
-                    // idtexture
-                    var idtexture = this.reader.getString(grandChildren[0],'idtexture');
-                    if(idtexture == null || idtexture == "") return "unable to parse idtexture of the terrain primitive for ID = " + primitiveId;
-                    else
-                    {
-                        var l = 0;
-                        var idFound = false;
-
-                        for(l; l < this.textures.length; l++)
-                        {
-                            if(this.textures[l].id == idtexture)
-                            {
-                                primitive.idtexture = this.textures[l].text;
-                                idFound = true;
-                                break;
-                            }
-                        }
-
-                        if(!idFound) return "no texture matches the reference idtexture, primitive with ID = " + primitiveId;
-                    
                     }
 
-                    // idwavemap
-                    var idwavemap = this.reader.getString(grandChildren[0],'idwavemap');
-                    if(idwavemap == null || idwavemap == "") return "unable to parse idwavemap of the terrain primitive for ID = " + primitiveId;
-                    else
+                    if(!idFound) return "no texture matches the reference idtexture, primitive with ID = " + primitiveId;
+                
+                }
+
+                // idheightmap
+                var idheightmap = this.reader.getString(grandChildren[0],'idheightmap');
+                if(idheightmap == null || idheightmap == "") return "unable to parse idheightmap of the terrain primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
                     {
-                        var l = 0;
-                        var idFound = false;
-
-                        for(l; l < this.textures.length; l++)
+                        if(this.textures[l].id == idheightmap)
                         {
-                            if(this.textures[l].id == idtexture)
-                            {
-                                primitive.idwavemap = this.textures[l].text;
-                                idFound = true;
-                                break;
-                            }
+                            primitive.idheightmap = this.textures[l].text;
+                            idFound = true;
+                            break;
                         }
-
-                        if(!idFound) return "no texture matches the reference idwavemap, primitive with ID = " + primitiveId;
-                    
                     }
 
-                    // parts
-                    var parts = this.reader.getFloat(grandChildren[0],'parts');
-                    if(!(parts != null && !isNaN(parts))) return "unable to parse parts of the terrain primitive for ID = " + primitiveId;               
-                    else if(parts % 1 != 0) return "parts parameter of Cylinder2 must be an integer";
-                    else primitive.parts = parts;
+                    if(!idFound) return "no texture matches the reference idheightmap, primmitive with ID = " + primitiveId;
+                
+                }
 
-                    // heightscale
-                    var heightscale = this.reader.getFloat(grandChildren[0],'heightscale');
-                    if(!(heightscale != null && !isNaN(heightscale))) return "unable to parse heightscale of the terrain primitive for ID = " + primitiveId;               
-                    else primitive.heightscale = heightscale;
+                // parts
+                var parts = this.reader.getFloat(grandChildren[0],'parts');
+                if(!(parts != null && !isNaN(parts))) return "unable to parse parts of the terrain primitive for ID = " + primitiveId;               
+                else if(parts % 1 != 0) return "parts parameter of Cylinder2 must be an integer";
+                else primitive.parts = parts;
 
-                    // texscale
-                    var texscale = this.reader.getFloat(grandChildren[0],'texscale');
-                    if(!(texscale != null && !isNaN(texscale))) return "unable to parse texscale of the terrain primitive for ID = " + primitiveId;               
-                    else primitive.texscale = texscale;                
+                // heightscale
+                var heightscale = this.reader.getFloat(grandChildren[0],'heightscale');
+                if(!(heightscale != null && !isNaN(heightscale))) return "unable to parse heightscale of the terrain primitive for ID = " + primitiveId;               
+                else primitive.heightscale = heightscale;
+            }
+            // WATER
+            else if(primitive.type == "water")
+            {
+                // idtexture
+                var idtexture = this.reader.getString(grandChildren[0],'idtexture');
+                if(idtexture == null || idtexture == "") return "unable to parse idtexture of the terrain primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == idtexture)
+                        {
+                            primitive.idtexture = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference idtexture, primitive with ID = " + primitiveId;
+                
+                }
+
+                // idwavemap
+                var idwavemap = this.reader.getString(grandChildren[0],'idwavemap');
+                if(idwavemap == null || idwavemap == "") return "unable to parse idwavemap of the terrain primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == idtexture)
+                        {
+                            primitive.idwavemap = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference idwavemap, primitive with ID = " + primitiveId;
+                
+                }
+
+                // parts
+                var parts = this.reader.getFloat(grandChildren[0],'parts');
+                if(!(parts != null && !isNaN(parts))) return "unable to parse parts of the terrain primitive for ID = " + primitiveId;               
+                else if(parts % 1 != 0) return "parts parameter of Cylinder2 must be an integer";
+                else primitive.parts = parts;
+
+                // heightscale
+                var heightscale = this.reader.getFloat(grandChildren[0],'heightscale');
+                if(!(heightscale != null && !isNaN(heightscale))) return "unable to parse heightscale of the terrain primitive for ID = " + primitiveId;               
+                else primitive.heightscale = heightscale;
+
+                // texscale
+                var texscale = this.reader.getFloat(grandChildren[0],'texscale');
+                if(!(texscale != null && !isNaN(texscale))) return "unable to parse texscale of the terrain primitive for ID = " + primitiveId;               
+                else primitive.texscale = texscale;                
+            }
+            // BOARD
+            else if(primitive.type == "board")
+            {
+                // npartsX
+                var npartsX = this.reader.getFloat(grandChildren[0],'npartsX');
+                if(!(npartsX != null && !isNaN(npartsX))) return "unable to parse npartsX of the Board primitive for ID = " + primitiveId;                
+                else if(npartsX % 1 != 0) return "npartsX parameter of Board must be an integer for ID = " + primitiveId;
+                else if(npartsX < 0) return "npartsX parameter of Board must be greater than zero for ID = " + primitiveId;
+                else primitive.npartsX = npartsX;
+
+                // npartsY
+                var npartsY = this.reader.getFloat(grandChildren[0],'npartsY');
+                if(!(npartsY != null && !isNaN(npartsY))) return "unable to parse npartsY of the Board primitive for ID = " + primitiveId;                
+                else if(npartsY % 1 != 0) return "npartsY parameter of Board must be an integer for ID = " + primitiveId;
+                else if(npartsY < 0) return "npartsY parameter of Board must be an integer for ID = " + primitiveId;
+                else primitive.npartsY = npartsY;
+
+                // textureP1
+                var idtextureP1 = this.reader.getString(grandChildren[0],'textureP1');
+                if(idtextureP1 == null || idtextureP1 == "") return "unable to parse idtextureP1 of the Board primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == idtextureP1)
+                        {
+                            primitive.idtextureP1 = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference idtextureP1, primitive with ID = " + primitiveId;
+                
+                }
+
+                // textureP2
+                var idtextureP2 = this.reader.getString(grandChildren[0],'textureP2');
+                if(idtextureP2 == null || idtextureP2 == "") return "unable to parse idtextureP2 of the Board primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == idtextureP2)
+                        {
+                            primitive.idtextureP2 = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference idtextureP2, primitive with ID = " + primitiveId;
+                
+                }
+
+                // textureSelected
+                var textureSelected = this.reader.getString(grandChildren[0],'textureSelected');
+                if(textureSelected == null || textureSelected == "") return "unable to parse textureSelected of the Board primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == textureSelected)
+                        {
+                            primitive.textureSelected = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference textureSelected, primitive with ID = " + primitiveId;
+                
                 }
             }
-            else
-                primitive.type = children[i].nodeName;
             
             if(primitive.type == "rectangle") primitive.obj = new Rectangle(this.scene, primitive.x1, primitive.y1, primitive.x2, primitive.y2);
             else if(primitive.type == "triangle") primitive.obj = new Triangle(this.scene, primitive.x1, primitive.y1, primitive.z1, primitive.x2, primitive.y2, primitive.z2, primitive.x3, primitive.y3, primitive.z3);
@@ -1375,6 +1453,7 @@ class MySceneGraph {
             else if(primitive.type == "cylinder2") primitive.obj = new Cylinder2(this.scene, primitive.base, primitive.top, primitive.height, primitive.slices, primitive.stacks);
             else if(primitive.type == "terrain") primitive.obj = new Terrain(this.scene, primitive.idtexture, primitive.idheightmap, primitive.parts, primitive.heightscale);
             else if(primitive.type == "water") primitive.obj = new Water(this.scene, primitive.idtexture, primitive.idwavemap, primitive.parts, primitive.heightscale, primitive.texscale);
+            else if(primitive.type == "board") primitive.obj = new Board(this.scene, primitive.npartsX, primitive.npartsY, primitive.idtextureP1, primitive.idtextureP2, primitive.textureSelected);            
             
 
             this.primitives.push(primitive);

@@ -3,6 +3,7 @@
     Sala,tipo escritorio, prateleiras, etc...
     duas cadeiras, mesa
     tabuleiro
-
+    sideBoard com as peças pousadas entre si
+    
 2º scene
 
