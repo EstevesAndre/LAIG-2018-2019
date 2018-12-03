@@ -126,6 +126,10 @@
         <primitive id="table_leg">
             <cylinder base="0.25" top="0.25" height="2.0" slices="12" stacks="12"/>
         </primitive>
+
+        <primitive id="board">
+            <board npartsX="5.0" npartsY="5.0" textureP1="wood" textureP2="darkwood" textureSelected="wood" />
+        </primitive>
     </primitives>
 
     <components>            
@@ -151,6 +155,7 @@
                 <componentref id="flags" />
                 <componentref id="table_center" />
                 <componentref id="table_side" />
+                <componentref id="board" />
             </children>
         </component>
 
@@ -1160,6 +1165,24 @@
 
             <children>
                 <primitiveref id="square"/>
+            </children>
+        </component>
+
+        <component id="board">
+            <transformation>
+                <scale x="3.5" y="1.0" z="3.5"/>
+                <translate x="0.0" y="2.21" z="0.0"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="board"/>
             </children>
         </component>
         

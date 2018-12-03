@@ -59,12 +59,10 @@ class Board extends CGFobject
         {                     
             for(let j = 0; j < this.spaces[i].length; j++)
             {   
-                if(i == j || j + i == this.spaces.length - 1)
-                    this.def.setTexture(this.textureSelected);
-                else if(j > i)
-                    this.def.setTexture(this.textureP2);
-                else                 
+                if((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
                     this.def.setTexture(this.textureP1);
+                else                
+                    this.def.setTexture(this.textureP2);
                 this.def.apply();
                 this.spaces[i][j].display();
             }            
