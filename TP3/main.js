@@ -11,7 +11,7 @@ function getUrlVars() {
     return vars;
 }	 
 //Include additional files here
-serialInclude(['lib/CGF.js', 'XMLscene.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js',
                 'primitives/Water.js','MyInterface.js', 
                 'animations/Animation.js','animations/LinearAnimation.js',
                 'animations/CircularAnimation.js','MySceneGraph.js',
