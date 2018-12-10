@@ -64,7 +64,7 @@
 
     <primitives>
         <primitive id="prim_Board">
-            <board npartsX="5.0" npartsY="5.0" textureP1="neondark" textureP2="neon" textureSelected="neonselected" />
+            <board npartsX="5.0" npartsY="5.0" textureP1="neondark" textureP2="neon" textureSelected="neonselected" texturePiece1="neondark" texturePiece2="neon"/>
         </primitive>
     </primitives>
 

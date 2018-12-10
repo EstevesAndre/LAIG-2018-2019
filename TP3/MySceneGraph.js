@@ -1442,6 +1442,50 @@ class MySceneGraph {
                     if(!idFound) return "no texture matches the reference textureSelected, primitive with ID = " + primitiveId;
                 
                 }
+
+                // texturePiece1
+                var texturePiece1 = this.reader.getString(grandChildren[0],'texturePiece1');
+                if(texturePiece1 == null || texturePiece1 == "") return "unable to parse texturePiece1 of the Board primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == texturePiece1)
+                        {
+                            primitive.texturePiece1 = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference texturePiece1, primitive with ID = " + primitiveId;
+                
+                }
+
+                // texturePiece2
+                var texturePiece2 = this.reader.getString(grandChildren[0],'texturePiece2');
+                if(texturePiece2 == null || texturePiece2 == "") return "unable to parse texturePiece2 of the Board primitive for ID = " + primitiveId;
+                else
+                {
+                    var l = 0;
+                    var idFound = false;
+
+                    for(l; l < this.textures.length; l++)
+                    {
+                        if(this.textures[l].id == texturePiece2)
+                        {
+                            primitive.texturePiece2 = this.textures[l].text;
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if(!idFound) return "no texture matches the reference texturePiece2, primitive with ID = " + primitiveId;
+                
+                }
             }
             
             if(primitive.type == "rectangle") primitive.obj = new Rectangle(this.scene, primitive.x1, primitive.y1, primitive.x2, primitive.y2);
@@ -1455,7 +1499,7 @@ class MySceneGraph {
             else if(primitive.type == "cylinder2") primitive.obj = new Cylinder2(this.scene, primitive.base, primitive.top, primitive.height, primitive.slices, primitive.stacks);
             else if(primitive.type == "terrain") primitive.obj = new Terrain(this.scene, primitive.idtexture, primitive.idheightmap, primitive.parts, primitive.heightscale);
             else if(primitive.type == "water") primitive.obj = new Water(this.scene, primitive.idtexture, primitive.idwavemap, primitive.parts, primitive.heightscale, primitive.texscale);
-            else if(primitive.type == "board") primitive.obj = new Board(this.scene, primitive.npartsX, primitive.npartsY, primitive.idtextureP1, primitive.idtextureP2, primitive.textureSelected);            
+            else if(primitive.type == "board") primitive.obj = new Board(this.scene, primitive.npartsX, primitive.npartsY, primitive.idtextureP1, primitive.idtextureP2, primitive.textureSelected, primitive.texturePiece1, primitive.texturePiece2);            
             
 
             this.primitives.push(primitive);

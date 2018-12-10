@@ -1,6 +1,6 @@
 class Board extends CGFobject 
 {
-    constructor(scene, npartsX, npartsY, textureP1, textureP2, textureSelected)
+    constructor(scene, npartsX, npartsY, textureP1, textureP2, textureSelected, texturePiece1, texturePiece2)
     {
         super(scene);
 
@@ -8,9 +8,15 @@ class Board extends CGFobject
         this.npartsY = npartsY;
         this.textureP1 = textureP1;
         this.textureP2 = textureP2;
+        this.texturePiece1 = texturePiece1;
+        this.texturePiece2 = texturePiece2;
         this.textureSelected = textureSelected;
 
         this.spaces = [];
+        this.pieces = [];
+
+        this.squareSize = (1.0/this.npartsX);
+        this.pieceSize = (1.0/this.npartsX) * 0.8;
 
         this.def = new CGFappearance(this.scene);
         this.def.setAmbient(1,1,1,1);
@@ -18,7 +24,7 @@ class Board extends CGFobject
         this.def.setTexture(this.textureP1);
                 
         this.createSpaces();
-        this.createBorder();
+        this.createPieces(scene);
     };
 
     createSpaces()
@@ -41,15 +47,28 @@ class Board extends CGFobject
         }
     };
 
-    createBorder()
+    createPieces(scene)
     {
-       // this.upBorder = new Quadrilateral(this.scene,-0.6,-0.6, 0.6,-0.6, 0.5,-0.5, -0.5,-0.5);
-    };
+        for(let i = 0; i < this.npartsX * 2; i++)
+        {
+            if(i < this.npartsX)
+            {
+                this.pieces.push(new Piece(scene, this.pieceSize, this.texturePiece1, this.textureP1, this.textureP2, 1, i+1));
+            }
+            else
+            {
+                this.pieces.push(new Piece(scene, this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2, this.npartsY, i+1-this.npartsX));
+            }
+        }
+    }
 
     display()
     {  
-        this.displayBoard();
-        this.displayBorder();
+        this.displayPieces();
+        this.scene.pushMatrix();
+            this.scene.rotate(Math.PI/2.0, 0, 0, 1);
+            this.displayBoard();
+        this.scene.popMatrix();
     };
 
     displayBoard()
@@ -69,10 +88,15 @@ class Board extends CGFobject
         }
     };
 
-    displayBorder()
+    displayPieces()
     {
-        this.scene.pushMatrix();
-            //this.leftBorder.display();
-        this.scene.popMatrix();
+        for(let i = 0; i < this.pieces.length; i++)
+        {                     
+            this.scene.pushMatrix();
+                    this.scene.translate(0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize, -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize, 0);
+                    this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);
+                this.pieces[i].display();
+            this.scene.popMatrix(); 
+        }
     };
 };
