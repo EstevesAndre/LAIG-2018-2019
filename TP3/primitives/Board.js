@@ -14,6 +14,7 @@ class Board extends CGFobject
 
         this.spaces = [];
         this.pieces = [];
+        this.piecePicked = null;
 
         this.squareSize = (1.0/this.npartsX);
         this.pieceSize = (1.0/this.npartsX) * 0.8;
@@ -41,7 +42,7 @@ class Board extends CGFobject
             let line = [];
             for(let j = -0.5 - edgeX; j < 0.5 + edgeX - 0.0005; j+= tmhX + space)
             {                
-                line.push(new Rectangle(this.scene,j,i,j+tmhX,i+tmhY));
+                line.push(new PickableObject(this.scene,j,i,j+tmhX,i+tmhY,this.textureSelected));
             }
             this.spaces.push(line);
         }
@@ -83,6 +84,9 @@ class Board extends CGFobject
                 else                
                     this.def.setTexture(this.textureP2);
                 this.def.apply();
+                this.scene.registerForPick(i*this.spaces.length + j + 1, this.spaces[i][j]);
+                
+                this.spaces[i][j].applyTexture();
                 this.spaces[i][j].display();
             }            
         }
