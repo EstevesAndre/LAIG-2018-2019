@@ -8,7 +8,7 @@ class PickableObject extends Rectangle
         this.isPicked = false;
 
         this.def = new CGFappearance(this.scene);
-        this.def.setAmbient(1,0,1,1);
+        this.def.setAmbient(0,0,1,1);
         this.def.setSpecular(0.7,0.7,0.7,1);
         this.def.setTexture(this.texture);
     }
