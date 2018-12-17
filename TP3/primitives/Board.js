@@ -61,7 +61,6 @@ class Board extends CGFobject
                 this.pieces.push(new Piece(scene, "p" + String.fromCharCode(65 - this.npartsX + i), this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2, this.npartsY, i+1-this.npartsX));
             }
         }
-        this.getBoard();
     }
 
     display()
@@ -107,7 +106,7 @@ class Board extends CGFobject
 
     getBoard()
     {
-        var board = new Array(this.npartsY).fill(new Array(this.npartsX).fill("e"));
+        var board = new Array(this.npartsY);
         
         for(var i = 0; i < this.npartsY; i++)
         {
@@ -120,7 +119,6 @@ class Board extends CGFobject
         }
 
         return JSON.stringify(board).replace(/"/g, '');
-
     }
 
     setBoard(board)
@@ -144,6 +142,22 @@ class Board extends CGFobject
                 }
             }
         }
+    }
 
+    getValidMoves(validCoords)
+    {
+        validCoords = validCoords.substring(1,validCoords.length - 1);        
+        let points = (validCoords.match(/\[(.*?)\]/g).map(function(val){ return val.replace(/\[/g, '');})).map(function(val){ return val.replace(/\]/g, '');});
+
+        let validMoves = new Array(this.npartsY);        
+        for(var i = 0; i < this.npartsY; i++) validMoves[i] = new Array(this.npartsX).fill(false);
+        
+        points.forEach(element => {
+            let coords = element.split(',').map(function(item) { return parseInt(item, 10); });
+            validMoves[coords[0] - 1][coords[1] - 1] = true;
+        });
+
+        //console.log(validMoves);
+        console.log(validMoves);
     }
 };
