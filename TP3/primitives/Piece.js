@@ -1,9 +1,10 @@
 class Piece extends CGFobject 
 {
-    constructor(scene, size, texture, textureP1, textureP2, X, Y)
+    constructor(scene, name, size, texture, textureP1, textureP2, X, Y)
     {
         super(scene);
 
+        this.name = name;
         this.size = size;
         this.texture = texture;
         this.textureP1 = textureP1;
@@ -49,7 +50,6 @@ class Piece extends CGFobject
             }
             this.pinSpaces.push(line);
         }
-        console.log(this.pinSpaces);
     };
     
     display()

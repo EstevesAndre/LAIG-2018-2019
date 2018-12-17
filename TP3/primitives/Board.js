@@ -54,13 +54,14 @@ class Board extends CGFobject
         {
             if(i < this.npartsX)
             {
-                this.pieces.push(new Piece(scene, this.pieceSize, this.texturePiece1, this.textureP1, this.textureP2, 1, i+1));
+                this.pieces.push(new Piece(scene, "p" + (i+1), this.pieceSize, this.texturePiece1, this.textureP1, this.textureP2, 1, i+1));
             }
             else
             {
-                this.pieces.push(new Piece(scene, this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2, this.npartsY, i+1-this.npartsX));
+                this.pieces.push(new Piece(scene, "p" + String.fromCharCode(65 - this.npartsX + i), this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2, this.npartsY, i+1-this.npartsX));
             }
         }
+        this.getBoard();
     }
 
     display()
@@ -103,4 +104,46 @@ class Board extends CGFobject
             this.scene.popMatrix(); 
         }
     };
+
+    getBoard()
+    {
+        var board = new Array(this.npartsY).fill(new Array(this.npartsX).fill("e"));
+        
+        for(var i = 0; i < this.npartsY; i++)
+        {
+            board[i] = new Array(this.npartsX).fill("e");
+        }
+
+        for(var i = 0; i < this.pieces.length; i++)
+        {
+            board[this.pieces[i].X - 1][this.pieces[i].Y - 1] = this.pieces[i].name;
+        }
+
+        return JSON.stringify(board).replace(/"/g, '');
+
+    }
+
+    setBoard(board)
+    {
+        var board_str = "<" + board.replace(/\[/g, '').replace(/\]/g, '') + ">";
+        board_str = board_str.replace(/,/g, "><");
+        board_str = (board_str.match(/<(.*?)>/g).map(function(val){ return val.replace(/>/g, '');})).map(function(val){ return val.replace(/</g, '');});;
+        
+        for(var i = 0; i < board_str.length; i++)
+        {
+            if(board_str[i] != "e")
+            {
+                for(var j = 0; j < this.pieces.length; j++)
+                {
+                    if(this.pieces[j].name == board_str[i])
+                    {
+                        this.pieces[j].X = Math.floor(i / this.npartsY) + 1;
+                        this.pieces[j].Y = (i % this.npartsY) + 1;
+                        break; 
+                    }
+                }
+            }
+        }
+
+    }
 };
