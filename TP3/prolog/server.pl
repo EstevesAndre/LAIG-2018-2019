@@ -101,12 +101,32 @@ print_header_line(_).
 %%%%                                       Commands                                                  %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Require your Prolog Files here
+:- consult('eigenstate.pl').
 
-parse_input(handshake, handshake).
-parse_input(test(C,N), Res) :- test(C,Res,N).
+parse_input(handshake, handshake) :- restartData.
 parse_input(quit, goodbye).
 
-test(_,[],N) :- N =< 0.
-test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
-	
+parse_input(setBoard(Board), Ret) :- 
+	board(B),
+	retract(board(B)),
+	assert(board(Board)),
+	Ret is 0.	
+
+parse_input(setPiece(Name,Piece), Ret) :-
+	piece(Name,P),
+	retract(piece(Name,P)),
+	assert(piece(Name,Piece)),
+	Ret is 0.
+
+parse_input(getBoard, Ret):-
+	board(Ret).
+
+parse_input(getPiece(Name), Ret):-
+	piece(Name,Ret).
+
+parse_input(getValidMoves(Piece), Ret):-
+	getAvailableMoves(Piece, [], Ret, 5, 5).
+
+parse_input(computerTurn(Player, Depth), Ret):-
+	if_then_else(Player =:= 1, p2computer(Depth), p1computer(Depth)),
+	Ret is 0.
