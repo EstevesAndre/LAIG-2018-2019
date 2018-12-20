@@ -81,6 +81,7 @@ class Piece extends CGFobject
                     else
                         this.def.setTexture(this.texture);
                     this.def.apply();
+                    this.scene.registerForPick(this.name.charCodeAt(1) * 100 + (i + 1) * 10  + j + 1, this.pinSpaces[i][j]);
                     this.pinSpaces[i][j].display();
                 }            
             }
@@ -89,6 +90,7 @@ class Piece extends CGFobject
         this.scene.pushMatrix();
             this.def.setTexture(this.texture);
             this.def.apply();
+            this.scene.registerForPick(this.name.charCodeAt(1), this.struct);
             this.struct.display();
         this.scene.popMatrix();
     };

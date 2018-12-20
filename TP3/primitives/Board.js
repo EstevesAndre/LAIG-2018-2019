@@ -1,3 +1,6 @@
+const HUMAN = 0;
+const AI = 1;
+
 class Board extends CGFobject 
 {
     constructor(scene, npartsX, npartsY, textureP1, textureP2, textureSelected, texturePiece1, texturePiece2)
@@ -15,6 +18,8 @@ class Board extends CGFobject
         this.spaces = [];
         this.pieces = [];
         this.piecePicked = null;
+        
+        this.playing = false;
 
         this.squareSize = (1.0/this.npartsX);
         this.pieceSize = (1.0/this.npartsX) * 0.8;
@@ -25,7 +30,39 @@ class Board extends CGFobject
         this.def.setTexture(this.textureP1);
                 
         this.createSpaces();
-        this.createPieces(scene);
+    };
+
+    newGame(mode, difficulty)
+    {
+        this.playing = true;
+        this.createPieces();
+        
+        switch(mode)
+        {
+            case 'Player vs Player':
+                this.Player1 = HUMAN;
+                this.Player2 = HUMAN;
+                break;
+            case 'Player vs AI':
+                this.Player1 = HUMAN;
+                this.Player2 = AI;
+                break;
+            case 'AI vs Player':
+                this.Player1 = AI;
+                this.Player2 = HUMAN;
+                break;
+            case 'AI vs AI':
+                this.Player1 = AI;
+                this.Player2 = AI;
+                break;
+            default:
+                this.playing = false;
+                console.log("THAT WAS NOT SUPOSSED TO ENTER HERE!");
+                break;
+        }
+
+        this.currentPlayer = 1;        
+        this.difficulty = difficulty;
     };
 
     createSpaces()
@@ -38,22 +75,22 @@ class Board extends CGFobject
             let line = [];
             for(let j = -0.5; j < 0.5 - 0.0005; j += tmhX)
             {                
-                line.push(new PickableObject(this.scene,j,i,j+tmhX,i+tmhY,this.textureSelected));
+                line.push(new Rectangle(this.scene,j,i,j+tmhX,i+tmhY));
             }
             this.spaces.push(line);
         }
     };
 
-    createPieces(scene)
+    createPieces()
     {
         for(let i = 0; i < this.npartsX * 2; i++)
         {
             if(i < this.npartsX)
-                this.pieces.push(new Piece(scene, "p" + (i+1), this.pieceSize, this.texturePiece1, this.textureP1, this.textureP2, 1, i+1));
+                this.pieces.push(new Piece(this.scene, "p" + (i+1), this.pieceSize, this.texturePiece1, this.textureP1, this.textureP2, 1, i+1));
             else
-                this.pieces.push(new Piece(scene, "p" + String.fromCharCode(65 - this.npartsX + i), this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2, this.npartsY, i+1-this.npartsX));
+                this.pieces.push(new Piece(this.scene, "p" + String.fromCharCode(65 - this.npartsX + i), this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2, this.npartsY, i+1-this.npartsX));
         }
-    }
+    };
 
     display()
     {  
@@ -76,9 +113,8 @@ class Board extends CGFobject
                 else                
                     this.def.setTexture(this.textureP2);
                 this.def.apply();
-                this.scene.registerForPick(i*this.spaces.length + j + 1, this.spaces[i][j]);
-                
-                this.spaces[i][j].applyTexture();
+                this.scene.registerForPick(100 * (i + 1) + 10 * (j + 1), this.spaces[i][j]);
+            
                 this.spaces[i][j].display();
             }            
         }
@@ -111,7 +147,7 @@ class Board extends CGFobject
         }
 
         return JSON.stringify(board).replace(/"/g, '');
-    }
+    };
 
     setBoard(board)
     {
@@ -134,7 +170,7 @@ class Board extends CGFobject
                 }
             }
         }
-    }
+    };
 
     getValidMoves(validCoords)
     {
@@ -150,5 +186,5 @@ class Board extends CGFobject
         });
 
         console.log(validMoves);
-    }
+    };
 };

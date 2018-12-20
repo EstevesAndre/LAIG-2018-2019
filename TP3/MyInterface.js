@@ -40,7 +40,7 @@ class MyInterface extends CGFinterface {
             }
         }
 
-        group.add(this.scene, 'Current_Graph', names);
+        group.add(this.scene, 'Current_Graph', names).name("Theme");
     }
 
     addViewsGroup(views)
@@ -56,7 +56,23 @@ class MyInterface extends CGFinterface {
             }
         }
 
-        this.group.add(this.scene, 'Current_Camera', names);
+        this.group.add(this.scene, 'Current_Camera', names).name("Current Camera");
+    }
+
+    addPlayOptionsGroup()
+    {
+        this.group = this.gui.addFolder("Options");
+        this.group.open();
+
+        var names = ["Player vs Player", "Player vs AI", "AI vs Player", "AI vs AI"];
+
+        this.group.add(this.scene, 'Mode', names);
+        this.group.add(this.scene, 'Difficulty', 1, 3).step(1);
+    }
+
+    addNewGameButton()
+    {
+        this.gui.add(this.scene, 'New_Game').name("New Game");
     }
 
     initKeys()

@@ -1,13 +1,16 @@
 class LinearAnimation extends Animation 
 {
-    constructor(time,controlPoints)
+    constructor(time,controlPoints, loop)
     {
         super(time);
         this.controlPoints = controlPoints;
+        this.loop = loop || false;
+
         this.totalDistance = 0.0;
         this.distancePerVec = [];
         this.timeAtControlPoint = [];
         this.rotationAngles = [];
+        
         this.updateVariables();
     };
 

@@ -104,6 +104,15 @@ class XMLscene extends CGFscene {
         if(this.graphs.length == 2) {        
         this.graph = this.graphs[0];
         this.Current_Graph = this.graph.name;
+        this.Mode = "Player vs Player";
+        this.Difficulty = 1;
+        this.New_Game = function() {
+            for(let i = 0; i < this.graph.primitives.length; i++)
+            {
+                if(this.graph.primitives[i].type == "board")
+                    this.graph.primitives[i].obj.newGame(this.Mode, this.Difficulty);
+            }
+        };
 
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
@@ -122,11 +131,15 @@ class XMLscene extends CGFscene {
         
         this.initLights();
 
+        this.interface.addPlayOptionsGroup();
+
         // Adds looks group.
         this.interface.addLookGroup(this.graphs);
 
         // Adds views group.
         this.interface.addViewsGroup(this.graph.views);
+        
+        this.interface.addNewGameButton();
 
         this.sceneInited = true;}
     }
@@ -266,7 +279,6 @@ class XMLscene extends CGFscene {
                     {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        obj.togglePicked();
                     }
                 }
                 this.pickResults.splice(0,this.pickResults.length);
