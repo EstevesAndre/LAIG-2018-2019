@@ -33,14 +33,10 @@ class Board extends CGFobject
         var tmhX = 1.0/this.npartsX;
         var tmhY = 1.0/this.npartsY;
 
-        let space = 0.0;
-        var edgeX = space * this.npartsX;
-        var edgeY = space * this.npartsY;
-        
-        for(let i = -0.5 - edgeY; i < 0.5 + edgeY -0.0005; i += tmhY + space)
+        for(let i = -0.5; i < 0.5 - 0.0005; i += tmhY)
         {
             let line = [];
-            for(let j = -0.5 - edgeX; j < 0.5 + edgeX - 0.0005; j+= tmhX + space)
+            for(let j = -0.5; j < 0.5 - 0.0005; j += tmhX)
             {                
                 line.push(new PickableObject(this.scene,j,i,j+tmhX,i+tmhY,this.textureSelected));
             }
@@ -53,13 +49,9 @@ class Board extends CGFobject
         for(let i = 0; i < this.npartsX * 2; i++)
         {
             if(i < this.npartsX)
-            {
                 this.pieces.push(new Piece(scene, "p" + (i+1), this.pieceSize, this.texturePiece1, this.textureP1, this.textureP2, 1, i+1));
-            }
             else
-            {
                 this.pieces.push(new Piece(scene, "p" + String.fromCharCode(65 - this.npartsX + i), this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2, this.npartsY, i+1-this.npartsX));
-            }
         }
     }
 
@@ -157,7 +149,6 @@ class Board extends CGFobject
             validMoves[coords[0] - 1][coords[1] - 1] = true;
         });
 
-        //console.log(validMoves);
         console.log(validMoves);
     }
 };
