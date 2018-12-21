@@ -85,5 +85,4 @@ class MyInterface extends CGFinterface {
         if(event.code == "KeyM")
             this.scene.Mcnt++;
 	};
-
 }

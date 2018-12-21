@@ -21,7 +21,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js',
                 'primitives/Terrain.js','primitives/Torus.js',
                 'primitives/Sphere.js','primitives/Patch.js',
                 'primitives/Board.js','primitives/Box.js', 
-                'primitives/Piece.js',
+                'primitives/Piece.js','StateMachine.js',
                 
 main=function()
 {

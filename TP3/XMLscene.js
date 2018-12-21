@@ -279,6 +279,11 @@ class XMLscene extends CGFscene {
                     {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
+                        for(let i = 0; i < this.graph.primitives.length; i++)
+                        {
+                            if(this.graph.primitives[i].type == "board")
+                                this.graph.primitives[i].obj.stateMachine.event(customId);
+                        }
                     }
                 }
                 this.pickResults.splice(0,this.pickResults.length);

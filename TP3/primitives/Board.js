@@ -24,6 +24,8 @@ class Board extends CGFobject
         this.squareSize = (1.0/this.npartsX);
         this.pieceSize = (1.0/this.npartsX) * 0.8;
 
+        this.stateMachine = new StateMachine(this);
+
         this.def = new CGFappearance(this.scene);
         this.def.setAmbient(1,1,1,1);
         this.def.setSpecular(0.7,0.7,0.7,1);
@@ -37,32 +39,37 @@ class Board extends CGFobject
         this.playing = true;
         this.createPieces();
         
+        this.difficulty = difficulty;
+
         switch(mode)
         {
             case 'Player vs Player':
                 this.Player1 = HUMAN;
                 this.Player2 = HUMAN;
+                this.currentState = P1_CHOOSE_PIECE;
                 break;
             case 'Player vs AI':
                 this.Player1 = HUMAN;
                 this.Player2 = AI;
+                this.currentState = P1_CHOOSE_PIECE;
                 break;
             case 'AI vs Player':
                 this.Player1 = AI;
                 this.Player2 = HUMAN;
+                this.playComputerTurn();
+                this.currentState = P2_CHOOSE_PIECE;
                 break;
             case 'AI vs AI':
                 this.Player1 = AI;
                 this.Player2 = AI;
+                this.playing = false;
+                this.playAIGame();
                 break;
             default:
                 this.playing = false;
                 console.log("THAT WAS NOT SUPOSSED TO ENTER HERE!");
                 break;
         }
-
-        this.currentPlayer = 1;        
-        this.difficulty = difficulty;
     };
 
     createSpaces()
@@ -112,6 +119,7 @@ class Board extends CGFobject
                     this.def.setTexture(this.textureP1);
                 else                
                     this.def.setTexture(this.textureP2);
+
                 this.def.apply();
                 this.scene.registerForPick(100 * (i + 1) + 10 * (j + 1), this.spaces[i][j]);
             
