@@ -162,7 +162,8 @@ class Board extends CGFobject
 
         for(var i = 0; i < this.pieces.length; i++)
         {
-            board[this.pieces[i].X - 1][this.pieces[i].Y - 1] = this.pieces[i].name;
+            if(!this.pieces[i].captured)
+                board[this.pieces[i].X - 1][this.pieces[i].Y - 1] = this.pieces[i].name;
         }
 
         return JSON.stringify(board).replace(/"/g, '');
