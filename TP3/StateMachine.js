@@ -2,7 +2,7 @@ const P1_CHOOSE_PIECE = 0;
 const P1_PIECE_SENT = 1;
 const P1_BOARD_SENT = 2;
 const P1_VALID_MOVES = 3;
-const P1_CHOOSE_MOVES = 3;
+const P1_CHOOSE_MOVE = 4;
 const INACTIVE = -1;
 
 class StateMachine
@@ -87,6 +87,52 @@ class StateMachine
                 this.board.setValidMoves(msg);
                 
                 this.currentState = P1_CHOOSE_MOVE;
+            }
+            break;
+            case P1_CHOOSE_MOVE:
+            {
+                if(this.idPicked == 0)
+                return;
+            
+                var id = this.idPicked;
+                this.idPicked = 0;
+
+                var square = this.convertToSquare(id);
+
+                if(this.board.validMoves[square[0] - 1][square[1] - 1])
+                {
+                    this.board.resetValidMoves(msg);
+                    this.board.capturePiece(square);
+                    this.board.movePiece(this.pieceSelected, square);
+                    this.pieceSelected = null;
+                    this.currentState = P1_CHOOSE_PIN_1;
+                }
+                else
+                {
+                    var piece = this.convertToPiece(id);
+                    if(piece == null || piece.charCodeAt(1) > 60)
+                        return;
+                    else
+                    {
+                        this.board.resetValidMoves(msg);
+                        this.pieceSelected = piece;
+                        
+                        var piecePins;
+
+                        for(var i = 0; i < this.board.pieces.length; i++)
+                        {
+                            if(this.board.pieces[i].name == piece)
+                            {
+                                piecePins = this.board.pieces[i].getPiece();
+                            }
+                        }
+
+                        this.getPrologRequest("setPiece(" + piece + "," + piecePins + ")");
+
+                        this.currentState = P1_PIECE_SENT;
+                    }
+                }
+               
             }
             break;
         }
