@@ -43,6 +43,7 @@ class Board extends CGFobject
     newGame(mode, difficulty)
     {
         this.playing = true;
+        this.pieces = [];
         this.createPieces();
         
         this.difficulty = difficulty;
