@@ -3,6 +3,17 @@ const P1_PIECE_SENT = 1;
 const P1_BOARD_SENT = 2;
 const P1_VALID_MOVES = 3;
 const P1_CHOOSE_MOVE = 4;
+const P1_IS_GAME_OVER = 5;
+const P1_CHOOSE_PIN_1 = 6;
+const P1_CHOOSE_PIN_2 = 7;
+const P2_CHOOSE_PIECE = 8;
+const P2_PIECE_SENT = 9;
+const P2_BOARD_SENT = 10;
+const P2_VALID_MOVES = 11;
+const P2_CHOOSE_MOVE = 12;
+const P2_IS_GAME_OVER = 13;
+const P2_CHOOSE_PIN_1 = 14;
+const P2_CHOOSE_PIN_2 = 15;
 const INACTIVE = -1;
 
 class StateMachine
@@ -22,6 +33,7 @@ class StateMachine
     
         switch(this.currentState)
         {
+            //PLAYER 1
             case P1_CHOOSE_PIECE:
             {
                 if(this.idPicked == 0)
@@ -105,7 +117,10 @@ class StateMachine
                     this.board.capturePiece(square);
                     this.board.movePiece(this.pieceSelected, square);
                     this.pieceSelected = null;
-                    this.currentState = P1_CHOOSE_PIN_1;
+
+                    this.getPrologRequest("setBoard(" + this.board.getBoard() + ")");
+
+                    this.currentState = P1_IS_GAME_OVER;
                 }
                 else
                 {
@@ -133,6 +148,278 @@ class StateMachine
                     }
                 }
                
+            }
+            break;
+            case P1_IS_GAME_OVER:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                if(msg != "0")
+                {
+                    this.board.playing = false;
+                    return;
+                }
+                
+                this.currentState = P1_CHOOSE_PIN_1;
+            }
+            break;
+            case P1_CHOOSE_PIN_1:
+            {
+                if(this.idPicked == 0)
+                return;
+            
+                var id = this.idPicked;
+                this.idPicked = 0;
+
+                var pin = this.convertToPin(id);
+
+                if(pin == null)
+                    return;
+
+                if(pin[0].charCodeAt(1) > 60 || (pin[1] == 3 && pin[2] == 3))
+                {
+                    return;
+                }
+                
+                for(var i = 0; i < this.board.pieces.length; i++)
+                {
+                    if(this.board.pieces[i].name == pin[0])
+                    {
+                        piecePins = this.board.pieces[i].pin(pin[1], pin[2]);
+                    }
+                }
+                this.currentState = P1_CHOOSE_PIN_2;
+            }
+            break;
+            case P1_CHOOSE_PIN_2:
+            {
+                if(this.idPicked == 0)
+                return;
+            
+                var id = this.idPicked;
+                this.idPicked = 0;
+
+                var pin = this.convertToPin(id);
+
+                if(pin == null)
+                    return;
+
+                if(pin[0].charCodeAt(1) > 60 || (pin[1] == 3 && pin[2] == 3))
+                {
+                    return;
+                }
+                
+                for(var i = 0; i < this.board.pieces.length; i++)
+                {
+                    if(this.board.pieces[i].name == pin[0])
+                    {
+                        piecePins = this.board.pieces[i].pin(pin[1], pin[2]);
+                    }
+                }
+                
+                if(this.board.Player2 == HUMAN)
+                    this.currentState = P2_CHOOSE_PIECE;
+                else
+                    this.currentState = AI2_SEND_BOARD;
+            }
+            break;
+
+            //PLAYER 2
+            case P2_CHOOSE_PIECE:
+            {
+                if(this.idPicked == 0)
+                    return;
+                
+                var id = this.idPicked;
+                this.idPicked = 0;
+
+                var piece = this.convertToPiece(id);
+
+                if(piece == null || piece.charCodeAt(1) < 60)
+                    return;
+                
+                this.pieceSelected = piece;
+
+                var piecePins;
+
+                for(var i = 0; i < this.board.pieces.length; i++)
+                {
+                    if(this.board.pieces[i].name == piece)
+                    {
+                        piecePins = this.board.pieces[i].getPiece();
+                    }
+                }
+
+                this.getPrologRequest("setPiece(" + piece + "," + piecePins + ")");
+
+                this.currentState = P2_PIECE_SENT;
+            }
+            break;
+            case P2_PIECE_SENT:
+            {
+                if(this.message == null)
+                    return;
+                
+                this.message = null;
+
+                this.getPrologRequest("setBoard(" + this.board.getBoard() + ")");
+                
+                this.currentState = P2_BOARD_SENT;
+            }
+            break;
+            case P2_BOARD_SENT:
+            {
+                if(this.message == null)
+                    return;
+                
+                this.message = null;
+
+                this.getPrologRequest("getValidMoves(" + this.pieceSelected + ")");
+                
+                this.currentState = P2_VALID_MOVES;
+            }
+            break;
+            case P2_VALID_MOVES:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.setValidMoves(msg);
+                
+                this.currentState = P2_CHOOSE_MOVE;
+            }
+            break;
+            case P2_CHOOSE_MOVE:
+            {
+                if(this.idPicked == 0)
+                return;
+            
+                var id = this.idPicked;
+                this.idPicked = 0;
+
+                var square = this.convertToSquare(id);
+
+                if(this.board.validMoves[square[0] - 1][square[1] - 1])
+                {
+                    this.board.resetValidMoves(msg);
+                    this.board.capturePiece(square);
+                    this.board.movePiece(this.pieceSelected, square);
+                    this.pieceSelected = null;
+
+                    this.getPrologRequest("setBoard(" + this.board.getBoard() + ")");
+
+                    this.currentState = P2_IS_GAME_OVER;
+                }
+                else
+                {
+                    var piece = this.convertToPiece(id);
+                    if(piece == null || piece.charCodeAt(1) < 60)
+                        return;
+                    else
+                    {
+                        this.board.resetValidMoves(msg);
+                        this.pieceSelected = piece;
+                        
+                        var piecePins;
+
+                        for(var i = 0; i < this.board.pieces.length; i++)
+                        {
+                            if(this.board.pieces[i].name == piece)
+                            {
+                                piecePins = this.board.pieces[i].getPiece();
+                            }
+                        }
+
+                        this.getPrologRequest("setPiece(" + piece + "," + piecePins + ")");
+
+                        this.currentState = P2_PIECE_SENT;
+                    }
+                }
+               
+            }
+            break;
+            case P2_IS_GAME_OVER:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                if(msg != "0")
+                {
+                    this.board.playing = false;
+                    return;
+                }
+                
+                this.currentState = P2_CHOOSE_PIN_1;
+            }
+            break;
+            case P2_CHOOSE_PIN_1:
+            {
+                if(this.idPicked == 0)
+                return;
+            
+                var id = this.idPicked;
+                this.idPicked = 0;
+
+                var pin = this.convertToPin(id);
+
+                if(pin == null)
+                    return;
+
+                if(pin[0].charCodeAt(1) < 60 || (pin[1] == 3 && pin[2] == 3))
+                {
+                    return;
+                }
+                
+                for(var i = 0; i < this.board.pieces.length; i++)
+                {
+                    if(this.board.pieces[i].name == pin[0])
+                    {
+                        piecePins = this.board.pieces[i].pin(pin[1], pin[2]);
+                    }
+                }
+                this.currentState = P2_CHOOSE_PIN_2;
+            }
+            break;
+            case P2_CHOOSE_PIN_2:
+            {
+                if(this.idPicked == 0)
+                return;
+            
+                var id = this.idPicked;
+                this.idPicked = 0;
+
+                var pin = this.convertToPin(id);
+
+                if(pin == null)
+                    return;
+
+                if(pin[0].charCodeAt(1) < 60 || (pin[1] == 3 && pin[2] == 3))
+                {
+                    return;
+                }
+                
+                for(var i = 0; i < this.board.pieces.length; i++)
+                {
+                    if(this.board.pieces[i].name == pin[0])
+                    {
+                        piecePins = this.board.pieces[i].pin(pin[1], pin[2]);
+                    }
+                }
+                
+                if(this.board.Player1 == HUMAN)
+                    this.currentState = P1_CHOOSE_PIECE;
+                else
+                    this.currentState = AI1_SEND_BOARD;
             }
             break;
         }

@@ -13,6 +13,8 @@ class Piece extends CGFobject
         this.X = X;
         this.Y = Y;
 
+        this.captured = false;
+
         this.pinSpaces = [];
 
         this.struct = new Box(scene, this.size, this.size, 0.2);
@@ -124,4 +126,16 @@ class Piece extends CGFobject
 
         this.pins.reverse();
     };
+
+    pin(X, Y)
+    {
+        if(this.name.charCodeAt(1) >= 65)
+        {
+            this.pins[X - 1][Y - 1] = 'o';
+        }
+        else
+        {
+            this.pins[X - 1][Y - 1] = 'x';
+        }
+    }
 };

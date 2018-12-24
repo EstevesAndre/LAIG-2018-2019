@@ -138,7 +138,10 @@ class Board extends CGFobject
     displayPieces()
     {
         for(let i = 0; i < this.pieces.length; i++)
-        {                     
+        {      
+            if(this.pieces[i].captured)
+                continue;
+
             this.scene.pushMatrix();
                     this.scene.translate(0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize, -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize, 0);
                     this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);
@@ -211,6 +214,33 @@ class Board extends CGFobject
                             [false, false, false, false, false, false],
                             [false, false, false, false, false, false],
                             [false, false, false, false, false, false] ];
+    }
+
+    capturePiece(square)
+    {
+        for(let i = 0; i < this.pieces.length; i++)
+        {                     
+            if(this.pieces[i].X == square[0] && this.pieces[i].Y == square[1])
+            {
+                this.pieces[i].X = 0;
+                this.pieces[i].Y = 0;
+                this.pieces[i].captured = true;
+                break;
+            }
+        }
+    }
+
+    movePiece(piece, square)
+    {
+        for(let i = 0; i < this.pieces.length; i++)
+        {                     
+            if(this.pieces[i].name == piece)
+            {
+                this.pieces[i].X = square[0];
+                this.pieces[i].Y = square[1];
+                break;
+            }
+        }
     }
 
     update(time)
