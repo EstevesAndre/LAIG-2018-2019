@@ -18,7 +18,7 @@ class StateMachine
 
     update()
     {
-        if(!this.board.playing || this.currentState == INACTIVE || this.waitingForResponse || this.idPicked == 0) return;
+        if(!this.board.playing || this.currentState == INACTIVE || this.waitingForResponse) return;
     
         switch(this.currentState)
         {
@@ -32,7 +32,7 @@ class StateMachine
 
                 var piece = this.convertToPiece(id);
 
-                if(piece == null)
+                if(piece == null || piece.charCodeAt(1) > 60)
                     return;
                 
                 this.pieceSelected = piece;
@@ -43,7 +43,7 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == piece)
                     {
-                        piecePins = this.board.pieces[i].getPiece;
+                        piecePins = this.board.pieces[i].getPiece();
                     }
                 }
 

@@ -96,8 +96,9 @@ class Piece extends CGFobject
     };
         
     getPiece()
-    {        
-        return JSON.stringify(this.pins).replace(/"/g, "'");
+    {    
+        var pins = this.pins.slice(0).reverse();
+        return JSON.stringify(pins).replace(/"/g, "'");
     };
 
     setPiece(listPins)
@@ -120,5 +121,7 @@ class Piece extends CGFobject
             this.pins[iter_line] = value;
             iter_line++;
         });
+
+        this.pins.reverse();
     };
 };
