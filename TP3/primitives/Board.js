@@ -18,6 +18,12 @@ class Board extends CGFobject
         this.spaces = [];
         this.pieces = [];
         this.piecePicked = null;
+        this.validMoves = [[false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false] ];
         
         this.playing = false;
 
@@ -40,30 +46,29 @@ class Board extends CGFobject
         this.createPieces();
         
         this.difficulty = difficulty;
+        this.resetValidMoves();
 
         switch(mode)
         {
             case 'Player vs Player':
                 this.Player1 = HUMAN;
                 this.Player2 = HUMAN;
-                this.currentState = P1_CHOOSE_PIECE;
+                this.stateMachine.currentState = P1_CHOOSE_PIECE;
                 break;
             case 'Player vs AI':
                 this.Player1 = HUMAN;
                 this.Player2 = AI;
-                this.currentState = P1_CHOOSE_PIECE;
+                this.stateMachine.currentState = P1_CHOOSE_PIECE;
                 break;
             case 'AI vs Player':
                 this.Player1 = AI;
                 this.Player2 = HUMAN;
-                this.playComputerTurn();
-                this.currentState = P2_CHOOSE_PIECE;
+                this.stateMachine.currentState = AI1_PLAY;
                 break;
             case 'AI vs AI':
                 this.Player1 = AI;
                 this.Player2 = AI;
-                this.playing = false;
-                this.playAIGame();
+                this.stateMachine.currentState = AI1_PLAY;
                 break;
             default:
                 this.playing = false;
@@ -114,8 +119,10 @@ class Board extends CGFobject
         for(let i = 0; i < this.spaces.length; i++)
         {                     
             for(let j = 0; j < this.spaces[i].length; j++)
-            {   
-                if((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
+            { 
+                if(this.validMoves[i][j])
+                    this.def.setTexture(this.textureSelected);  
+                else if((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
                     this.def.setTexture(this.textureP1);
                 else                
                     this.def.setTexture(this.textureP2);
@@ -180,7 +187,7 @@ class Board extends CGFobject
         }
     };
 
-    getValidMoves(validCoords)
+    setValidMoves(validCoords)
     {
         validCoords = validCoords.substring(1,validCoords.length - 1);        
         let points = (validCoords.match(/\[(.*?)\]/g).map(function(val){ return val.replace(/\[/g, '');})).map(function(val){ return val.replace(/\]/g, '');});
@@ -193,6 +200,21 @@ class Board extends CGFobject
             validMoves[coords[0] - 1][coords[1] - 1] = true;
         });
 
-        console.log(validMoves);
+       this.validMoves = validMoves;
     };
+
+    resetValidMoves()
+    {
+        this.validMoves = [[false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false] ];
+    }
+
+    update(time)
+    {
+        this.stateMachine.update();
+    }
 };

@@ -264,7 +264,7 @@ class XMLscene extends CGFscene {
 
         for(let i = 0; i < this.graph.primitives.length; i++)
         {
-            if(this.graph.primitives[i].type == "water")
+            if(this.graph.primitives[i].type == "water" || this.graph.primitives[i].type == "board")
                 this.graph.primitives[i].obj.update(this.deltaTime);
         }
     }
@@ -282,7 +282,12 @@ class XMLscene extends CGFscene {
                         for(let i = 0; i < this.graph.primitives.length; i++)
                         {
                             if(this.graph.primitives[i].type == "board")
-                                this.graph.primitives[i].obj.stateMachine.event(customId);
+                            {
+                                    if(this.graph.primitives[i].obj.playing &&
+                                        !this.graph.primitives[i].obj.stateMachine.waitingForResponse &&
+                                        this.graph.primitives[i].obj.stateMachine.idPicked == 0 )
+                                            this.graph.primitives[i].obj.stateMachine.idPicked = customId;
+                            }
                         }
                     }
                 }

@@ -107,12 +107,14 @@ parse_input(handshake, handshake) :- restartData.
 parse_input(quit, goodbye).
 
 parse_input(setBoard(Board), Ret) :- 
+	restartData,
 	board(B),
 	retract(board(B)),
 	assert(board(Board)),
 	Ret is 0.	
 
 parse_input(setPiece(Name,Piece), Ret) :-
+	restartData,
 	piece(Name,P),
 	retract(piece(Name,P)),
 	assert(piece(Name,Piece)),
