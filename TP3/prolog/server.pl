@@ -107,12 +107,14 @@ parse_input(handshake, handshake) :- restartData.
 parse_input(quit, goodbye).
 
 parse_input(setBoard(Board), Ret) :- 
-	if_then_else(board(B), retract(board(B)), true),
+	board(B),
+	retract(board(B)),
 	assert(board(Board)),
 	Ret is 0.	
 
 parse_input(setPiece(Name,Piece), Ret) :-
-	if_then_else(piece(Name,P), retract(piece(Name,P)), true),
+	piece(Name, P),
+	retract(piece(Name,P)),
 	assert(piece(Name,Piece)),
 	Ret is 0.
 
@@ -127,9 +129,9 @@ parse_input(getValidMoves(Piece), Ret):-
 
 parse_input(computerTurn(Player, Depth), Ret):-
 	if_then_else(Player =:= 1, p2computer(Depth), p1computer(Depth)),
-	Ret is 0.
+	Ret = 'MOVE PLAYED'.
 
 parse_input(isGameOver, Ret):-
 	if_then_else(winnerP1(""),
-			if_then_else(winnerP2(""), Ret is 0, Ret is 2),
-			Ret is 1).
+			if_then_else(winnerP2(""), Ret is 0, Ret is 1),
+			Ret is 2).

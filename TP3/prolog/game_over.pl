@@ -18,10 +18,6 @@ winnerP1(_) :-
     checkPlayerPieces([p1, p2, p3, p4, p5, p6], 0),
     checkP1Pins, !.
 
-winnerP1(Player1) :-
-    printWin(Player1), nl, nl,
-    fail.
-
 /* Checks for player 2 win
 
     Checks for insufficient pieces in player 1 side and for possible seondary win condition - (piece full of pins)
@@ -32,10 +28,6 @@ winnerP1(Player1) :-
 winnerP2(_) :-
     checkPlayerPieces([pA, pB, pC, pD, pE, pF], 0),
     checkP2Pins, !.
-
-winnerP2(Player2) :-
-    printWin(Player2), nl, nl,
-    fail.
 
 
 /* Prints win menu */

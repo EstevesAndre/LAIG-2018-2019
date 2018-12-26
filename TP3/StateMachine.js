@@ -4,6 +4,7 @@ const P1_BOARD_SENT = 2;
 const P1_VALID_MOVES = 3;
 const P1_CHOOSE_MOVE = 4;
 const P1_IS_GAME_OVER = 5;
+const P1_GAME_OVER_RESPONSE = 50;
 const P1_CHOOSE_PIN_1 = 6;
 const P1_CHOOSE_PIN_2 = 7;
 const P2_CHOOSE_PIECE = 8;
@@ -12,8 +13,43 @@ const P2_BOARD_SENT = 10;
 const P2_VALID_MOVES = 11;
 const P2_CHOOSE_MOVE = 12;
 const P2_IS_GAME_OVER = 13;
+const P2_GAME_OVER_RESPONSE = 130;
 const P2_CHOOSE_PIN_1 = 14;
 const P2_CHOOSE_PIN_2 = 15;
+const AI1_SEND_BOARD = 16;
+const AI1_BOARD_SENT = 17;
+const AI1_PIECES_SENT = 18;
+const AI1_BOARD_REQUEST = 19;
+const AI1_PIECE_1_REQUEST = 20;
+const AI1_PIECE_2_REQUEST = 21;
+const AI1_PIECE_3_REQUEST = 22;
+const AI1_PIECE_4_REQUEST = 23;
+const AI1_PIECE_5_REQUEST = 24;
+const AI1_PIECE_6_REQUEST = 25;
+const AI1_PIECE_7_REQUEST = 26;
+const AI1_PIECE_8_REQUEST = 27;
+const AI1_PIECE_9_REQUEST = 28;
+const AI1_PIECE_10_REQUEST = 29;
+const AI1_PIECE_11_REQUEST = 30;
+const AI1_PIECE_12_REQUEST = 31;
+const AI1_IS_GAME_OVER = 32;
+const AI2_SEND_BOARD = 33;
+const AI2_BOARD_SENT = 34;
+const AI2_PIECES_SENT = 35;
+const AI2_BOARD_REQUEST = 36;
+const AI2_PIECE_1_REQUEST = 37;
+const AI2_PIECE_2_REQUEST = 38;
+const AI2_PIECE_3_REQUEST = 39;
+const AI2_PIECE_4_REQUEST = 40;
+const AI2_PIECE_5_REQUEST = 41;
+const AI2_PIECE_6_REQUEST = 42;
+const AI2_PIECE_7_REQUEST = 43;
+const AI2_PIECE_8_REQUEST = 44;
+const AI2_PIECE_9_REQUEST = 45;
+const AI2_PIECE_10_REQUEST = 46;
+const AI2_PIECE_11_REQUEST = 47;
+const AI2_PIECE_12_REQUEST = 48;
+const AI2_IS_GAME_OVER = 49;
 const INACTIVE = -1;
 
 class StateMachine
@@ -158,8 +194,22 @@ class StateMachine
                 var msg = this.message;
                 this.message = null;
 
+                this.getPrologRequest("isGameOver");
+                
+                this.currentState = P1_GAME_OVER_RESPONSE;
+            }
+            break;
+            case P1_GAME_OVER_RESPONSE:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
                 if(msg != "0")
                 {
+                    alert("Player " + msg + " wins!");
                     this.board.playing = false;
                     return;
                 }
@@ -353,8 +403,22 @@ class StateMachine
                 var msg = this.message;
                 this.message = null;
 
+                this.getPrologRequest("isGameOver");
+                
+                this.currentState = P2_GAME_OVER_RESPONSE;
+            }
+            break;
+            case P2_GAME_OVER_RESPONSE:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
                 if(msg != "0")
                 {
+                    alert("Player " + msg + " wins!");
                     this.board.playing = false;
                     return;
                 }
@@ -416,6 +480,512 @@ class StateMachine
                     }
                 }
                 
+                if(this.board.Player1 == HUMAN)
+                    this.currentState = P1_CHOOSE_PIECE;
+                else
+                    this.currentState = AI1_SEND_BOARD;
+            }
+            break;
+            //AI1
+            case AI1_SEND_BOARD:
+            {
+                this.getPrologRequest("setBoard(" + this.board.getBoard() + ")");
+                
+                this.currentState = AI1_BOARD_SENT;
+            }
+            break;
+            case AI1_BOARD_SENT:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                for(var i = 0; i < this.board.pieces.length; i++)
+                {
+                    this.getPrologRequest("setPiece(" + this.board.pieces[i].name + "," + this.board.pieces[i].getPiece() + ")");
+                }
+
+                this.getPrologRequest("computerTurn(1," + this.board.difficulty + ")");
+                
+                this.currentState = AI1_PIECES_SENT;
+            }
+            case AI1_PIECES_SENT:
+            {
+                if(this.message != "MOVE PLAYED")
+                    return;
+
+                this.message = null;
+
+                this.getPrologRequest("getBoard");
+
+                this.currentState = AI1_BOARD_REQUEST;
+            }
+            break;
+            case AI1_BOARD_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.setBoard(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[0].name + ")");
+                
+                this.currentState = AI1_PIECE_1_REQUEST;
+            }
+            break;
+            case AI1_PIECE_1_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[0].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[1].name + ")");
+                
+                this.currentState = AI1_PIECE_2_REQUEST;
+            }
+            break;
+            case AI1_PIECE_2_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[1].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[2].name + ")");
+                
+                this.currentState = AI1_PIECE_3_REQUEST;
+            }
+            break;
+            case AI1_PIECE_3_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[2].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[3].name + ")");
+                
+                this.currentState = AI1_PIECE_4_REQUEST;
+            }
+            break;
+            case AI1_PIECE_4_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[3].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[4].name + ")");
+                
+                this.currentState = AI1_PIECE_5_REQUEST;
+            }
+            break;
+            case AI1_PIECE_5_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[4].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[5].name + ")");
+                
+                this.currentState = AI1_PIECE_6_REQUEST;
+            }
+            break;
+            case AI1_PIECE_6_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[5].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[6].name + ")");
+                
+                this.currentState = AI1_PIECE_7_REQUEST;
+            }
+            break;
+            case AI1_PIECE_7_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[6].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[7].name + ")");
+                
+                this.currentState = AI1_PIECE_8_REQUEST;
+            }
+            break;
+            case AI1_PIECE_8_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[7].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[8].name + ")");
+                
+                this.currentState = AI1_PIECE_9_REQUEST;
+            }
+            break;
+            case AI1_PIECE_9_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[8].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[9].name + ")");
+                
+                this.currentState = AI1_PIECE_10_REQUEST;
+            }
+            break;
+            case AI1_PIECE_10_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[9].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[10].name + ")");
+                
+                this.currentState = AI1_PIECE_11_REQUEST;
+            }
+            break;
+            case AI1_PIECE_11_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[10].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[11].name + ")");
+                
+                this.currentState = AI1_PIECE_12_REQUEST;
+            }
+            break;
+            case AI1_PIECE_12_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[11].setPiece(msg);
+
+                this.getPrologRequest("isGameOver");
+                
+                this.currentState = AI1_IS_GAME_OVER;
+            }
+            break;
+            case AI1_IS_GAME_OVER:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                if(msg != "0")
+                {
+                    alert("Player " + msg + " wins!");
+                    this.board.playing = false;
+                    return;
+                }
+
+                if(this.board.Player2 == HUMAN)
+                    this.currentState = P2_CHOOSE_PIECE;
+                else
+                    this.currentState = AI2_SEND_BOARD;
+            }
+            break;
+            //AI2
+            case AI2_SEND_BOARD:
+            {
+                this.getPrologRequest("setBoard(" + this.board.getBoard() + ")");
+                
+                this.currentState = AI2_BOARD_SENT;
+            }
+            break;
+            case AI2_BOARD_SENT:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                for(var i = 0; i < this.board.pieces.length; i++)
+                {
+                    this.getPrologRequest("setPiece(" + this.board.pieces[i].name + "," + this.board.pieces[i].getPiece() + ")");
+                }
+
+                this.getPrologRequest("computerTurn(2," + this.board.difficulty + ")");
+                
+                this.currentState = AI2_PIECES_SENT;
+            }
+            case AI2_PIECES_SENT:
+            {
+                if(this.message != "MOVE PLAYED")
+                    return;
+
+                this.message = null;
+
+                this.getPrologRequest("getBoard");
+
+                this.currentState = AI2_BOARD_REQUEST;
+            }
+            break;
+            case AI2_BOARD_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.setBoard(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[0].name + ")");
+                
+                this.currentState = AI2_PIECE_1_REQUEST;
+            }
+            break;
+            case AI2_PIECE_1_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[0].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[1].name + ")");
+                
+                this.currentState = AI2_PIECE_2_REQUEST;
+            }
+            break;
+            case AI2_PIECE_2_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[1].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[2].name + ")");
+                
+                this.currentState = AI2_PIECE_3_REQUEST;
+            }
+            break;
+            case AI2_PIECE_3_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[2].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[3].name + ")");
+                
+                this.currentState = AI2_PIECE_4_REQUEST;
+            }
+            break;
+            case AI2_PIECE_4_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[3].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[4].name + ")");
+                
+                this.currentState = AI2_PIECE_5_REQUEST;
+            }
+            break;
+            case AI2_PIECE_5_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[4].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[5].name + ")");
+                
+                this.currentState = AI2_PIECE_6_REQUEST;
+            }
+            break;
+            case AI2_PIECE_6_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[5].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[6].name + ")");
+                
+                this.currentState = AI2_PIECE_7_REQUEST;
+            }
+            break;
+            case AI2_PIECE_7_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[6].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[7].name + ")");
+                
+                this.currentState = AI2_PIECE_8_REQUEST;
+            }
+            break;
+            case AI2_PIECE_8_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[7].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[8].name + ")");
+                
+                this.currentState = AI2_PIECE_9_REQUEST;
+            }
+            break;
+            case AI2_PIECE_9_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[8].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[9].name + ")");
+                
+                this.currentState = AI2_PIECE_10_REQUEST;
+            }
+            break;
+            case AI2_PIECE_10_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[9].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[10].name + ")");
+                
+                this.currentState = AI2_PIECE_11_REQUEST;
+            }
+            break;
+            case AI2_PIECE_11_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[10].setPiece(msg);
+
+                this.getPrologRequest("getPiece(" + this.board.pieces[11].name + ")");
+                
+                this.currentState = AI2_PIECE_12_REQUEST;
+            }
+            break;
+            case AI2_PIECE_12_REQUEST:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                this.board.pieces[11].setPiece(msg);
+
+                this.getPrologRequest("isGameOver");
+                
+                this.currentState = AI2_IS_GAME_OVER;
+            }
+            break;
+            case AI2_IS_GAME_OVER:
+            {
+                if(this.message == null)
+                    return;
+                
+                var msg = this.message;
+                this.message = null;
+
+                if(msg != "0")
+                {
+                    alert("Player " + msg + " wins!");
+                    this.board.playing = false;
+                    return;
+                }
+
                 if(this.board.Player1 == HUMAN)
                     this.currentState = P1_CHOOSE_PIECE;
                 else

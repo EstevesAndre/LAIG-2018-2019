@@ -49,6 +49,8 @@ class Board extends CGFobject
         this.difficulty = difficulty;
         this.resetValidMoves();
 
+        this.stateMachine.getPrologRequest("handshake");
+
         switch(mode)
         {
             case 'Player vs Player':
@@ -64,12 +66,12 @@ class Board extends CGFobject
             case 'AI vs Player':
                 this.Player1 = AI;
                 this.Player2 = HUMAN;
-                this.stateMachine.currentState = AI1_PLAY;
+                this.stateMachine.currentState = AI1_SEND_BOARD;
                 break;
             case 'AI vs AI':
                 this.Player1 = AI;
                 this.Player2 = AI;
-                this.stateMachine.currentState = AI1_PLAY;
+                this.stateMachine.currentState = AI1_SEND_BOARD;
                 break;
             default:
                 this.playing = false;
@@ -179,6 +181,16 @@ class Board extends CGFobject
         board_str = board_str.replace(/,/g, "><");
         board_str = (board_str.match(/<(.*?)>/g).map(function(val){ return val.replace(/>/g, '');})).map(function(val){ return val.replace(/</g, '');});;
         
+        for(var i = 0; i < this.pieces.length; i++)
+        {
+            if(board_str.indexOf(this.pieces[i].name) == -1)
+            {
+                this.pieces[i].X = -1;
+                this.pieces[i].Y = -1;
+                this.pieces[i].captured = true;
+            }
+        }
+
         for(var i = 0; i < board_str.length; i++)
         {
             if(board_str[i] != "e")
