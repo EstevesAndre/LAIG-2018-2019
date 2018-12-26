@@ -2,9 +2,9 @@ var DEGREE_TO_RAD = Math.PI / 180;
 
 class CircularAnimation extends Animation 
 {
-    constructor(time, center, radius, initialAngle, rotationAngle)
+    constructor(time, center, radius, initialAngle, rotationAngle, loop)
     {
-        super(time);
+        super(time, loop);
         this.center = center;
         this.radius = radius;
         
@@ -32,6 +32,6 @@ class CircularAnimation extends Animation
         scene.rotate(this.initialAngle + this.rotationAngle,0,1,0);
         scene.translate(0,0,this.radius);
         scene.rotate(this.initialRotAngle, 0,1,0);
-    }
+    };
 
 };
