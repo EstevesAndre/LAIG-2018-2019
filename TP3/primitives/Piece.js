@@ -24,6 +24,8 @@ class Piece extends CGFobject
         this.def.setSpecular(0.7,0.7,0.7,1);
         this.def.setTexture(this.texture);
 
+        this.isMoving = false;
+        this.animation = null;
         
         this.createPins();
         this.createPinSpaces();
@@ -82,6 +84,7 @@ class Piece extends CGFobject
                         this.def.setTexture(this.textureP2);
                     else
                         this.def.setTexture(this.texture);
+
                     this.def.apply();
                     this.scene.registerForPick(this.name.charCodeAt(1) * 100 + (i + 1) * 10  + j + 1, this.pinSpaces[i][j]);
                     this.pinSpaces[i][j].display();
@@ -137,5 +140,30 @@ class Piece extends CGFobject
         {
             this.pins[X - 1][Y - 1] = 'x';
         }
+    };
+
+    setAnimation(initialX, initialY, squareSize, pieceSize)
+    {
+        let x = (this.X  - initialX) * squareSize;
+        let y = (initialY - this.Y) * squareSize;
+
+        this.animation = new LinearAnimation(3.0, [ [x,y,0], [x,y,1], [0,0,1], [0,0,0] ], false);
+        //console.log(this.animation);
+
+        this.isMoving = true;
     }
+
+    update(time)
+    {
+        if(this.isMoving)
+        {
+            this.animation.update(time/1000);
+        
+            if(this.animation.isAnimationOver())
+            {
+                this.isMoving = false;
+                this.animation = null;
+            }                
+        }
+    };
 };

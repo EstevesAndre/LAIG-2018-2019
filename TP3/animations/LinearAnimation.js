@@ -2,9 +2,8 @@ class LinearAnimation extends Animation
 {
     constructor(time,controlPoints, loop)
     {
-        super(time);
+        super(time, loop);
         this.controlPoints = controlPoints;
-        this.loop = loop || false;
 
         this.totalDistance = 0.0;
         this.distancePerVec = [];
@@ -66,12 +65,12 @@ class LinearAnimation extends Animation
         return pos;
     }
 
-    apply(scene)
+    apply(scene, piece = true)
     {
         var pos = this.getCurrentPoint();
         
         scene.translate(pos[0],pos[1],pos[2]);
-        scene.rotate(this.angRotation,0,1,0);
+        if(piece) scene.rotate(this.angRotation,0,1,0);
     };
 
     applyLast(scene)
@@ -79,5 +78,5 @@ class LinearAnimation extends Animation
         let finalPos = this.controlPoints[this.controlPoints.length-1];
         scene.translate(finalPos[0],finalPos[1],finalPos[2]);
         scene.rotate(this.angRotation,0,1,0);
-    }
+    };
 };

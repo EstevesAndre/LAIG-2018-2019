@@ -144,8 +144,12 @@ class Board extends CGFobject
                 continue;
 
             this.scene.pushMatrix();
-                    this.scene.translate(0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize, -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize, 0);
-                    this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);
+                if(this.pieces[i].isMoving) 
+                    this.pieces[i].animation.apply(this.scene, false);                    
+                
+                this.scene.translate(0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize, -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize, 0);
+                this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);                
+                
                 this.pieces[i].display();
             this.scene.popMatrix(); 
         }
@@ -216,7 +220,7 @@ class Board extends CGFobject
                             [false, false, false, false, false, false],
                             [false, false, false, false, false, false],
                             [false, false, false, false, false, false] ];
-    }
+    };
 
     capturePiece(square)
     {
@@ -230,7 +234,7 @@ class Board extends CGFobject
                 break;
             }
         }
-    }
+    };
 
     movePiece(piece, square)
     {
@@ -238,15 +242,24 @@ class Board extends CGFobject
         {                     
             if(this.pieces[i].name == piece)
             {
+                let oldX = this.pieces[i].X;
+                let oldY = this.pieces[i].Y;
                 this.pieces[i].X = square[0];
                 this.pieces[i].Y = square[1];
+
+                this.stateMachine.isPieceMoving = true;
+                this.pieces[i].setAnimation(oldX, oldY, this.squareSize, this.pieceSize);
                 break;
             }
         }
-    }
+    };   
 
     update(time)
     {
-        this.stateMachine.update();
-    }
+        this.pieces.forEach(function(piece) {
+            piece.update(time);
+        });
+         
+        this.stateMachine.update();        
+    };
 };
