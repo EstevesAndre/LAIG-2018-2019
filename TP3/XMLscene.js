@@ -283,10 +283,12 @@ class XMLscene extends CGFscene {
                         {
                             if(this.graph.primitives[i].type == "board")
                             {
-                                    if(this.graph.primitives[i].obj.playing &&
+                                    if(  this.graph.primitives[i].obj.playing &&
                                         !this.graph.primitives[i].obj.stateMachine.waitingForResponse &&
-                                        this.graph.primitives[i].obj.stateMachine.idPicked == 0 )
-                                            this.graph.primitives[i].obj.stateMachine.idPicked = customId;
+                                         this.graph.primitives[i].obj.stateMachine.idPicked == 0 )
+                                    {
+                                        this.graph.primitives[i].obj.stateMachine.idPicked = customId;
+                                    }
                             }
                         }
                     }
