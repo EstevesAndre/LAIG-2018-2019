@@ -146,8 +146,9 @@ class Piece extends CGFobject
     {
         let x = (this.X  - initialX) * squareSize;
         let y = (initialY - this.Y) * squareSize;
-
-        this.animation = new LinearAnimation(3.0, [ [x,y,0], [x,y,1], [0,0,1], [0,0,0] ], false);
+        
+        this.animation = new BezierAnimation(2.0, [ [x,y,0], [-x,-y,2], [x,y,2], [0,0,0] ], false);
+        //this.animation = new LinearAnimation(3.0, [ [x,y,0], [x,y,1], [0,0,1], [0,0,0] ], false);
         //console.log(this.animation);
 
         this.isMoving = true;
