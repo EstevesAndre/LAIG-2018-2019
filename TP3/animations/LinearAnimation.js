@@ -43,7 +43,7 @@ class LinearAnimation extends Animation
                 this.timeAtControlPoint[i] =  this.timeAtControlPoint[i-1] + this.time / (this.controlPoints.length - 1));
         }
         
-    }
+    };
 
     getCurrentPoint()
     {
@@ -63,7 +63,7 @@ class LinearAnimation extends Animation
         }
 
         return pos;
-    }
+    };
 
     apply(scene, piece = true)
     {
@@ -71,7 +71,7 @@ class LinearAnimation extends Animation
         
         scene.translate(pos[0],pos[1],pos[2]);
         if(piece) scene.rotate(this.angRotation,0,1,0);
-    };
+    } 
 
     applyLast(scene)
     {
