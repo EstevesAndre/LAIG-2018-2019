@@ -210,6 +210,8 @@ class StateMachine
                 if(msg != "0")
                 {
                     alert("Player " + msg + " wins!");
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
+
                     this.board.playing = false;
                     return;
                 }
@@ -422,6 +424,7 @@ class StateMachine
                 if(msg != "0")
                 {
                     alert("Player " + msg + " wins!");
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
                     this.board.playing = false;
                     return;
                 }
@@ -735,15 +738,13 @@ class StateMachine
                 if(msg != "0")
                 {
                     alert("Player " + msg + " wins!");
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
                     this.board.playing = false;
                     return;
                 }
 
                 if(this.board.Player2 == HUMAN)
-                {
-                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
-                    this.currentState = P2_CHOOSE_PIECE;
-                }
+                    this.currentState = P2_CHOOSE_PIECE
                 else
                     this.currentState = AI2_SEND_BOARD;
             }
@@ -991,15 +992,13 @@ class StateMachine
                 if(msg != "0")
                 {
                     alert("Player " + msg + " wins!");
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
                     this.board.playing = false;
                     return;
                 }
 
                 if(this.board.Player1 == HUMAN)
-                {
-                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P1_CHOOSE_PIECE;
-                }
                 else
                     this.currentState = AI1_SEND_BOARD;
             }
