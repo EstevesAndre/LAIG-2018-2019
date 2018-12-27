@@ -57,21 +57,25 @@ class Board extends CGFobject
                 this.Player1 = HUMAN;
                 this.Player2 = HUMAN;
                 this.stateMachine.currentState = P1_CHOOSE_PIECE;
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
                 break;
             case 'Player vs AI':
                 this.Player1 = HUMAN;
                 this.Player2 = AI;
                 this.stateMachine.currentState = P1_CHOOSE_PIECE;
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
                 break;
             case 'AI vs Player':
                 this.Player1 = AI;
                 this.Player2 = HUMAN;
                 this.stateMachine.currentState = AI1_SEND_BOARD;
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
                 break;
             case 'AI vs AI':
                 this.Player1 = AI;
                 this.Player2 = AI;
                 this.stateMachine.currentState = AI1_SEND_BOARD;
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
                 break;
             default:
                 this.playing = false;

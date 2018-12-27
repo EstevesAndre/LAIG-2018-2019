@@ -272,7 +272,10 @@ class StateMachine
                 }
                 
                 if(this.board.Player2 == HUMAN)
+                {
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P2_CHOOSE_PIECE;
+                }
                 else
                     this.currentState = AI2_SEND_BOARD;
             }
@@ -481,7 +484,10 @@ class StateMachine
                 }
                 
                 if(this.board.Player1 == HUMAN)
+                {
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P1_CHOOSE_PIECE;
+                }
                 else
                     this.currentState = AI1_SEND_BOARD;
             }
@@ -734,7 +740,10 @@ class StateMachine
                 }
 
                 if(this.board.Player2 == HUMAN)
+                {
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P2_CHOOSE_PIECE;
+                }
                 else
                     this.currentState = AI2_SEND_BOARD;
             }
@@ -987,7 +996,10 @@ class StateMachine
                 }
 
                 if(this.board.Player1 == HUMAN)
+                {
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P1_CHOOSE_PIECE;
+                }
                 else
                     this.currentState = AI1_SEND_BOARD;
             }
