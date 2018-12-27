@@ -264,7 +264,7 @@ class Board extends CGFobject
                 this.pieces[i].Y = square[1];
 
                 this.stateMachine.isPieceMoving = true;
-                this.pieces[i].setAnimation(oldX, oldY, this.squareSize, this.pieceSize);
+                this.pieces[i].setAnimation(oldX, oldY);
                 break;
             }
         }
