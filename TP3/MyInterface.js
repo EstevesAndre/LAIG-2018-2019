@@ -43,22 +43,6 @@ class MyInterface extends CGFinterface {
         group.add(this.scene, 'Current_Graph', names).name("Theme");
     }
 
-    addViewsGroup(views)
-    {
-        this.group = this.gui.addFolder("Cameras");
-        this.group.open();
-
-        var names = [];
-
-        for (var key in views) {
-            if (views.hasOwnProperty(key)) {
-                names[key] = views[key].id;
-            }
-        }
-
-        this.group.add(this.scene, 'Current_Camera', names).name("Current Camera");
-    }
-
     addPlayOptionsGroup()
     {
         this.group = this.gui.addFolder("Options");

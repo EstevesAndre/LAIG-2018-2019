@@ -104,6 +104,7 @@ class XMLscene extends CGFscene {
         if(this.graphs.length == 2) {        
         this.graph = this.graphs[0];
         this.Current_Graph = this.graph.name;
+        this.prev_graph = this.Current_Graph;
         this.Mode = "Player vs Player";
         this.Difficulty = 1;
         this.New_Game = function() {
@@ -124,10 +125,8 @@ class XMLscene extends CGFscene {
             this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
         else
             this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
-        this.interface.setActiveCamera(this.camera);
-        this.Current_Camera = d.id;
-        this.prev_camara = this.Current_Camera;
 
+        this.prev_camera = null;
         
         this.initLights();
 
@@ -135,9 +134,6 @@ class XMLscene extends CGFscene {
 
         // Adds looks group.
         this.interface.addLookGroup(this.graphs);
-
-        // Adds views group.
-        this.interface.addViewsGroup(this.graph.views);
         
         this.interface.addNewGameButton();
 
@@ -172,22 +168,6 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.axis.display();
 
-            //changes camera if necessary
-            if(this.prev_camara != this.Current_Camera)
-            {
-                this.prev_camara = this.Current_Camera
-                var cc = this.Current_Camera;
-
-                var d = this.graph.views.find(function( element ) {
-                    return element.id == cc;
-                });
-                if(d.type == "perspective")
-                    this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
-                else
-                    this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
-                this.interface.setActiveCamera(this.camera);
-            }
-
             //changes graph if necessary
             if(this.prev_graph != this.Current_Graph)
             {
@@ -199,6 +179,21 @@ class XMLscene extends CGFscene {
                     {
                         this.graph = this.graphs[i];
                         this.initLights();
+
+                        var d = this.graph.defaultView;
+                        if(this.graph.defaultView.type == "perspective")
+                            this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
+                        else
+                            this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
+                    
+                        for(let i = 0; i < this.graph.primitives.length; i++)
+                        {
+                            if (this.graph.primitives[i].type == "board" && this.graph.primitives[i].obj.playing)
+                            {
+                                this.cameraAnimation = new CameraAnimation(1000, this.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+
+                            }
+                        }
                     }
                 }
             }
@@ -260,13 +255,27 @@ class XMLscene extends CGFscene {
                 node.animations[j].update(this.deltaTime / 1000);
                 break;
             }
+
         }
 
         for(let i = 0; i < this.graph.primitives.length; i++)
         {
-            if(this.graph.primitives[i].type == "water" || this.graph.primitives[i].type == "board")
+            if(this.graph.primitives[i].type == "water")
                 this.graph.primitives[i].obj.update(this.deltaTime);
+            else if (this.graph.primitives[i].type == "board")
+            {
+                this.graph.primitives[i].obj.update(this.deltaTime);
+                if(!this.graph.primitives[i].obj.playing && (this.cameraAnimation == null || this.cameraAnimation.isAnimationOver()))
+                    this.camera.orbit(vec3.fromValues(0, 1, 0), this.deltaTime / 10000.0);
+            }
         }
+
+        if(this.cameraAnimation != null && !this.cameraAnimation.isAnimationOver())
+        {
+            this.cameraAnimation.update(this.deltaTime);
+            this.cameraAnimation.apply();
+        }
+
     }
     
     logPicking()
