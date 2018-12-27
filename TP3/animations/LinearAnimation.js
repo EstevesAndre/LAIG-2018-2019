@@ -1,8 +1,8 @@
 class LinearAnimation extends Animation 
 {
-    constructor(time,controlPoints, loop)
+    constructor(time,controlPoints, loop, StartTimeElapsed)
     {
-        super(time, loop);
+        super(time, loop, StartTimeElapsed);
         this.controlPoints = controlPoints;
 
         this.totalDistance = 0.0;

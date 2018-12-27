@@ -1,10 +1,10 @@
 class Animation 
 {
-    constructor(time, loop)
+    constructor(time, loop, StartTimeElapsed)
     {
         this.time = time;
         this.loop = loop || false;
-        this.timeElapsed = 0.0;
+        this.timeElapsed = StartTimeElapsed || 0.0;
         this.angRotation = 0.0;
     };
 

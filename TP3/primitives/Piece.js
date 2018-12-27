@@ -19,6 +19,8 @@ class Piece extends CGFobject
 
         this.struct = new Box(scene, this.size, this.size, 0.2);
 
+        this.a = new SelectedSquare(this.scene, this.size * 1.05, this.size);
+
         this.def = new CGFappearance(this.scene);
         this.def.setAmbient(1,1,1,1);
         this.def.setSpecular(0.7,0.7,0.7,1);
@@ -26,6 +28,12 @@ class Piece extends CGFobject
 
         this.isMoving = false;
         this.animation = null;
+
+        this.selectionAnimations = [new LinearAnimation(2.5, [ [0,0,0], [0,0,0.1] ], true),
+                                    new LinearAnimation(2.5, [ [0,0,0], [0,0,0.1] ], true, 0.5),
+                                    new LinearAnimation(2.5, [ [0,0,0], [0,0,0.1] ], true, 0.1)
+                                    ];
+        this.isForSelection = true;
         
         this.createPins();
         this.createPinSpaces();
@@ -72,8 +80,23 @@ class Piece extends CGFobject
     
     display()
     {
+        if(this.isForSelection)
+        {
+            this.scene.pushMatrix();    
+                this.scene.translate(this.size/2.0, this.size/2.0, 0);
+
+                for(let i = 0; i < this.selectionAnimations.length; i++)
+                {
+                    this.selectionAnimations[i].apply(this.scene,false);
+                    this.a.display();
+                }
+                this.a.display();
+            this.scene.popMatrix();
+        }
+
         this.scene.pushMatrix();
             this.scene.translate(this.size/2.0, this.size/2.0, 0.21);
+
             for(let i = 0; i < this.pinSpaces.length; i++)
             {                   
                 for(let j = 0; j < this.pinSpaces[i].length; j++)
@@ -142,17 +165,22 @@ class Piece extends CGFobject
         }
     };
 
-    setAnimation(initialX, initialY, squareSize, pieceSize)
+    setAnimation(initialX, initialY)
     {
-        let x = (this.X  - initialX) * squareSize;
-        let y = (initialY - this.Y) * squareSize;
+        let x = (this.X  - initialX) * this.size;
+        let y = (initialY - this.Y) * this.size;
         
         this.animation = new BezierAnimation(2.0, [ [x,y,0], [-x,-y,2], [x,y,2], [0,0,0] ], false);
         //this.animation = new LinearAnimation(3.0, [ [x,y,0], [x,y,1], [0,0,1], [0,0,0] ], false);
         //console.log(this.animation);
 
         this.isMoving = true;
-    }
+    };
+
+    toogleSelectable()
+    {
+        this.isForSelection = !this.isForSelection;
+    };
 
     update(time)
     {
@@ -165,6 +193,13 @@ class Piece extends CGFobject
                 this.isMoving = false;
                 this.animation = null;
             }                
+        }
+
+        if(this.isForSelection)
+        {
+            this.selectionAnimations.forEach(function(animation) {
+                animation.update(time/1000);
+            });
         }
     };
 };
