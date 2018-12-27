@@ -19,7 +19,6 @@ class Piece extends CGFobject
 
         this.struct = new Box(scene, this.size, this.size, 0.2);
 
-        this.a = new SelectedSquare(this.scene, this.size * 1.05, this.size);
 
         this.def = new CGFappearance(this.scene);
         this.def.setAmbient(1,1,1,1);
@@ -29,14 +28,25 @@ class Piece extends CGFobject
         this.isMoving = false;
         this.animation = null;
 
-        this.selectionAnimations = [new LinearAnimation(2.5, [ [0,0,0], [0,0,0.1] ], true),
-                                    new LinearAnimation(2.5, [ [0,0,0], [0,0,0.1] ], true, 0.5),
-                                    new LinearAnimation(2.5, [ [0,0,0], [0,0,0.1] ], true, 0.1)
-                                    ];
-        this.isForSelection = true;
+        this.selectionAnimations = null;
+
+        this.pieceSelected = new SelectedSquare(this.scene, this.size * 1.05, this.size);
+        
+        if(this.name.charCodeAt(1) < 65)
+            this.isForSelection = true;
+        else
+            this.isForSelection = false;
         
         this.createPins();
         this.createPinSpaces();
+    };
+
+    createSelectAnimations()
+    {
+        this.selectionAnimations = [new LinearAnimation(3.5, [ [0,0,0], [0,0,0.075], [0,0,0] ], true),
+                                    new LinearAnimation(3.5, [ [0,0,0], [0,0,0.075], [0,0,0] ], true, 0.1),
+                                    new LinearAnimation(3.5, [ [0,0,0], [0,0,0.075], [0,0,0] ], true, 0.2)
+                                    ];
     };
 
     createPins()
@@ -60,7 +70,7 @@ class Piece extends CGFobject
     };
 
     createPinSpaces()
-    {
+    {        
         let space = this.size * 0.9 / 50;
 
         var tmhX = this.size * 0.9/5 - space;
@@ -72,7 +82,7 @@ class Piece extends CGFobject
             let line = [];
             for(let j = this.size * 0.9 / 2.0 - tmhX - space; j >= -this.size * 0.9 / 2.0 + 0.0005 - tmhX - space; j -= (tmhX + space))
             {                
-                line.push(new Rectangle(this.scene,j,i,j+tmhX,i+tmhY));
+                line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY));
             }
             this.pinSpaces.push(line);
         }
@@ -80,20 +90,6 @@ class Piece extends CGFobject
     
     display()
     {
-        if(this.isForSelection)
-        {
-            this.scene.pushMatrix();    
-                this.scene.translate(this.size/2.0, this.size/2.0, 0);
-
-                for(let i = 0; i < this.selectionAnimations.length; i++)
-                {
-                    this.selectionAnimations[i].apply(this.scene,false);
-                    this.a.display();
-                }
-                this.a.display();
-            this.scene.popMatrix();
-        }
-
         this.scene.pushMatrix();
             this.scene.translate(this.size/2.0, this.size/2.0, 0.21);
 
@@ -114,6 +110,22 @@ class Piece extends CGFobject
                 }            
             }
         this.scene.popMatrix();
+
+        if(this.isForSelection)
+        {
+            if(this.selectionAnimations == null)
+                this.createSelectAnimations();
+            this.scene.pushMatrix();    
+                this.scene.translate(this.size/2.0, this.size/2.0, 0);
+
+                for(let i = 0; i < this.selectionAnimations.length; i++)
+                {
+                    this.selectionAnimations[i].apply(this.scene,false);
+                    this.pieceSelected.display();
+                }
+                this.pieceSelected.display();
+            this.scene.popMatrix();
+        }
 
         this.scene.pushMatrix();
             this.def.setTexture(this.texture);
@@ -171,16 +183,23 @@ class Piece extends CGFobject
         let y = (initialY - this.Y) * this.size;
         
         this.animation = new BezierAnimation(2.0, [ [x,y,0], [-x,-y,2], [x,y,2], [0,0,0] ], false);
-        //this.animation = new LinearAnimation(3.0, [ [x,y,0], [x,y,1], [0,0,1], [0,0,0] ], false);
-        //console.log(this.animation);
 
         this.isMoving = true;
     };
 
-    toogleSelectable()
+    setPieceSelectable(bool)
     {
-        this.isForSelection = !this.isForSelection;
+        this.isForSelection = bool;
     };
+
+    setPinsSelectable(bool)
+    {
+        this.pinSpaces.forEach(function(line) {
+            line.forEach(function(pin) {
+                pin.setPinSelectable(bool);
+            });            
+        });
+    }
 
     update(time)
     {
@@ -197,9 +216,18 @@ class Piece extends CGFobject
 
         if(this.isForSelection)
         {
+            if(this.selectionAnimations == null)
+                this.createSelectAnimations();
+            
             this.selectionAnimations.forEach(function(animation) {
                 animation.update(time/1000);
             });
         }
+
+        this.pinSpaces.forEach(function(line) {
+            line.forEach(function(pin) {
+                pin.update(time);
+            });
+        });
     };
 };

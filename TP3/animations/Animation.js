@@ -16,7 +16,6 @@ class Animation
     update(currTime)
     {
         this.timeElapsed += currTime;
-        if(this.loop) this.timeElapsed %= this.time;
-    };
-    
+        if(this.loop && this.timeElapsed >= this.time) this.timeElapsed %= this.time;
+    };    
 };
