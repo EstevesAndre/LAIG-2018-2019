@@ -15,7 +15,7 @@ class Board extends CGFobject
         this.texturePiece2 = texturePiece2;
         this.textureSelected = textureSelected;
 
-        this.clock = new Clock(scene);
+        this.clock = new Clock(scene, this);
 
         this.spaces = [];
         this.pieces = [];
@@ -53,7 +53,8 @@ class Board extends CGFobject
 
         this.stateMachine.getPrologRequest("handshake");
 
-        this.clock.activate(time_per_move);
+        this.clock.enable(time_per_move);
+        this.clock.start();
 
         switch(mode)
         {
@@ -317,6 +318,7 @@ class Board extends CGFobject
             piece.update(time);
         });
          
-        this.stateMachine.update();        
+        this.stateMachine.update();  
+        this.clock.update(time);
     };
 };

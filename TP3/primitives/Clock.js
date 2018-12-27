@@ -1,8 +1,10 @@
 class Clock extends CGFobject {
 
-    constructor(scene)
+    constructor(scene, board)
     {
         super(scene)
+
+        this.board = board;
 
         this.active = false;
 
@@ -52,15 +54,20 @@ class Clock extends CGFobject {
 
         this.clockPlane = new Rectangle(scene, 0, 0, 8.49, 2.56);
 
-        this.digit = new Rectangle(scene, 0, 0, 1.40, 2.56);
+        this.digit = new Rectangle(scene, 0, 0, 1.40, 2.16);
     };
 
-    activate(time)
+    enable(time)
     {
         this.active = true;
 
         this.plays = 0;
         this.playClock = time;
+    }
+
+    disable()
+    {
+        this.active = false;
     }
 
     display()
@@ -71,6 +78,133 @@ class Clock extends CGFobject {
             this.scene.translate(-4.2, 16.6, 0.1);
             this.clockPlane.display();      
         this.scene.popMatrix();  
+
+        if(this.active)
+        {
+            console.log(this.plays);
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor(this.plays / 10));
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(-3.65, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix();  
+
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor(this.plays % 10));
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(-2.25, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix();  
+
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor(this.counting_clock / 100));
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(-0.45, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix();  
+
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor((this.counting_clock % 100) / 10));
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(0.95, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix();  
+
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor((this.counting_clock % 100) % 10));                
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(2.35, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix();  
+        }
     };
+
+    addPlay()
+    {
+        this.plays++;
+    }
    
+    undoPlay()
+    {
+        this.plays--;
+    }
+
+    start()
+    {
+        this.counting_clock = this.playClock;
+    }
+
+    applyNumberTexture(n)
+    {
+        switch(n)
+        {
+            case 0:
+            {
+                this.texture0.apply();
+            }
+            break;
+            case 1:
+            {
+                this.texture1.apply();
+            }
+            break;
+            case 2:
+            {
+                this.texture2.apply();
+            }
+            break;
+            case 3:
+            {
+                this.texture3.apply();
+            }
+            break;
+            case 4:
+            {
+                this.texture4.apply();
+            }
+            break;
+            case 5:
+            {
+                this.texture5.apply();
+            }
+            break;
+            case 6:
+            {
+                this.texture6.apply();
+            }
+            break;
+            case 7:
+            {
+                this.texture7.apply();
+            }
+            break;
+            case 8:
+            {
+                this.texture8.apply();
+            }
+            break;
+            case 9:
+            {
+                this.texture9.apply();
+            }
+            break;
+        }
+    }
+
+    update(time)
+    {
+        if(!this.active) return;
+
+        this.counting_clock -= time / 1000.0;
+
+        if(this.counting_clock <= 0)
+        {
+            this.active = false;
+            this.board.stateMachine.currentState = INACTIVE;
+            this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
+            this.board.playing = false;
+
+            alert("Time is up!");
+        }
+    }
 };

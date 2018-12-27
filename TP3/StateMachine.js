@@ -276,6 +276,9 @@ class StateMachine
                     }
                 }
                 
+                this.board.clock.start();
+                this.board.clock.addPlay();
+
                 if(this.board.Player2 == HUMAN)
                 {
                     this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
@@ -494,6 +497,9 @@ class StateMachine
                     }
                 }
                 
+                this.board.clock.start();
+                this.board.clock.addPlay();
+
                 if(this.board.Player1 == HUMAN)
                 {
                     this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
@@ -753,6 +759,9 @@ class StateMachine
                     return;
                 }
 
+                this.board.clock.start();
+                this.board.clock.addPlay();
+
                 if(this.board.Player2 == HUMAN)
                 {
                     this.currentState = P2_CHOOSE_PIECE;
@@ -1009,6 +1018,9 @@ class StateMachine
                     this.board.playing = false;
                     return;
                 }
+
+                this.board.clock.start();
+                this.board.clock.addPlay();
 
                 if(this.board.Player1 == HUMAN)
                 {
