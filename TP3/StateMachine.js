@@ -1020,7 +1020,7 @@ class StateMachine
             self.waitingForResponse = false;
         };
 
-        request.onerror = function () { console.log("Server error."); this.waitingForResponse = false; this.board.playing = false;};
+        request.onerror = function () { alert("Server Error!"); this.waitingForResponse = false; this.board.playing = false;};
 
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.send();

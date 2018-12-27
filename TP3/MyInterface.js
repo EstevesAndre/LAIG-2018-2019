@@ -52,6 +52,7 @@ class MyInterface extends CGFinterface {
 
         this.group.add(this.scene, 'Mode', names);
         this.group.add(this.scene, 'Difficulty', 1, 3).step(1);
+        this.group.add(this.scene, 'time_to_play', 30, 900).step(5).name("Time to Move");
     }
 
     addNewGameButton()

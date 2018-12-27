@@ -107,11 +107,12 @@ class XMLscene extends CGFscene {
         this.prev_graph = this.Current_Graph;
         this.Mode = "Player vs Player";
         this.Difficulty = 1;
+        this.time_to_play = 450;
         this.New_Game = function() {
             for(let i = 0; i < this.graph.primitives.length; i++)
             {
                 if(this.graph.primitives[i].type == "board")
-                    this.graph.primitives[i].obj.newGame(this.Mode, this.Difficulty);
+                    this.graph.primitives[i].obj.newGame(this.Mode, this.Difficulty, this.time_to_play);
             }
         };
 

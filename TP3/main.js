@@ -21,9 +21,9 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js',
                 'primitives/Terrain.js','primitives/Torus.js',
                 'primitives/Sphere.js','primitives/Patch.js',
                 'primitives/Board.js','primitives/Box.js', 
-                'primitives/Piece.js','StateMachine.js',
+                'primitives/Piece.js', 'primitives/Clock.js', 
                 'animations/BezierAnimation.js', 'primitives/SelectedSquare.js',
-                'animations/CameraAnimation.js',
+                'animations/CameraAnimation.js', 'StateMachine.js',
                 
 main=function()
 {

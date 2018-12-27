@@ -15,6 +15,8 @@ class Board extends CGFobject
         this.texturePiece2 = texturePiece2;
         this.textureSelected = textureSelected;
 
+        this.clock = new Clock(scene);
+
         this.spaces = [];
         this.pieces = [];
         this.piecePicked = null;
@@ -40,7 +42,7 @@ class Board extends CGFobject
         this.createSpaces();
     };
 
-    newGame(mode, difficulty)
+    newGame(mode, difficulty, time_per_move)
     {
         this.playing = true;
         this.pieces = [];
@@ -50,6 +52,8 @@ class Board extends CGFobject
         this.resetValidMoves();
 
         this.stateMachine.getPrologRequest("handshake");
+
+        this.clock.activate(time_per_move);
 
         switch(mode)
         {
@@ -118,6 +122,7 @@ class Board extends CGFobject
             this.scene.rotate(Math.PI/2.0, 0, 0, 1);
             this.displayBoard();
         this.scene.popMatrix();
+        this.clock.display();
     };
 
     displayBoard()
