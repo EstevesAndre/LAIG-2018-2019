@@ -180,21 +180,19 @@ class XMLscene extends CGFscene {
                         this.graph = this.graphs[i];
                         this.initLights();
 
-                        if(this.prev_camera == null)
-                        {
-                            this.prev_camera = this.camera;
-
-                            var d = this.graph.defaultView;
-                            if(this.graph.defaultView.type == "perspective")
-                                this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
-                            else
-                                this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
-                        }
+                        var d = this.graph.defaultView;
+                        if(this.graph.defaultView.type == "perspective")
+                            this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
                         else
+                            this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
+                    
+                        for(let i = 0; i < this.graph.primitives.length; i++)
                         {
-                            var temp = this.prev_camera;
-                            this.prev_camera = this.camera;
-                            this.camara = temp;
+                            if (this.graph.primitives[i].type == "board" && this.graph.primitives[i].obj.playing)
+                            {
+                                this.cameraAnimation = new CameraAnimation(1000, this.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+
+                            }
                         }
                     }
                 }
