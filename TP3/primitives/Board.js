@@ -270,6 +270,42 @@ class Board extends CGFobject
         }
     };   
 
+    setPieceSelectable(type, bool = true)
+    {
+        if(type.charCodeAt(1) >= 65)
+        {
+            this.pieces.forEach(function(piece) {
+                if(!piece.captured && piece.name.charCodeAt(1) >= 65)
+                    piece.setPieceSelectable(bool);
+            });
+        }
+        else
+        {
+            this.pieces.forEach(function(piece) {
+                if(!piece.captured && piece.name.charCodeAt(1) < 65)
+                    piece.setPieceSelectable(bool);
+            });
+        }        
+    }
+
+    setPinsSelectable(type, bool = true)
+    {
+        if(type.charCodeAt(1) >= 65)
+        {
+            this.pieces.forEach(function(piece) {
+                if(!piece.captured && piece.name.charCodeAt(1) >= 65)
+                    piece.setPinsSelectable(bool);
+            });
+        }
+        else
+        {
+            this.pieces.forEach(function(piece) {
+                if(!piece.captured && piece.name.charCodeAt(1) < 65)
+                    piece.setPinsSelectable(bool);
+            });
+        }   
+    }
+
     update(time)
     {
         this.pieces.forEach(function(piece) {
