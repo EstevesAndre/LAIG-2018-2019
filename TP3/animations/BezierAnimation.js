@@ -32,10 +32,6 @@ class BezierAnimation extends Animation
     
         this.angle = Math.atan2(newZ - this.z, newX - this.x);
 
-        this.x = newX;
-        this.y = newY;
-        this.z = newZ;
-
-        scene.translate(this.x, this.y, this.z);
+        scene.translate(newX, newY, newZ);
     };    
 };
