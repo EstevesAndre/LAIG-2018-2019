@@ -182,8 +182,7 @@ class StateMachine
 
                         this.currentState = P1_PIECE_SENT;
                     }
-                }
-               
+                }               
             }
             break;
             case P1_IS_GAME_OVER:
@@ -216,7 +215,9 @@ class StateMachine
                     return;
                 }
                 
+                this.board.setPieceSelectable('p1', false);
                 this.currentState = P1_CHOOSE_PIN_1;
+                this.board.setPinsSelectable('x');
             }
             break;
             case P1_CHOOSE_PIN_1:
@@ -242,8 +243,10 @@ class StateMachine
                     if(this.board.pieces[i].name == pin[0])
                     {
                         piecePins = this.board.pieces[i].pin(pin[1], pin[2]);
+                        this.board.pieces[i].pinSpaces[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
                     }
                 }
+
                 this.currentState = P1_CHOOSE_PIN_2;
             }
             break;
@@ -277,6 +280,8 @@ class StateMachine
                 {
                     this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P2_CHOOSE_PIECE;
+                    this.board.setPieceSelectable('pA');
+                    this.board.setPinsSelectable('x', false);
                 }
                 else
                     this.currentState = AI2_SEND_BOARD;
@@ -429,7 +434,9 @@ class StateMachine
                     return;
                 }
                 
-                this.currentState = P2_CHOOSE_PIN_1;
+                this.board.setPieceSelectable('pA', false);
+                this.currentState = P2_CHOOSE_PIN_1;                
+                this.board.setPinsSelectable('o');
             }
             break;
             case P2_CHOOSE_PIN_1:
@@ -454,7 +461,8 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
-                        piecePins = this.board.pieces[i].pin(pin[1], pin[2]);
+                        piecePins = this.board.pieces[i].pin(pin[1], pin[2]);                        
+                        this.board.pieces[i].pinSpaces[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
                     }
                 }
                 this.currentState = P2_CHOOSE_PIN_2;
@@ -490,6 +498,8 @@ class StateMachine
                 {
                     this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P1_CHOOSE_PIECE;
+                    this.board.setPieceSelectable('p1');
+                    this.board.setPinsSelectable('o', false);
                 }
                 else
                     this.currentState = AI1_SEND_BOARD;
@@ -744,7 +754,10 @@ class StateMachine
                 }
 
                 if(this.board.Player2 == HUMAN)
-                    this.currentState = P2_CHOOSE_PIECE
+                {
+                    this.currentState = P2_CHOOSE_PIECE;
+                    this.board.setPieceSelectable('pA');
+                }
                 else
                     this.currentState = AI2_SEND_BOARD;
             }
@@ -998,7 +1011,10 @@ class StateMachine
                 }
 
                 if(this.board.Player1 == HUMAN)
-                    this.currentState = P1_CHOOSE_PIECE;
+                {
+                    this.currentState = P1_CHOOSE_PIECE;                    
+                    this.board.setPieceSelectable('p1');
+                }
                 else
                     this.currentState = AI1_SEND_BOARD;
             }
