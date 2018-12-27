@@ -2,7 +2,7 @@ class CameraAnimation extends Animation
 {
     constructor(time, camera, param1, param2)
     {
-        super(time, false);
+        super(time);
         
         if(param2 != null)
         {
