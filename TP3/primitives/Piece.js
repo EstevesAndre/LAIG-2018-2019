@@ -15,7 +15,7 @@ class Piece extends CGFobject
 
         this.captured = false;
 
-        this.pinSpaces = [];
+        this.pins = [];
 
         this.struct = new Box(scene, this.size, this.size, 0.2);
 
@@ -38,7 +38,6 @@ class Piece extends CGFobject
             this.isForSelection = false;
         
         this.createPins();
-        this.createPinSpaces();
     };
 
     createSelectAnimations()
@@ -50,41 +49,29 @@ class Piece extends CGFobject
     };
 
     createPins()
-    {
-        if(this.name.charCodeAt(1) >= 65)
-        {
-            this.pins = [['.', '.', '.', '.', '.'], 
-                        ['.', '.', '.', '.', '.'],
-                        ['.', '.', this.name, '.', '.'],
-                        ['.', '.', 'o', '.', '.'],
-                        ['.', '.', '.', '.', '.']];
-        }
-        else
-        {
-            this.pins = [['.', '.', '.', '.', '.'], 
-                        ['.', '.', 'x', '.', '.'],
-                        ['.', '.', this.name, '.', '.'],
-                        ['.', '.', '.', '.', '.'],
-                        ['.', '.', '.', '.', '.']];
-        }
-    };
-
-    createPinSpaces()
     {        
         let space = this.size * 0.9 / 50;
 
         var tmhX = this.size * 0.9/5 - space;
         var tmhY = this.size * 0.9/5 - space;
 
+    
         
-        for(let i = -this.size * 0.9 / 2.0; i < this.size * 0.9 / 2.0 - 0.0005; i += tmhY + space)
+        for(let i = -this.size * 0.9 / 2.0, i_iter = 1; i < this.size * 0.9 / 2.0 - 0.0005; i += tmhY + space, i_iter++)
         {
             let line = [];
-            for(let j = this.size * 0.9 / 2.0 - tmhX - space; j >= -this.size * 0.9 / 2.0 + 0.0005 - tmhX - space; j -= (tmhX + space))
-            {                
-                line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY));
+            for(let j = this.size * 0.9 / 2.0 - tmhX - space, j_iter = 1; j >= -this.size * 0.9 / 2.0 + 0.0005 - tmhX - space; j -= (tmhX + space), j_iter++)
+            {       
+                if(i_iter == 3 && j_iter == 3)
+                    line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY, this.name));     
+                else if(this.name.charCodeAt(1) >= 65 && i_iter == 4 && j_iter == 3)                    
+                    line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY, 'o')); 
+                else if(this.name.charCodeAt(1) < 65 && i_iter == 2 && j_iter == 3)                    
+                    line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY, 'x')); 
+                else
+                    line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY)); 
             }
-            this.pinSpaces.push(line);
+            this.pins.push(line);
         }
     };
     
@@ -93,20 +80,20 @@ class Piece extends CGFobject
         this.scene.pushMatrix();
             this.scene.translate(this.size/2.0, this.size/2.0, 0.21);
 
-            for(let i = 0; i < this.pinSpaces.length; i++)
+            for(let i = 0; i < this.pins.length; i++)
             {                   
-                for(let j = 0; j < this.pinSpaces[i].length; j++)
+                for(let j = 0; j < this.pins[i].length; j++)
                 {   
-                    if(this.pins[i][j] == '.')
+                    if(this.pins[i][j].pinCode == '.')
                         this.def.setTexture(this.textureP1);
-                    else if (this.pins[i][j] == 'x' || this.pins[i][j] == 'o')
+                    else if (this.pins[i][j].pinCode == 'x' || this.pins[i][j].pinCode == 'o')
                         this.def.setTexture(this.textureP2);
                     else
                         this.def.setTexture(this.texture);
 
                     this.def.apply();
-                    this.scene.registerForPick(this.name.charCodeAt(1) * 100 + (i + 1) * 10  + j + 1, this.pinSpaces[i][j]);
-                    this.pinSpaces[i][j].display();
+                    this.scene.registerForPick(this.name.charCodeAt(1) * 100 + (i + 1) * 10  + j + 1, this.pins[i][j]);
+                    this.pins[i][j].display();
                 }            
             }
         this.scene.popMatrix();
@@ -137,43 +124,33 @@ class Piece extends CGFobject
         
     getPiece()
     {    
-        var pins = this.pins.slice(0).reverse();
-        return JSON.stringify(pins).replace(/"/g, "'");
+        let listPins = [];
+        this.pins.forEach(function(line) {
+            let auxLine = [];
+            line.forEach(function(pin) {
+                auxLine.push(pin.pinCode);
+            });
+            listPins.push(auxLine);
+        });
+
+        return JSON.stringify(listPins.reverse()).replace(/"/g, "'");
     };
 
-    setPiece(listPins)
+    setPiece(listPins) // sometimes it fails here
     {
         listPins = listPins.substring(1,listPins.length - 1);        
         
         let pins = (listPins.match(/\[(.*?)\]/g).map(function(val){ return val.replace(/\[/g, '');})).map(function(val){ return val.replace(/\]/g, '');});
 
-        let newPins = new Array(5); 
-        for(var i = 0; i < this.size; i++) 
-            newPins[i] = new Array(5);
-
-        let iter_line = 0;
-        
+        let iter_line = this.pins.length - 1;        
         pins.forEach(element => {
-            let value = element.split(',').map(function(item) { 
-                return item.replace(/'/g, '');}).map(function(item) { 
-                    return item.replace(/ /g, '');});
-            this.pins[iter_line] = value;
-            iter_line++;
+            let lineElems = element.split(',');
+            for(let i = 0; i < lineElems.length; i++)
+            {
+                this.pins[iter_line][i].setPinCode(lineElems[i]);
+            }             
+            iter_line--;
         });
-
-        this.pins.reverse();
-    };
-
-    pin(X, Y)
-    {
-        if(this.name.charCodeAt(1) >= 65)
-        {
-            this.pins[X - 1][Y - 1] = 'o';
-        }
-        else
-        {
-            this.pins[X - 1][Y - 1] = 'x';
-        }
     };
 
     setAnimation(initialX, initialY)
@@ -193,14 +170,11 @@ class Piece extends CGFobject
 
     setPinsSelectable(bool)
     {
-        for(let i = 0; i < this.pinSpaces.length; i++)
+        for(let i = 0; i < this.pins.length; i++)
         {
-            for(let j = 0; j < this.pinSpaces[i].length; j++)
+            for(let j = 0; j < this.pins[i].length; j++)
             {
-                if(this.pins[i][j] == '.')
-                {
-                    this.pinSpaces[i][j].setPinSelectable(bool);
-                }
+                this.pins[i][j].setPinSelectable(bool);
             }
         }
     }
@@ -228,7 +202,7 @@ class Piece extends CGFobject
             });
         }
 
-        this.pinSpaces.forEach(function(line) {
+        this.pins.forEach(function(line) {
             line.forEach(function(pin) {
                 pin.update(time);
             });
