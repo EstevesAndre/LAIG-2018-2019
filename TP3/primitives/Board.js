@@ -220,7 +220,8 @@ class Board extends CGFobject
 
     setValidMoves(validCoords)
     {
-        validCoords = validCoords.substring(1,validCoords.length - 1);        
+        validCoords = validCoords.substring(1,validCoords.length - 1);  
+              
         let points = (validCoords.match(/\[(.*?)\]/g).map(function(val){ return val.replace(/\[/g, '');})).map(function(val){ return val.replace(/\]/g, '');});
 
         let validMoves = new Array(this.npartsY);        
