@@ -296,14 +296,14 @@ class Board extends CGFobject
 
     setPinsSelectable(type, bool = true)
     {
-        if(type.charCodeAt(1) >= 65)
+        if(type == 'o')
         {
             this.pieces.forEach(function(piece) {
                 if(!piece.captured && piece.name.charCodeAt(1) >= 65)
                     piece.setPinsSelectable(bool);
             });
         }
-        else
+        else if(type == 'x')
         {
             this.pieces.forEach(function(piece) {
                 if(!piece.captured && piece.name.charCodeAt(1) < 65)
