@@ -81,7 +81,7 @@ class Clock extends CGFobject {
 
         if(this.active)
         {
-            console.log(this.plays);
+            //console.log(this.plays);
             this.scene.pushMatrix();
                 this.applyNumberTexture(Math.floor(this.plays / 10));
                 this.scene.scale(0.03, 0.03, 0.03);
