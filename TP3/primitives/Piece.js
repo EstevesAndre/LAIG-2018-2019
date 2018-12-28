@@ -147,7 +147,6 @@ class Piece extends CGFobject
         
         let pins = (listPins.match(/\[(.*?)\]/g).map(function(val){ return val.replace(/\[/g, '');})).map(function(val){ return val.replace(/\]/g, '');});
 
-
         let newPins = new Array(5); 
         for(var i = 0; i < this.size; i++) 
             newPins[i] = new Array(5);
@@ -194,11 +193,16 @@ class Piece extends CGFobject
 
     setPinsSelectable(bool)
     {
-        this.pinSpaces.forEach(function(line) {
-            line.forEach(function(pin) {
-                pin.setPinSelectable(bool);
-            });            
-        });
+        for(let i = 0; i < this.pinSpaces.length; i++)
+        {
+            for(let j = 0; j < this.pinSpaces[i].length; j++)
+            {
+                if(this.pins[i][j] == '.')
+                {
+                    this.pinSpaces[i][j].setPinSelectable(bool);
+                }
+            }
+        }
     }
 
     update(time)
