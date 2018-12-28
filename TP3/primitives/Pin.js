@@ -1,10 +1,12 @@
 class Pin extends Rectangle
 {
-    constructor(scene, name, x1, y1, x2, y2)
+    constructor(scene, name, x1, y1, x2, y2, pinCode)
     {
         super(scene, x1, y1, x2, y2);
     
         this.name = name;
+        this.pinCode = pinCode || '.'; // default
+
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
@@ -19,9 +21,18 @@ class Pin extends Rectangle
         this.windowTexture.setAmbient(0,0.2,0.7,1);
     };
 
+    setPinCode(newPinCode)
+    {
+        if(this.name.charCodeAt(1) >= 65)
+            this.pinCode = newPinCode || 'o';
+        else
+            this.pinCode = newPinCode || 'x';
+    };
+
     setPinSelectable(bool)
     {
-        this.isForSelection = bool;
+        if(this.pinCode == '.')
+            this.isForSelection = bool;
     };
 
     createSelectAnimation()
@@ -33,7 +44,7 @@ class Pin extends Rectangle
     {
         this.drawElements(this.scene.gl.TRIANGLES);
 
-        if(this.isForSelection)
+        if(this.isForSelection && this.pinCode == '.')
         {
             if(this.selectionAnimation == null)
                 this.createSelectAnimation();
