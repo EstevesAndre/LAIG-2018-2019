@@ -3,22 +3,30 @@ class Pin extends Rectangle
     constructor(scene, name, x1, y1, x2, y2)
     {
         super(scene, x1, y1, x2, y2);
-
+    
         this.name = name;
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
+
         this.isForSelection = false;
         this.selectionAnimation = null;
-        this.pinSelected = new SelectedSquare(this.scene, (x2 - x1) * 1.05, x2 - x1);       
+
+        this.pinSelected = new SelectedSquare(this.scene, (x2 - x1) * 1.05, (x2 - x1) * 0.8);
+
+        this.windowTexture = new CGFappearance(this.scene);
+        this.windowTexture.setAmbient(0,0.2,0.7,1);
     };
 
     setPinSelectable(bool)
     {
-        console
         this.isForSelection = bool;
     };
 
     createSelectAnimation()
     {        
-        this.selectionAnimation = new LinearAnimation(3.5, [ [0,0,0], [0,0,0.075], [0,0,0] ], true); //new ScaleAnimation(2.5, [ [1,1,1], [0,0,0], [1,1,1] ], true);
+        this.selectionAnimation = new ScaleAnimation(2.5, [ [1,1,1], [0.25,0.25,0.25], [1,1,1] ], true);
     };    
 
     display()
@@ -31,8 +39,9 @@ class Pin extends Rectangle
                 this.createSelectAnimation();
 
             this.scene.pushMatrix();
+                this.scene.translate(this.x1 + (this.x2-this.x1)/2,this.y2 + (this.y1-this.y2)/2,0.02);
                 this.selectionAnimation.apply(this.scene);
-                
+                this.windowTexture.apply();
                 this.pinSelected.display();
             this.scene.popMatrix();
         }
