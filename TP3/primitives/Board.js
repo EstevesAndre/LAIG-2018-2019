@@ -38,7 +38,9 @@ class Board extends CGFobject
         this.def.setAmbient(1,1,1,1);
         this.def.setSpecular(0.7,0.7,0.7,1);
         this.def.setTexture(this.textureP1);
-                
+        
+
+        this.createPieceHolder();
         this.createSpaces();
     };
 
@@ -89,6 +91,11 @@ class Board extends CGFobject
         }
     };
 
+    createPieceHolder()
+    {
+        this.pieceHolder = new Box(this.scene,0.2,1,0.075);        
+    };
+
     createSpaces()
     {
         var tmhX = 1.0/this.npartsX;
@@ -118,12 +125,23 @@ class Board extends CGFobject
 
     display()
     {  
-        this.displayPieces();
         this.scene.pushMatrix();
+            this.scene.translate(0,0.1,0);
             this.scene.rotate(Math.PI/2.0, 0, 0, 1);
             this.displayBoard();
         this.scene.popMatrix();
-        this.clock.display();
+
+        this.scene.pushMatrix();
+            this.scene.translate(0,0.1,0);
+            this.displayPieces();
+            this.clock.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+            this.scene.translate(0.5,-0.65,0);
+            this.scene.rotate(Math.PI/2.0, 0,0,1);
+            this.pieceHolder.display();
+        this.scene.popMatrix();
     };
 
     displayBoard()
@@ -257,6 +275,11 @@ class Board extends CGFobject
                 break;
             }
         }
+    };
+
+    preCaptureAnimation()
+    {
+
     };
 
     movePiece(piece, square)

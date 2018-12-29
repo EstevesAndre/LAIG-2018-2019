@@ -715,10 +715,26 @@
             <texture id="wood" length_s="1" length_t="1" />
 
             <children>
-                <componentref id="tabletop"/>
+                <componentref id="tabletop_center"/>
                 <componentref id="table_leg"/>
                 <componentref id="center_chair_1"/>
                 <componentref id="center_chair_2"/>
+            </children>
+        </component>
+
+        <component id="tabletop_center">
+            <transformation>
+                <scale x="4.0" y="0.2" z="5.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="cube"/>
             </children>
         </component>
 
@@ -1195,7 +1211,7 @@
             <children>
                 <primitiveref id="board"/>
             </children>
-        </component>
+        </component>      
         
     </components>
 
