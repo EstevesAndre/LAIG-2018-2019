@@ -243,7 +243,7 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
-                        piecePins = this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinCode();
+                        piecePins = this.board.setPinCode(i, pin[1]-1, pin[2]-1);;
                         this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
                     }
                 }
@@ -273,7 +273,7 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
-                        piecePins = this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinCode();
+                        piecePins = this.board.setPinCode(i, pin[1]-1, pin[2]-1);;
                         this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
                     }
                 }
@@ -468,7 +468,7 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
-                        piecePins = this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinCode();                        
+                        piecePins = this.board.setPinCode(i, pin[1]-1, pin[2]-1);
                         this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
                     }
                 }
@@ -497,7 +497,7 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
-                        piecePins = this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinCode();
+                        piecePins = this.board.setPinCode(i, pin[1]-1, pin[2]-1);;
                         this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
                     }
                 }
