@@ -25,6 +25,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js',
                 'animations/BezierAnimation.js', 'primitives/SelectedSquare.js',
                 'animations/CameraAnimation.js', 'primitives/Pin.js',
                 'animations/ScaleAnimation.js', 'StateMachine.js',
+                'primitives/Plant.js',
                 
 main=function()
 {

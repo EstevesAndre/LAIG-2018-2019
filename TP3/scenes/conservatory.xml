@@ -1,5 +1,5 @@
 <yas>
-    <scene root="PLOG" axis_length="1.0" />
+    <scene root="plant" axis_length="1.0" />
 
     <views default="Scene">  
         <perspective id="Scene" near="0.1" far="500" angle="23">
@@ -66,6 +66,9 @@
         <primitive id="prim_Board">
             <board npartsX="5.0" npartsY="5.0" textureP1="neondark" textureP2="neon" textureSelected="neonselected" texturePiece1="neondark" texturePiece2="neon"/>
         </primitive>
+        <primitive id="plant">
+            <plant textureLeaves="neonselected"/>
+        </primitive>
     </primitives>
 
     <components>            
@@ -81,6 +84,21 @@
 
             <children>
                 <primitiveref id="prim_Board" />
+            </children>
+        </component>
+
+        <component id="plant">
+            <transformation>
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="none" length_s="1.0" length_t="1.0" />
+
+            <children>
+                <primitiveref id="plant" />
             </children>
         </component>
     </components>
