@@ -430,8 +430,6 @@ class Board extends CGFobject
 
     videoDisplay()
     {
-        //console.log(this.moves);
-        //console.log(this.pieces);
         for(let i = 0; i < this.pieces.length; i++)
         {
             this.scene.pushMatrix();
