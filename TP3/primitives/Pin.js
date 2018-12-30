@@ -29,6 +29,12 @@ class Pin extends Rectangle
             this.pinCode = newPinCode || 'x';
     };
 
+    unpin()
+    {
+        this.pinCode = '.';
+        this.isForSelection = false;
+    };
+
     setPinSelectable(bool)
     {
         if(this.pinCode == '.')

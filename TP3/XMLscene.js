@@ -116,6 +116,14 @@ class XMLscene extends CGFscene {
             }
         };
 
+        this.Undo = function() {
+            for(let i = 0; i < this.graph.primitives.length; i++)
+            {
+                if(this.graph.primitives[i].type == "board")
+                    this.graph.primitives[i].obj.undo(false);
+            }
+        };
+
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
         this.setGlobalAmbientLight(this.graph.ambient.r, this.graph.ambient.g, this.graph.ambient.b, this.graph.ambient.a);
@@ -137,6 +145,8 @@ class XMLscene extends CGFscene {
         this.interface.addLookGroup(this.graphs);
         
         this.interface.addNewGameButton();
+
+        this.interface.addUndoButton();
 
         this.sceneInited = true;}
     }

@@ -58,7 +58,7 @@ class StateMachine
                     return;
                 
                 console.log(this.board.moves);
-                
+
                 this.pieceSelected = piece;
 
                 var piecePins;

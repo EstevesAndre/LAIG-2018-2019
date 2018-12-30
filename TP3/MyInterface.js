@@ -60,6 +60,11 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'New_Game').name("New Game");
     }
 
+    addUndoButton()
+    {
+        this.gui.add(this.scene, 'Undo');
+    }
+
     initKeys()
 	{
 		this.processKeyboard = function() {};

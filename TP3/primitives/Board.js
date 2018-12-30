@@ -31,16 +31,7 @@ class Board extends CGFobject
         
         this.playing = false;
         this.videoPlaying = true;
-        this.initializeVideo();
-
-        this.moves = [
-            {type: "piece", name: "p3", X: 2, Y: 3},
-            {type: "pin", name: "p2", X: 0, Y: 4},
-            {type: "pin", name: "p2", X: 0, Y: 3},
-            {type: "piece", name: "pC", X: 5, Y: 3},
-            {type: "pin", name: "pD", X: 1, Y: 0},
-            {type: "pin", name: "pB", X: 1, Y: 2}
-        ];
+        this.undoing = false;
 
         this.squareSize = (1.0/this.npartsX);
         this.pieceSize = (1.0/this.npartsX) * 0.8;
@@ -336,7 +327,7 @@ class Board extends CGFobject
 
                 this.stateMachine.isPieceMoving = true;
                 this.pieces[i].setAnimation(oldX, oldY);
-                if(!this.videoPlaying) this.insertNewMove('piece', piece, square[0], square[1], oldX, oldY);
+                if(!this.videoPlaying && !this.undoing) this.insertNewMove('piece', piece, square[0], square[1], oldX, oldY);
                 break;
             }
         }
@@ -462,4 +453,98 @@ class Board extends CGFobject
         }
     };
 
+    undo(second)
+    {
+        if(!this.playing || this.moves.length == 0 || (this.stateMachine.currentState != P1_CHOOSE_PIECE && this.stateMachine.currentState != P2_CHOOSE_PIECE))
+        {
+            console.log("Cannot UNDO");
+            return;
+        }
+
+        this.undoing = true;
+
+        var move = this.moves.pop();
+        
+        for(var i = 0; i < this.pieces.length; i++)
+        {
+            if(this.pieces[i].name == move['name'])
+            {
+                this.pieces[i].pins[move['X']][move['Y']].unpin();
+                break;
+            }
+        }
+
+        move = this.moves.pop();
+
+        for(var i = 0; i < this.pieces.length; i++)
+        {
+            if(this.pieces[i].name == move['name'])
+            {
+                this.pieces[i].pins[move['X']][move['Y']].unpin();
+                break;
+            }
+        }
+
+        move = this.moves.pop();
+        
+        this.movePiece(move['name'], [move['oldX'], move['oldY']]);
+
+        if(this.moves.length > 0)
+        {
+            move = this.moves.pop();
+            
+            if(move['type'] == "capture")
+            {
+                for(let i = 0; i < this.pieces.length; i++)
+                {                     
+                    if(this.pieces[i].name == move['name'])
+                    {                
+                        let oldX = 0.35 - (this.capturedCount % (this.pieces.length / 2)) * this.squareSize - (this.capturedCount >= this.pieces.length/2 ?  0.0 : 0.03);
+                        let oldY = (this.capturedCount >= this.pieces.length/2 ?  0.075 : -0.06) - 0.75;
+
+                        this.pieces[i].X = move['X'];
+                        this.pieces[i].Y = move['Y'];
+                        this.pieces[i].setAnimation(oldX, oldY, true);
+
+                        this.capturedCount--;
+                        this.pieces[i].captured = false;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                this.moves.push(move);
+            }
+        }
+        
+        if(second)
+        {
+            this.undoing = false;
+            return;
+        }
+        else if (this.Player1 == AI || this.Player2 == AI)
+        {
+            this.undo(true);
+        }
+        else
+        {
+            this.undoing = false;
+            
+            if(this.stateMachine.currentState == P1_CHOOSE_PIECE)
+            {
+                this.stateMachine.currentState = P2_CHOOSE_PIECE;
+                this.setPieceSelectable('pA');
+                this.setPinsSelectable('x', false);
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, Math.PI);
+            }
+            else
+            {
+                this.stateMachine.currentState = P1_CHOOSE_PIECE;
+                this.setPieceSelectable('p1');
+                this.setPinsSelectable('o', false);
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, Math.PI);
+            }
+        }
+    }
 };
