@@ -260,12 +260,12 @@ class StateMachine
                 if(this.board.Player2 == HUMAN)
                 {
                     this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
-                    this.currentState = P2_CHOOSE_PIECE;                    
+                    this.currentState = P2_CHOOSE_PIECE;
+                    this.board.setPieceSelectable('pA');                    
                 }
                 else
                     this.currentState = AI2_SEND_BOARD;
                                 
-                this.board.setPieceSelectable('pA');
                 this.board.setPinsSelectable('x', false);
             }
             break;
@@ -485,11 +485,11 @@ class StateMachine
                 {
                     this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P1_CHOOSE_PIECE;
+                    this.board.setPieceSelectable('p1');
                 }
                 else
                     this.currentState = AI1_SEND_BOARD;
             
-                this.board.setPieceSelectable('p1');
                 this.board.setPinsSelectable('o', false);
             }
             break;
@@ -552,11 +552,13 @@ class StateMachine
                 this.board.clock.addPlay();
 
                 if(this.board.Player2 == HUMAN)
+                {
                     this.currentState = P2_CHOOSE_PIECE;
+                    this.board.setPieceSelectable('pA');
+                }
                 else
                     this.currentState = AI2_SEND_BOARD;
                 
-                this.board.setPieceSelectable('pA');
                 this.board.setPinsSelectable('x', false);
             }
             break;
@@ -620,12 +622,12 @@ class StateMachine
 
                 if(this.board.Player1 == HUMAN)
                 {
-                    this.currentState = P1_CHOOSE_PIECE;     
+                    this.currentState = P1_CHOOSE_PIECE;    
+                    this.board.setPieceSelectable('p1');
                 }
                 else
                     this.currentState = AI1_SEND_BOARD;
                                    
-                this.board.setPieceSelectable('p1');
                 this.board.setPinsSelectable('o', false);
             }
             break;

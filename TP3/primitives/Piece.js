@@ -32,10 +32,7 @@ class Piece extends CGFobject
 
         this.pieceSelected = new SelectedSquare(this.scene, this.size * 1.05, this.size);
         
-        if(this.name.charCodeAt(1) < 65)
-            this.isForSelection = true;
-        else
-            this.isForSelection = false;
+        this.isForSelection = false;
         
         this.createPins();
     };

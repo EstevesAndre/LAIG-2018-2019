@@ -70,12 +70,14 @@ class Board extends CGFobject
                 this.Player2 = HUMAN;
                 this.stateMachine.currentState = P1_CHOOSE_PIECE;
                 this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                this.setPieceSelectable('p1');
                 break;
             case 'Player vs AI':
                 this.Player1 = HUMAN;
                 this.Player2 = AI;
                 this.stateMachine.currentState = P1_CHOOSE_PIECE;
                 this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                this.setPieceSelectable('p1');
                 break;
             case 'AI vs Player':
                 this.Player1 = AI;
@@ -530,7 +532,7 @@ class Board extends CGFobject
         else
         {
             this.undoing = false;
-            
+            this.clock.start();
             if(this.stateMachine.currentState == P1_CHOOSE_PIECE)
             {
                 this.stateMachine.currentState = P2_CHOOSE_PIECE;
