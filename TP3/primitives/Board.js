@@ -30,6 +30,17 @@ class Board extends CGFobject
                             [false, false, false, false, false, false] ];
         
         this.playing = false;
+        this.videoPlaying = true;
+        this.initializeVideo();
+
+        this.moves = [
+            {type: "piece", name: "p3", X: 2, Y: 3},
+            {type: "pin", name: "p2", X: 0, Y: 4},
+            {type: "pin", name: "p2", X: 0, Y: 3},
+            {type: "piece", name: "pC", X: 5, Y: 3},
+            {type: "pin", name: "pD", X: 1, Y: 0},
+            {type: "pin", name: "pB", X: 1, Y: 2}
+        ];
 
         this.squareSize = (1.0/this.npartsX);
         this.pieceSize = (1.0/this.npartsX) * 0.8;
@@ -48,6 +59,8 @@ class Board extends CGFobject
     newGame(mode, difficulty, time_per_move)
     {
         this.playing = true;
+        this.videoPlaying = false;
+        this.moves = [];
         this.pieces = [];
         this.createPieces();
         
@@ -132,11 +145,21 @@ class Board extends CGFobject
             this.displayBoard();
         this.scene.popMatrix();
 
-        this.scene.pushMatrix();
-            this.scene.translate(0,0.175,0);
-            this.displayPieces();
-            this.clock.display();
-        this.scene.popMatrix();
+        if(!this.videoPlaying)
+        {
+            this.scene.pushMatrix();
+                this.scene.translate(0,0.175,0);
+                this.displayPieces();
+                this.clock.display();
+            this.scene.popMatrix();
+        }
+        else 
+        {            
+            this.scene.pushMatrix();
+                this.scene.translate(0,0.175,0);
+                this.videoDisplay();
+            this.scene.popMatrix();
+        }
 
         this.scene.pushMatrix();
             this.scene.translate(0.525,-0.7,0);
@@ -292,6 +315,7 @@ class Board extends CGFobject
                 this.pieces[i].Y = (this.capturedCount >= this.pieces.length/2 ?  0.075 : -0.06) - 0.75;
                 this.pieces[i].setAnimation(oldX, oldY, true);
 
+                if(!this.videoPlaying) this.insertNewMove('capture', this.pieces[i].name, square[0], square[1]);
                 this.capturedCount++;
                 this.pieces[i].captured = true;
                 break;
@@ -312,6 +336,7 @@ class Board extends CGFobject
 
                 this.stateMachine.isPieceMoving = true;
                 this.pieces[i].setAnimation(oldX, oldY);
+                if(!this.videoPlaying) this.insertNewMove('piece', piece, square[0], square[1]);
                 break;
             }
         }
@@ -362,4 +387,56 @@ class Board extends CGFobject
         this.stateMachine.update();  
         this.clock.update(time);
     };
+    
+    setPinCode(pieceIndex, pinX, pinY)
+    {
+        this.pieces[pieceIndex].pins[pinX][pinY].setPinCode();                    
+        if(!this.videoPlaying) this.insertNewMove('pin', this.pieces[pieceIndex].name, pinX, pinY);
+    };
+
+    insertNewMove(type, pieceName, newX, newY)
+    {
+        let move = {
+            'type' : type,
+            'name' : pieceName,
+            'X' : newX,
+            'Y' : newY
+        };
+
+        this.moves.push(move);
+    };
+
+    initializeVideo()
+    {
+        this.pieces = [];
+        this.createPieces();
+    };
+
+    videoDisplay()
+    {
+        //console.log(this.moves);
+        //console.log(this.pieces);
+        for(let i = 0; i < this.pieces.length; i++)
+        {
+            this.scene.pushMatrix();
+                if(this.pieces[i].isMoving) 
+                    this.pieces[i].animation.apply(this.scene, false);                    
+                
+                if(!this.pieces[i].captured)
+                {
+                    this.scene.translate(0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize, -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize, 0);                    
+                    this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);
+                }
+                else 
+                {
+                    this.scene.translate(this.pieces[i].X, this.pieces[i].Y, 0.075);
+                    this.pieces[i].isMoving ?   this.scene.rotate(-Math.PI / (2.0 + this.pieces[i].animation.timeElapsed / this.pieces[i].animation.time * 10), 0, 0, 1) : 
+                                                this.scene.rotate(-Math.PI / 12.0, 0, 0, 1);                    
+                }
+                
+                this.pieces[i].display();
+            this.scene.popMatrix();
+        }
+    };
+
 };
