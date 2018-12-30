@@ -57,6 +57,8 @@ class StateMachine
                 if(piece == null || piece.charCodeAt(1) > 60)
                     return;
                 
+                console.log(this.board.moves);
+                
                 this.pieceSelected = piece;
 
                 var piecePins;

@@ -336,7 +336,7 @@ class Board extends CGFobject
 
                 this.stateMachine.isPieceMoving = true;
                 this.pieces[i].setAnimation(oldX, oldY);
-                if(!this.videoPlaying) this.insertNewMove('piece', piece, square[0], square[1]);
+                if(!this.videoPlaying) this.insertNewMove('piece', piece, square[0], square[1], oldX, oldY);
                 break;
             }
         }
@@ -353,12 +353,12 @@ class Board extends CGFobject
             if(this.pieces[i].name == array[3])
             {
                 this.pieces[i].pins[Number(array[4]) - 1][Number(array[5]) - 1].setPinCode();
-                this.insertNewMove('pin', array[3], Number(array[4]), Number(array[5]));
+                this.insertNewMove('pin', array[3], Number(array[4]) - 1, Number(array[5]) - 1);
             }
             else if(this.pieces[i].name == array[6])
             {
                 this.pieces[i].pins[Number(array[7]) - 1][Number(array[8]) - 1].setPinCode();
-                this.insertNewMove('pin', array[6], Number(array[7]), Number(array[8]));                
+                this.insertNewMove('pin', array[6], Number(array[7]) - 1, Number(array[8]) - 1);                
             }
         }
     }
@@ -415,13 +415,15 @@ class Board extends CGFobject
         if(!this.videoPlaying) this.insertNewMove('pin', this.pieces[pieceIndex].name, pinX, pinY);
     };
 
-    insertNewMove(type, pieceName, newX, newY)
+    insertNewMove(type, pieceName, newX, newY, oldX, oldY)
     {
         let move = {
             'type' : type,
             'name' : pieceName,
             'X' : newX,
-            'Y' : newY
+            'Y' : newY,
+            'oldX': oldX,
+            'oldY': oldY
         };
 
         this.moves.push(move);
