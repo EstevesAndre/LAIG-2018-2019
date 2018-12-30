@@ -20,6 +20,8 @@ class Board extends CGFobject
         this.spaces = [];
         this.pieces = [];
         this.piecePicked = null;
+        this.capturedCount = 0;
+
         this.validMoves = [[false, false, false, false, false, false],
                             [false, false, false, false, false, false],
                             [false, false, false, false, false, false],
@@ -39,7 +41,6 @@ class Board extends CGFobject
         this.def.setSpecular(0.7,0.7,0.7,1);
         this.def.setTexture(this.textureP1);
         
-
         this.createPieceHolder();
         this.createSpaces();
     };
@@ -93,7 +94,7 @@ class Board extends CGFobject
 
     createPieceHolder()
     {
-        this.pieceHolder = new Box(this.scene,0.2,1,0.075);        
+        this.pieceHolder = new Box(this.scene,0.35,1.05,0.075);        
     };
 
     createSpaces()
@@ -126,20 +127,22 @@ class Board extends CGFobject
     display()
     {  
         this.scene.pushMatrix();
-            this.scene.translate(0,0.1,0);
+            this.scene.translate(0,0.175,0);
             this.scene.rotate(Math.PI/2.0, 0, 0, 1);
             this.displayBoard();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-            this.scene.translate(0,0.1,0);
+            this.scene.translate(0,0.175,0);
             this.displayPieces();
             this.clock.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-            this.scene.translate(0.5,-0.65,0);
-            this.scene.rotate(Math.PI/2.0, 0,0,1);
+            this.scene.translate(0.525,-0.7,0);
+            this.scene.rotate(Math.PI/2.0, 0,0,1);            
+            this.def.setTexture(this.textureP2);
+            this.def.apply();
             this.pieceHolder.display();
         this.scene.popMatrix();
     };
@@ -169,19 +172,25 @@ class Board extends CGFobject
     displayPieces()
     {
         for(let i = 0; i < this.pieces.length; i++)
-        {      
-            if(this.pieces[i].captured)
-                continue;
-
+        {
             this.scene.pushMatrix();
                 if(this.pieces[i].isMoving) 
                     this.pieces[i].animation.apply(this.scene, false);                    
                 
-                this.scene.translate(0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize, -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize, 0);
-                this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);                
+                if(!this.pieces[i].captured)
+                {
+                    this.scene.translate(0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize, -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize, 0);                    
+                    this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);
+                }
+                else 
+                {
+                    this.scene.translate(this.pieces[i].X, this.pieces[i].Y, 0.075);
+                    this.pieces[i].isMoving ?   this.scene.rotate(-Math.PI / (2.0 + this.pieces[i].animation.timeElapsed / this.pieces[i].animation.time * 10), 0, 0, 1) : 
+                                                this.scene.rotate(-Math.PI / 12.0, 0, 0, 1);                    
+                }
                 
                 this.pieces[i].display();
-            this.scene.popMatrix(); 
+            this.scene.popMatrix();
         }
     };
 
@@ -213,8 +222,13 @@ class Board extends CGFobject
         {
             if(board_str.indexOf(this.pieces[i].name) == -1)
             {
-                this.pieces[i].X = -1;
-                this.pieces[i].Y = -1;
+                let oldX = 0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize;
+                let oldY = -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize;                
+                this.pieces[i].X = 0.35 - (this.capturedCount % (this.pieces.length / 2)) * this.squareSize - (this.capturedCount >= this.pieces.length/2 ?  0.0 : 0.03);
+                this.pieces[i].Y = (this.capturedCount >= this.pieces.length/2 ?  0.075 : -0.06) - 0.75;
+
+                this.pieces[i].setAnimation(oldX, oldY, true);
+                this.capturedCount++;
                 this.pieces[i].captured = true;
             }
         }
@@ -238,6 +252,9 @@ class Board extends CGFobject
 
     setValidMoves(validCoords)
     {
+        if(validCoords == null)
+            return;
+        
         validCoords = validCoords.substring(1,validCoords.length - 1);  
               
         let points = (validCoords.match(/\[(.*?)\]/g).map(function(val){ return val.replace(/\[/g, '');})).map(function(val){ return val.replace(/\]/g, '');});
@@ -268,18 +285,18 @@ class Board extends CGFobject
         for(let i = 0; i < this.pieces.length; i++)
         {                     
             if(this.pieces[i].X == square[0] && this.pieces[i].Y == square[1])
-            {
-                this.pieces[i].X = 0;
-                this.pieces[i].Y = 0;
+            {                
+                let oldX = 0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize;
+                let oldY = -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize;                
+                this.pieces[i].X = 0.35 - (this.capturedCount % (this.pieces.length / 2)) * this.squareSize - (this.capturedCount >= this.pieces.length/2 ?  0.0 : 0.03);
+                this.pieces[i].Y = (this.capturedCount >= this.pieces.length/2 ?  0.075 : -0.06) - 0.75;
+                this.pieces[i].setAnimation(oldX, oldY, true);
+
+                this.capturedCount++;
                 this.pieces[i].captured = true;
                 break;
             }
         }
-    };
-
-    preCaptureAnimation()
-    {
-
     };
 
     movePiece(piece, square)
