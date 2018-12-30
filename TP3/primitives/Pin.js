@@ -37,7 +37,7 @@ class Pin extends Rectangle
 
     createSelectAnimation()
     {        
-        this.selectionAnimation = new ScaleAnimation(2.5, [ [1,1,1], [0.25,0.25,0.25], [1,1,1] ], true);
+        this.selectionAnimation = new ScaleAnimation(2.5, [ [1,1,1], [0.25,0.25,1], [1,1,1] ], true);
     };    
 
     display()
@@ -50,7 +50,7 @@ class Pin extends Rectangle
                 this.createSelectAnimation();
 
             this.scene.pushMatrix();
-                this.scene.translate(this.x1 + (this.x2-this.x1)/2,this.y2 + (this.y1-this.y2)/2,0.02);
+                this.scene.translate(this.x1 + (this.x2-this.x1)/2,this.y2 + (this.y1-this.y2)/2,0.01);
                 this.selectionAnimation.apply(this.scene);
                 this.windowTexture.apply();
                 this.pinSelected.display();
