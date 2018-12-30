@@ -11,15 +11,15 @@
 
     Depth - the number of moves calculated while choosing the best move 
 */
-p1computer(Depth) :-
+p1computer(Depth, [BestMove, Pin1, Pin2]) :-
     random_permutation([pA, pB, pC, pD, pE, pF], Pieces), 
     removeExtraPieces(Pieces, [], NewPieces),
     board(T),
     valid_moves(T, NewPieces, [], Moves),
     choose_move(T, Moves, _, BestMove, -1000, _, NewPieces, Depth),
     moveAI(BestMove),
-    pinAI(NewPieces),
-    pinAI(NewPieces).
+    pinAI(NewPieces, Pin1),
+    pinAI(NewPieces, Pin2).
 
 /* Gets computer move info if is the second player 
     
@@ -32,15 +32,15 @@ p1computer(Depth) :-
 
     Depth - the number of moves calculated while choosing the best move 
 */
-p2computer(Depth) :-
+p2computer(Depth, [BestMove, Pin1, Pin2]) :-
     random_permutation([p1, p2, p3, p4, p5, p6], Pieces), 
     removeExtraPieces(Pieces, [], NewPieces),
     board(T),
     valid_moves(T, NewPieces, [], Moves),
     choose_move(T, Moves, _, BestMove, -1000, _, NewPieces, Depth),
     moveAI(BestMove),
-    pinAI(NewPieces),
-    pinAI(NewPieces).
+    pinAI(NewPieces, Pin1),
+    pinAI(NewPieces, Pin2).
 
 /* Removes pieces that are no longer on the board 
 
@@ -81,7 +81,7 @@ moveAI([Piece, TrgRow, TrgCol]) :-
 
     Pieces - the pieces available for pin
 */
-pinAI(Pieces) :-
+pinAI(Pieces, [Piece, Row, Col]) :-
     choosePinPiece(Pieces, _, Piece, 1000),
     chooseBestPin(Piece, Row, Col),
     pin(Piece, Row, Col).

@@ -342,6 +342,27 @@ class Board extends CGFobject
         }
     };   
 
+    makeAIMove(str)
+    {
+        var array = str.replace(/\[/g, '').replace(/\]/g, '').split(',');
+        this.capturePiece([Number(array[1]), Number(array[2])]);
+        this.movePiece(array[0], [Number(array[1]), Number(array[2])]);
+
+        for(var i = 0; i < this.pieces.length; i++)
+        {
+            if(this.pieces[i].name == array[3])
+            {
+                this.pieces[i].pins[Number(array[4]) - 1][Number(array[5]) - 1].setPinCode();
+                this.insertNewMove('pin', array[3], Number(array[4]), Number(array[5]));
+            }
+            else if(this.pieces[i].name == array[6])
+            {
+                this.pieces[i].pins[Number(array[7]) - 1][Number(array[8]) - 1].setPinCode();
+                this.insertNewMove('pin', array[6], Number(array[7]), Number(array[8]));                
+            }
+        }
+    }
+
     setPieceSelectable(type, bool = true)
     {
         if(type.charCodeAt(1) >= 65)

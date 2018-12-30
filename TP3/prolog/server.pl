@@ -128,8 +128,7 @@ parse_input(getValidMoves(Piece), Ret):-
 	getAvailableMoves(Piece, [], Ret, 5, 5).
 
 parse_input(computerTurn(Player, Depth), Ret):-
-	if_then_else(Player =:= 1, p2computer(Depth), p1computer(Depth)),
-	Ret = 'MOVE PLAYED'.
+	if_then_else(Player =:= 1, p2computer(Depth, Ret), p1computer(Depth, Ret)).
 
 parse_input(isGameOver, Ret):-
 	if_then_else(winnerP1(""),
