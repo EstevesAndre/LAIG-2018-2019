@@ -77,7 +77,7 @@ class Piece extends CGFobject
     {
         this.scene.pushMatrix();
             this.scene.translate(this.size/2.0, this.size/2.0, 0.21);
-
+            
             for(let i = 0; i < this.pins.length; i++)
             {                   
                 for(let j = 0; j < this.pins[i].length; j++)
@@ -134,7 +134,7 @@ class Piece extends CGFobject
         return JSON.stringify(listPins.reverse()).replace(/"/g, "'");
     };
 
-    setPiece(listPins) // sometimes it fails here
+    setPiece(listPins)
     {
         listPins = listPins.substring(1,listPins.length - 1);        
         
