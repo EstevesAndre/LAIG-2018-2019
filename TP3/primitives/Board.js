@@ -33,34 +33,34 @@ class Board extends CGFobject
         this.videoPlaying = false;
         this.undoing = false;
 
-        this.moves = [
-            {type: "piece", name: "p3", X: 2, Y: 3, oldX: 1, oldY: 3},
-            {type: "pin", name: "p4", X: 0, Y: 0, oldX: null, oldY: null},
-            {type: "pin", name: "p3", X: 0, Y: 2, oldX: null, oldY: null},
-            {type: "piece", name: "pE", X: 5, Y: 5, oldX: 6, oldY: 5},
-            {type: "pin", name: "pC", X: 4, Y: 2, oldX: null, oldY: null},
-            {type: "pin", name: "pD", X: 4, Y: 1, oldX: null, oldY: null},
-            {type: "piece", name: "p5", X: 2, Y: 5, oldX: 1, oldY: 5},
-            {type: "pin", name: "p5", X: 0, Y: 2, oldX: null, oldY: null},
-            {type: "pin", name: "p5", X: 0, Y: 1, oldX: null, oldY: null},
-            {type: "piece", name: "pE", X: 4, Y: 5, oldX: 5, oldY: 5},
-            {type: "pin", name: "pD", X: 4, Y: 3, oldX: null, oldY: null},
-            {type: "pin", name: "pD", X: 4, Y: 2, oldX: null, oldY: null},
-            {type: "capture", name: "pE", X: 4, Y: 5, oldX: -0.15000000000000002, oldY: 0.3166666},
-            {type: "piece", name: "p5", X: 4, Y: 5, oldX: 2, oldY: 5},
-            {type: "pin", name: "p5", X: 2, Y: 0, oldX: null, oldY: null},
-            {type: "pin", name: "p5", X: 1, Y: 0, oldX: null, oldY: null},
-            {type: "piece", name: "pD", X: 5, Y: 4, oldX: 6, oldY: 4},
-            {type: "pin", name: "pD", X: 3, Y: 3, oldX: null, oldY: null},
-            {type: "pin", name: "pD", X: 2, Y: 0, oldX: null, oldY: null},
-            {type: "piece", name: "p3", X: 4, Y: 3, oldX: 2, oldY: 3},
-            {type: "pin", name: "p4", X: 1, Y: 1, oldX: null, oldY: null},
-            {type: "pin", name: "p4", X: 0, Y: 1, oldX: null, oldY: null},
-            {type: "capture", name: "p5", X: 4, Y: 5, oldX: -0.15000000000000002, oldY: 0.3166666},
-            {type: "piece", name: "pD", X: 4, Y: 5, oldX: 5, oldY: 4},
-            {type: "pin", name: "pF", X: 4, Y: 2, oldX: null, oldY: null},
-            {type: "pin", name: "pB", X: 4, Y: 2, oldX: null, oldY: null}
-        ];
+        // this.moves = [
+        //     {type: "piece", name: "p3", X: 2, Y: 3, oldX: 1, oldY: 3},
+        //     {type: "pin", name: "p4", X: 0, Y: 0, oldX: null, oldY: null},
+        //     {type: "pin", name: "p3", X: 0, Y: 2, oldX: null, oldY: null},
+        //     {type: "piece", name: "pE", X: 5, Y: 5, oldX: 6, oldY: 5},
+        //     {type: "pin", name: "pC", X: 4, Y: 2, oldX: null, oldY: null},
+        //     {type: "pin", name: "pD", X: 4, Y: 1, oldX: null, oldY: null},
+        //     {type: "piece", name: "p5", X: 2, Y: 5, oldX: 1, oldY: 5},
+        //     {type: "pin", name: "p5", X: 0, Y: 2, oldX: null, oldY: null},
+        //     {type: "pin", name: "p5", X: 0, Y: 1, oldX: null, oldY: null},
+        //     {type: "piece", name: "pE", X: 4, Y: 5, oldX: 5, oldY: 5},
+        //     {type: "pin", name: "pD", X: 4, Y: 3, oldX: null, oldY: null},
+        //     {type: "pin", name: "pD", X: 4, Y: 2, oldX: null, oldY: null},
+        //     {type: "capture", name: "pE", X: 4, Y: 5, oldX: -0.15000000000000002, oldY: 0.3166666},
+        //     {type: "piece", name: "p5", X: 4, Y: 5, oldX: 2, oldY: 5},
+        //     {type: "pin", name: "p5", X: 2, Y: 0, oldX: null, oldY: null},
+        //     {type: "pin", name: "p5", X: 1, Y: 0, oldX: null, oldY: null},
+        //     {type: "piece", name: "pD", X: 5, Y: 4, oldX: 6, oldY: 4},
+        //     {type: "pin", name: "pD", X: 3, Y: 3, oldX: null, oldY: null},
+        //     {type: "pin", name: "pD", X: 2, Y: 0, oldX: null, oldY: null},
+        //     {type: "piece", name: "p3", X: 4, Y: 3, oldX: 2, oldY: 3},
+        //     {type: "pin", name: "p4", X: 1, Y: 1, oldX: null, oldY: null},
+        //     {type: "pin", name: "p4", X: 0, Y: 1, oldX: null, oldY: null},
+        //     {type: "capture", name: "p5", X: 4, Y: 5, oldX: -0.15000000000000002, oldY: 0.3166666},
+        //     {type: "piece", name: "pD", X: 4, Y: 5, oldX: 5, oldY: 4},
+        //     {type: "pin", name: "pF", X: 4, Y: 2, oldX: null, oldY: null},
+        //     {type: "pin", name: "pB", X: 4, Y: 2, oldX: null, oldY: null}
+        // ];
 
         this.squareSize = (1.0/this.npartsX);
         this.pieceSize = (1.0/this.npartsX) * 0.8;
@@ -79,12 +79,11 @@ class Board extends CGFobject
 
     newGame(mode, difficulty, time_per_move)
     {
-        console.log(this.moves);
         this.playing = true;
         this.videoPlaying = false;
         this.moves = [];
         this.resetPieceCoords('initial');
-        
+
         this.difficulty = difficulty;
         this.resetValidMoves();
 
@@ -99,27 +98,31 @@ class Board extends CGFobject
                 this.Player1 = HUMAN;
                 this.Player2 = HUMAN;
                 this.stateMachine.currentState = P1_CHOOSE_PIECE;
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 11, 0), vec3.fromValues(-1.5, 0.0, 0.0));
                 this.setPieceSelectable('p1');
                 break;
             case 'Player vs AI':
                 this.Player1 = HUMAN;
                 this.Player2 = AI;
                 this.stateMachine.currentState = P1_CHOOSE_PIECE;
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 11, 0), vec3.fromValues(-1.5, 0.0, 0.0));
                 this.setPieceSelectable('p1');
                 break;
             case 'AI vs Player':
                 this.Player1 = AI;
                 this.Player2 = HUMAN;
                 this.stateMachine.currentState = AI1_SEND_BOARD;
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                this.setPieceSelectable('p1', false);
+                this.setPieceSelectable('pA');
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 11, 0), vec3.fromValues(1.5, 0.0, 0.0));
                 break;
             case 'AI vs AI':
                 this.Player1 = AI;
                 this.Player2 = AI;
                 this.stateMachine.currentState = AI1_SEND_BOARD;
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                this.setPieceSelectable('p1', false);
+                this.setPieceSelectable('pA', false);
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(0, 10, 9), vec3.fromValues(0.0, 0.0, -3.0));
                 break;
             default:
                 this.playing = false;
@@ -197,8 +200,7 @@ class Board extends CGFobject
                 for(let i = 0; i < this.pieces.length; i++)
                 {
                     this.pieces[i].resetPins();
-                    this.pieces[i].captured = false;
-                    this.capturedCount--;
+
                     if(i < this.npartsX)
                     {
                         if(this.pieces[i].X == 1 && this.pieces[i].Y == i + 1)
@@ -207,9 +209,19 @@ class Board extends CGFobject
                         {
                             let oldX = this.pieces[i].X;
                             let oldY = this.pieces[i].Y;
+
+                            if(this.pieces[i].captured)
+                            {
+                                oldX = - (this.pieces[i].X - 0.5 - (this.squareSize - this.pieceSize) / 2.0) / this.squareSize;
+                                oldY = (this.pieces[i].Y + 0.5 + this.squareSize + (this.squareSize - this.pieceSize) / 2.0) / this.squareSize;
+                                this.capturedCount--;
+                                this.pieces[i].captured = false;
+                            }
+
                             this.pieces[i].X = 1;
                             this.pieces[i].Y = i + 1;
-                            this.pieces[i].setAnimation(oldX, oldY);
+
+                            this.pieces[i].setAnimation(oldX, oldY, false, true);
                         }
                     }
                     else
@@ -220,9 +232,19 @@ class Board extends CGFobject
                         {
                             let oldX = this.pieces[i].X;
                             let oldY = this.pieces[i].Y;
+                            
+                            if(this.pieces[i].captured)
+                            {
+                                oldX = - (this.pieces[i].X - 0.5 - (this.squareSize - this.pieceSize) / 2.0) / this.squareSize;
+                                oldY = (this.pieces[i].Y + 0.5 + this.squareSize + (this.squareSize - this.pieceSize) / 2.0) / this.squareSize;
+                                this.capturedCount--;
+                                this.pieces[i].captured = false;
+                            }
+                            
                             this.pieces[i].X = this.npartsY;
                             this.pieces[i].Y = i + 1 - this.npartsX;
-                            this.pieces[i].setAnimation(oldX, oldY);
+                            
+                            this.pieces[i].setAnimation(oldX, oldY, false, true);
                         }
                     }
                 }                
@@ -230,8 +252,6 @@ class Board extends CGFobject
             default:
                 break;
         }
-
-
     };
 
     display()
@@ -292,8 +312,8 @@ class Board extends CGFobject
                 {
                     this.scene.translate(0.5 + (this.squareSize - this.pieceSize) / 2.0 - this.pieces[i].X * this.squareSize, 
                                         -0.5 - this.squareSize - (this.squareSize - this.pieceSize) / 2.0 + (this.pieces[i].Y + 1) * this.squareSize, 
-                                        0);                    
-                    this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);
+                                        0);
+                    this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);  
                 }
                 else 
                 {
@@ -425,8 +445,10 @@ class Board extends CGFobject
                 this.pieces[i].X = square[0];
                 this.pieces[i].Y = square[1];
 
-                this.stateMachine.isPieceMoving = true;
                 this.pieces[i].setAnimation(oldX, oldY);
+                
+                this.stateMachine.isPieceMoving = true;
+                
                 if(!this.videoPlaying && !this.undoing) this.insertNewMove('piece', piece, square[0], square[1], oldX, oldY);
                 break;
             }
@@ -492,9 +514,15 @@ class Board extends CGFobject
 
     update(time)
     {
-        this.pieces.forEach(function(piece) {
-            piece.update(time);
-        });
+        for(let i = 0; i < this.pieces.length; i++)
+        {
+            this.pieces[i].update(time);
+            if(this.pieces[i].animationOver)
+            {
+                this.pieces[i].animationOver = false;
+                this.stateMachine.isPieceMoving = false;
+            }
+        }
          
         this.stateMachine.update();  
         this.clock.update(time);
@@ -528,6 +556,8 @@ class Board extends CGFobject
             return;
         }
 
+        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(0, 10, 9), vec3.fromValues(0.0, 0.0, -3.0));
+
         if(this.videoPlaying)
             return;
      
@@ -540,24 +570,78 @@ class Board extends CGFobject
         }
         else this.wasPlaying = false;
 
+        switch(this.stateMachine.currentState)
+        {
+            case P1_CHOOSE_PIECE:
+                this.setPieceSelectable('p1', false);
+                break;
+            case P2_CHOOSE_PIECE:
+                this.setPieceSelectable('pA', false);
+                break;
+            default:
+                break;
+        }                
+
         this.resetPieceCoords('initial');
-        if(this.moves.length > 1 && this.moves[0].type != this.moves[1].type)
+        if(this.moves.length == 1  || (this.moves.length > 1 && this.moves[0].type != this.moves[1].type))
             this.moves.unshift(this.moves[0]);
-        console.log(this.moves);
+        
         this.indexVideoMoves = 0;
         this.secondIndex = null;
     };
 
     videoDisplay()
     {
-        console.log(this.indexVideoMoves);
         if(this.indexVideoMoves >= this.moves.length)
         {
             console.log("Video of the game completed!");
             this.videoPlaying = false;
-            if(this.wasPlaying) this.playing = true;
-            else this.resetPieceCoords('pieceHolder');
 
+            if(this.wasPlaying) 
+            {
+                this.playing = true;
+
+                switch(this.stateMachine.currentState)
+                {
+                    case P1_CHOOSE_PIECE:
+                        this.setPieceSelectable('p1');
+                    case P1_PIECE_SENT:
+                    case P1_BOARD_SENT:
+                    case P1_VALID_MOVES:
+                    case P1_CHOOSE_MOVE:
+                    case P1_IS_GAME_OVER:
+                    case P1_GAME_OVER_RESPONSE:                        
+                        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                        break;
+                    case P1_CHOOSE_PIN_1:
+                    case P1_CHOOSE_PIN_2:
+                        this.setPinsSelectable('x');
+                        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                        break;
+                    case P2_CHOOSE_PIECE:                        
+                        this.setPieceSelectable('pA');                        
+                    case P2_PIECE_SENT:
+                    case P2_BOARD_SENT:
+                    case P2_VALID_MOVES:
+                    case P2_CHOOSE_MOVE:
+                    case P2_IS_GAME_OVER:
+                    case P2_GAME_OVER_RESPONSE:
+                        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                        break;
+                    case P2_CHOOSE_PIN_1:
+                    case P2_CHOOSE_PIN_2:
+                        this.setPinsSelectable('o');
+                        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                this.resetPieceCoords('pieceHolder');
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
+            }
             return;
         }
 
@@ -589,16 +673,20 @@ class Board extends CGFobject
                 {
                     if(this.pieces[i].animationOver)
                     {
-                        console.log("over");
                         this.pieces[i].animationOver = false;
-                        this.indexVideoMoves++;
+                        
+                        if(this.indexVideoMoves == 0)
+                        {
+                            this.pieces.forEach(function(piece) {
+                                piece.animationOver = false;
+                            });
+                        }
+                        
+                        this.indexVideoMoves++;                        
                         return;
                     }
                     else if(this.pieces[i].isMoving)
-                    {
-                        console.log("CASC");
                         return;
-                    }
                     break;
                 }
             }
@@ -608,14 +696,12 @@ class Board extends CGFobject
         {
             case 'piece':
                 this.movePiece(move.name, [move.X, move.Y]);
-                console.log("Cria");
                 break;
             case 'pin':
                 for(var i = 0; i < this.pieces.length; i++)
                 {
                     if(this.pieces[i].name == move.name)
                     {
-                        console.log("HERE");
                         this.setPinCode(i, move.X, move.Y);
                         this.indexVideoMoves++;
                         break;
