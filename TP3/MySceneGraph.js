@@ -1487,31 +1487,7 @@ class MySceneGraph {
                     if(!idFound) return "no texture matches the reference texturePiece2, primitive with ID = " + primitiveId;
                 
                 }
-            }
-            // PLANT
-            else if(primitive.type == "plant")
-            {
-                // textureLeaves
-                var textureLeaves = this.reader.getString(grandChildren[0],'textureLeaves');
-                if(textureLeaves == null || textureLeaves == "") return "unable to parse textureLeaves of the Plant primitive for ID = " + primitiveId;
-                else
-                {
-                    var l = 0;
-                    var idFound = false;
-
-                    for(l; l < this.textures.length; l++)
-                    {
-                        if(this.textures[l].id == textureLeaves)
-                        {
-                            primitive.textureLeaves = this.textures[l].text;
-                            idFound = true;
-                            break;
-                        }
-                    }
-
-                    if(!idFound) return "no texture matches the reference textureLeaves, primitive with ID = " + primitiveId;
-                
-                }
+            
             }
             
             if(primitive.type == "rectangle") primitive.obj = new Rectangle(this.scene, primitive.x1, primitive.y1, primitive.x2, primitive.y2);
@@ -1526,7 +1502,7 @@ class MySceneGraph {
             else if(primitive.type == "terrain") primitive.obj = new Terrain(this.scene, primitive.idtexture, primitive.idheightmap, primitive.parts, primitive.heightscale);
             else if(primitive.type == "water") primitive.obj = new Water(this.scene, primitive.idtexture, primitive.idwavemap, primitive.parts, primitive.heightscale, primitive.texscale);
             else if(primitive.type == "board") primitive.obj = new Board(this.scene, primitive.npartsX, primitive.npartsY, primitive.idtextureP1, primitive.idtextureP2, primitive.textureSelected, primitive.texturePiece1, primitive.texturePiece2);            
-            else if(primitive.type == "plant") primitive.obj = new Plant(this.scene, primitive.textureLeaves);            
+            else if(primitive.type == "plant") primitive.obj = new Plant(this.scene);            
             
 
             this.primitives.push(primitive);
