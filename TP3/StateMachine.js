@@ -34,13 +34,14 @@ class StateMachine
         this.waitingForResponse = false;
         this.currentState = INACTIVE;
         this.idPicked = 0;
+        this.isPieceMoving = false;
         this.message = null;
     }
 
     update()
     {
-        if(!this.board.playing || this.currentState == INACTIVE || this.waitingForResponse) return;
-    
+        if(!this.board.playing || this.currentState == INACTIVE || this.waitingForResponse || this.isPieceMoving) return;
+
         switch(this.currentState)
         {
             //PLAYER 1
@@ -125,6 +126,9 @@ class StateMachine
                 {
                     this.board.resetValidMoves(msg);
                     this.board.capturePiece(square);
+                
+                    this.board.setPieceSelectable('p1', false);
+                    
                     this.board.movePiece(this.pieceSelected, square);
                     this.pieceSelected = null;
 
@@ -188,9 +192,8 @@ class StateMachine
                     this.board.playing = false;
                     return;
                 }
-                
-                this.board.setPieceSelectable('p1', false);
-                this.board.setPinsSelectable('x');
+
+                this.board.setPinsSelectable('x');                    
 
                 this.currentState = P1_CHOOSE_PIN_1;                
             }
@@ -265,9 +268,9 @@ class StateMachine
 
                 if(this.board.Player2 == HUMAN)
                 {
-                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI/2.0);
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
                     this.currentState = P2_CHOOSE_PIECE;
-                    this.board.setPieceSelectable('pA');                    
+                    this.board.setPieceSelectable('pA');
                 }
                 else
                     this.currentState = AI2_SEND_BOARD;
@@ -358,6 +361,9 @@ class StateMachine
                 {
                     this.board.resetValidMoves(msg);
                     this.board.capturePiece(square);
+                         
+                    this.board.setPieceSelectable('pA', false);
+
                     this.board.movePiece(this.pieceSelected, square);
                     this.pieceSelected = null;
 
@@ -421,8 +427,7 @@ class StateMachine
                     this.board.playing = false;
                     return;
                 }
-                         
-                this.board.setPieceSelectable('pA', false);
+                
                 this.board.setPinsSelectable('o');
 
                 this.currentState = P2_CHOOSE_PIN_1;       
