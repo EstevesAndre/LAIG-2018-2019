@@ -102,55 +102,69 @@ class XMLscene extends CGFscene {
      */
     onGraphLoaded() {
         if(this.graphs.length == 2) {        
-        this.graph = this.graphs[0];
-        this.Current_Graph = this.graph.name;
-        this.prev_graph = this.Current_Graph;
-        this.Mode = "Player vs Player";
-        this.Difficulty = 1;
-        this.time_to_play = 450;
-        this.New_Game = function() {
+            this.graph = this.graphs[0];
+            this.Current_Graph = this.graph.name;
+            this.prev_graph = this.Current_Graph;
+            this.Mode = "Player vs Player";
+            this.Difficulty = 1;
+            this.time_to_play = 450;
+            this.currentBoard = null;
+
             for(let i = 0; i < this.graph.primitives.length; i++)
             {
                 if(this.graph.primitives[i].type == "board")
-                    this.graph.primitives[i].obj.newGame(this.Mode, this.Difficulty, this.time_to_play);
+                    this.currentBoard = this.graph.primitives[i].obj;
             }
-        };
 
-        this.Undo = function() {
-            for(let i = 0; i < this.graph.primitives.length; i++)
-            {
-                if(this.graph.primitives[i].type == "board")
-                    this.graph.primitives[i].obj.undo(false);
-            }
-        };
+            this.New_Game = function() {
+                this.currentBoard.newGame(this.Mode, this.Difficulty, this.time_to_play);
+            };
 
-        this.axis = new CGFaxis(this, this.graph.referenceLength);
+            this.Undo = function() {
+                this.currentBoard.undo(false);
+            };
 
-        this.setGlobalAmbientLight(this.graph.ambient.r, this.graph.ambient.g, this.graph.ambient.b, this.graph.ambient.a);
-        this.gl.clearColor(this.graph.background.r, this.graph.background.g, this.graph.background.b, this.graph.background.a);
+            this.axis = new CGFaxis(this, this.graph.referenceLength);
 
-        var d = this.graph.defaultView;
-        if(this.graph.defaultView.type == "perspective")
-            this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
-        else
-            this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
+            this.setGlobalAmbientLight(this.graph.ambient.r, this.graph.ambient.g, this.graph.ambient.b, this.graph.ambient.a);
+            this.gl.clearColor(this.graph.background.r, this.graph.background.g, this.graph.background.b, this.graph.background.a);
 
-        this.prev_camera = null;
-        
-        this.initLights();
+            var d = this.graph.defaultView;
+            if(this.graph.defaultView.type == "perspective")
+                this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
+            else
+                this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
 
-        this.interface.addPlayOptionsGroup();
+            this.prev_camera = null;
+            
+            this.initLights();
 
-        // Adds looks group.
-        this.interface.addLookGroup(this.graphs);
-        
-        this.interface.addNewGameButton();
+            this.interface.addPlayOptionsGroup();
 
-        this.interface.addUndoButton();
+            // Adds looks group.
+            this.interface.addLookGroup(this.graphs);
+            
+            this.interface.addNewGameButton();
 
-        this.sceneInited = true;}
+            this.interface.addUndoButton();
+
+            this.sceneInited = true;
+        }
     }
 
+    playVideo()
+    {
+        if(!this.sceneInited) 
+        {
+            console.log("No game to be shown!");
+            return;
+        }
+
+        if(this.currentBoard != null)
+        {
+            this.currentBoard.initializeVideo();
+        }
+    }
 
     /**
      * Displays the scene.
@@ -197,12 +211,13 @@ class XMLscene extends CGFscene {
                         else
                             this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
                             this.interface.setActiveCamera(this.camera);
+
                         for(let i = 0; i < this.graph.primitives.length; i++)
                         {
                             if (this.graph.primitives[i].type == "board" && this.graph.primitives[i].obj.playing)
                             {
+                                this.currentBoard = this.graph.primitives[i].obj;
                                 this.cameraAnimation = new CameraAnimation(1000, this.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
-
                             }
                         }
                     }
@@ -273,13 +288,15 @@ class XMLscene extends CGFscene {
         {
             if(this.graph.primitives[i].type == "water")
                 this.graph.primitives[i].obj.update(this.deltaTime);
-            else if (this.graph.primitives[i].type == "board")
-            {
-                this.graph.primitives[i].obj.update(this.deltaTime);
-                if(!this.graph.primitives[i].obj.playing && (this.cameraAnimation == null || this.cameraAnimation.isAnimationOver()))
-                    this.camera.orbit(vec3.fromValues(0, 1, 0), this.deltaTime / 10000.0);
-            }
         }
+
+        if(this.currentBoard != null)
+        {
+            this.currentBoard.update(this.deltaTime);
+                if(!this.currentBoard.playing && (this.cameraAnimation == null || this.cameraAnimation.isAnimationOver()))
+                    this.camera.orbit(vec3.fromValues(0, 1, 0), this.deltaTime / 10000.0);
+        }
+
 
         if(this.cameraAnimation != null && !this.cameraAnimation.isAnimationOver())
         {
@@ -299,16 +316,14 @@ class XMLscene extends CGFscene {
                     {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        for(let i = 0; i < this.graph.primitives.length; i++)
+
+                        if(this.currentBoard != null)
                         {
-                            if(this.graph.primitives[i].type == "board")
+                            if(  this.currentBoard.playing &&
+                                !this.currentBoard.stateMachine.waitingForResponse &&
+                                 this.currentBoard.stateMachine.idPicked == 0 )
                             {
-                                    if(  this.graph.primitives[i].obj.playing &&
-                                        !this.graph.primitives[i].obj.stateMachine.waitingForResponse &&
-                                         this.graph.primitives[i].obj.stateMachine.idPicked == 0 )
-                                    {
-                                        this.graph.primitives[i].obj.stateMachine.idPicked = customId;
-                                    }
+                                this.currentBoard.stateMachine.idPicked = customId;
                             }
                         }
                     }

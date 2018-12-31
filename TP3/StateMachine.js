@@ -217,8 +217,12 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
+                        if(this.board.pieces[i].pins[pin[1]-1][pin[2]-1].pinCode != '.')
+                            return;
+                            
                         piecePins = this.board.setPinCode(i, pin[1]-1, pin[2]-1);;
                         this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
+                        break;
                     }
                 }
 
@@ -247,8 +251,12 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
+                        if(this.board.pieces[i].pins[pin[1]-1][pin[2]-1].pinCode != '.')
+                            return;
+
                         piecePins = this.board.setPinCode(i, pin[1]-1, pin[2]-1);;
                         this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
+                        break;
                     }
                 }
                 
@@ -257,7 +265,7 @@ class StateMachine
 
                 if(this.board.Player2 == HUMAN)
                 {
-                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI);
+                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, Math.PI/2.0);
                     this.currentState = P2_CHOOSE_PIECE;
                     this.board.setPieceSelectable('pA');                    
                 }
@@ -442,8 +450,12 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
+                        if(this.board.pieces[i].pins[pin[1]-1][pin[2]-1].pinCode != '.')
+                            return;
+
                         piecePins = this.board.setPinCode(i, pin[1]-1, pin[2]-1);
                         this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
+                        break;
                     }
                 }
                 this.currentState = P2_CHOOSE_PIN_2;
@@ -471,6 +483,9 @@ class StateMachine
                 {
                     if(this.board.pieces[i].name == pin[0])
                     {
+                        if(this.board.pieces[i].pins[pin[1]-1][pin[2]-1].pinCode != '.')
+                            return;
+
                         piecePins = this.board.setPinCode(i, pin[1]-1, pin[2]-1);;
                         this.board.pieces[i].pins[pin[1] - 1][pin[2] - 1].setPinSelectable(false);
                     }

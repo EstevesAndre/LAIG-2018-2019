@@ -70,9 +70,11 @@ class MyInterface extends CGFinterface {
 		this.processKeyboard = function() {};
 	};
 	
-	processKeyDown(event)
+	processKeyUp(event)
 	{        
         if(event.code == "KeyM")
             this.scene.Mcnt++;
+        else if(event.code == "KeyV")
+            this.scene.playVideo();
 	};
 }
