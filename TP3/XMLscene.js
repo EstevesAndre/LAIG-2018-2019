@@ -214,10 +214,11 @@ class XMLscene extends CGFscene {
 
                         for(let i = 0; i < this.graph.primitives.length; i++)
                         {
-                            if (this.graph.primitives[i].type == "board" && this.graph.primitives[i].obj.playing)
+                            if (this.graph.primitives[i].type == "board")
                             {
                                 this.currentBoard = this.graph.primitives[i].obj;
-                                this.cameraAnimation = new CameraAnimation(1000, this.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                                if(this.graph.primitives[i].obj.playing)
+                                    this.cameraAnimation = new CameraAnimation(1000, this.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
                             }
                         }
                     }
@@ -293,7 +294,10 @@ class XMLscene extends CGFscene {
         if(this.currentBoard != null)
         {
             this.currentBoard.update(this.deltaTime);
-                if(!this.currentBoard.playing && (this.cameraAnimation == null || this.cameraAnimation.isAnimationOver()))
+                if(!this.currentBoard.playing && 
+                    (this.cameraAnimation == null || this.cameraAnimation.isAnimationOver()) &&
+                    !this.currentBoard.videoPlaying
+                )
                     this.camera.orbit(vec3.fromValues(0, 1, 0), this.deltaTime / 10000.0);
         }
 
