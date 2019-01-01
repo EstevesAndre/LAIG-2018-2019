@@ -187,9 +187,7 @@ class StateMachine
                 if(msg != "0")
                 {
                     alert("Player " + msg + " wins!");
-                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
-
-                    this.board.playing = false;
+                    this.board.endGame();                    
                     return;
                 }
 
@@ -423,8 +421,7 @@ class StateMachine
                 if(msg != "0")
                 {
                     alert("Player " + msg + " wins!");
-                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
-                    this.board.playing = false;
+                    this.board.endGame();
                     return;
                 }
                 
@@ -561,8 +558,7 @@ class StateMachine
                 if(msg != "0")
                 {
                     alert("Player " + msg + " wins!");
-                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
-                    this.board.playing = false;
+                    this.board.endGame();
                     return;
                 }
 
@@ -630,8 +626,7 @@ class StateMachine
                 if(msg != "0")
                 {
                     alert("Player " + msg + " wins!");
-                    this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
-                    this.board.playing = false;
+                    this.board.endGame();
                     return;
                 }
 
@@ -666,7 +661,7 @@ class StateMachine
             self.waitingForResponse = false;
         };
 
-        request.onerror = function () { alert("Server Error!"); this.waitingForResponse = false; this.board.playing = false;};
+        request.onerror = function () { alert("Server Error!"); this.waitingForResponse = false; this.board.playing = false; this.board.clock.disable(); };
 
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.send();
