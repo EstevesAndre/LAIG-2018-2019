@@ -758,8 +758,7 @@ class Board extends CGFobject
         else if(this.stateMachine.currentState == P2_CHOOSE_PIECE)
         {
             this.setPieceSelectable('p1',false);
-        }
-        
+        }        
 
         this.undoing = true;
 
@@ -798,13 +797,13 @@ class Board extends CGFobject
                 for(let i = 0; i < this.pieces.length; i++)
                 {                     
                     if(this.pieces[i].name == move['name'])
-                    {                
-                        let oldX = 0.35 - (this.capturedCount % (this.pieces.length / 2)) * this.squareSize - (this.capturedCount >= this.pieces.length/2 ?  0.0 : 0.03);
-                        let oldY = (this.capturedCount >= this.pieces.length/2 ?  0.075 : -0.06) - 0.75;
+                    {
+                        let oldX = - (this.pieces[i].X - 0.5 - (this.squareSize - this.pieceSize) / 2.0) / this.squareSize;
+                        let oldY = (this.pieces[i].Y + 0.5 + this.squareSize + (this.squareSize - this.pieceSize) / 2.0) / this.squareSize;
 
                         this.pieces[i].X = move['X'];
                         this.pieces[i].Y = move['Y'];
-                        this.pieces[i].setAnimation(oldX, oldY, true);
+                        this.pieces[i].setAnimation(oldX, oldY);
 
                         this.capturedCount--;
                         this.pieces[i].captured = false;
