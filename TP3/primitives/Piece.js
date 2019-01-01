@@ -160,7 +160,7 @@ class Piece extends CGFobject
         let y = !capt ? (initialY - this.Y) * this.size : initialY - this.Y;
         let span = (Math.abs(x) + Math.abs(y)) * 15;
 
-        this.animation = !capt ? new BezierAnimation(limit ? 5 : span > 5 ? 5 : span, [ [x,y,0], [-x,-y,1], [x/2,y/2,1], [0,0,0] ], false) :
+        this.animation = !capt ? new BezierAnimation(limit ? 5 : span > 4 ? 4 : span, [ [x,y,0], [-x,-y,1], [x/2,y/2,1], [0,0,0] ], false) :
                                  new BezierAnimation(span > 3 ? 3 : span, [ [x,y,0], [5*x/3,5*y/3,2], [0,0,2], [0,0,0] ], false);
 
         this.isMoving = true;
@@ -181,7 +181,7 @@ class Piece extends CGFobject
                 this.pins[i][j].setPinSelectable(bool);
             }
         }
-    }
+    };
 
     update(time)
     {
@@ -192,6 +192,7 @@ class Piece extends CGFobject
         
             if(this.animation.isAnimationOver())
             {
+                console.log("HERE");
                 this.isMoving = false;
                 this.animation = null;
                 this.animationOver = true;

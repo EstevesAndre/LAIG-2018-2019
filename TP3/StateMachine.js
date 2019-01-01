@@ -34,7 +34,7 @@ class StateMachine
         this.waitingForResponse = false;
         this.currentState = INACTIVE;
         this.idPicked = 0;
-        this.isPieceMoving = false;
+        this.isPieceMoving = true;
         this.message = null;
     }
 

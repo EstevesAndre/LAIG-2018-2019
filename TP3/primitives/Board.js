@@ -517,7 +517,7 @@ class Board extends CGFobject
         for(let i = 0; i < this.pieces.length; i++)
         {
             this.pieces[i].update(time);
-            if(this.pieces[i].animationOver)
+            if(this.pieces[i].animationOver && !this.videoPlaying)
             {
                 this.pieces[i].animationOver = false;
                 this.stateMachine.isPieceMoving = false;
@@ -586,6 +586,8 @@ class Board extends CGFobject
         if(this.moves.length == 1  || (this.moves.length > 1 && this.moves[0].type != this.moves[1].type))
             this.moves.unshift(this.moves[0]);
         
+        console.log(this.moves);
+
         this.indexVideoMoves = 0;
         this.secondIndex = null;
     };
@@ -686,7 +688,9 @@ class Board extends CGFobject
                         return;
                     }
                     else if(this.pieces[i].isMoving)
+                    {
                         return;
+                    }
                     break;
                 }
             }
