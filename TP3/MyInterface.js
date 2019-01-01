@@ -76,5 +76,7 @@ class MyInterface extends CGFinterface {
             this.scene.Mcnt++;
         else if(event.code == "KeyV")
             this.scene.playVideo();
+        else if(event.code == "KeyU")
+            this.scene.Undo();
 	};
 }
