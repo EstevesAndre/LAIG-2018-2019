@@ -55,6 +55,9 @@ class Clock extends CGFobject {
         this.clockPlane = new Rectangle(scene, 0, 0, 8.49, 2.56);
 
         this.digit = new Rectangle(scene, 0, 0, 1.40, 2.16);
+
+        this.player1Count = 0;
+        this.player2Count = 0;
     };
 
     enable(time)
@@ -63,6 +66,9 @@ class Clock extends CGFobject {
 
         this.plays = 0;
         this.playClock = time;
+
+        this.player1Count = 0;
+        this.player2Count = 0;
     };
 
     disable()
@@ -124,7 +130,37 @@ class Clock extends CGFobject {
                 this.scene.scale(0.03, 0.03, 0.03);
                 this.scene.translate(2.35, 16.8, 0.15);
                 this.digit.display();      
-            this.scene.popMatrix();  
+            this.scene.popMatrix(); 
+            
+            // p1 count
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor(this.player1Count / 10));
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(5.15, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix(); 
+            
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor(this.player1Count % 10));                            
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(6.55, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix(); 
+            
+            // p2 count            
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor(this.player2Count / 10));
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(-7.85, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix();
+
+            this.scene.pushMatrix();
+                this.applyNumberTexture(Math.floor(this.player2Count % 10));         
+                this.scene.scale(0.03, 0.03, 0.03);
+                this.scene.translate(-6.45, 16.8, 0.15);
+                this.digit.display();      
+            this.scene.popMatrix(); 
         }
     };
 
