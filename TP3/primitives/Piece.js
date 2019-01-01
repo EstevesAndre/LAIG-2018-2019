@@ -192,7 +192,6 @@ class Piece extends CGFobject
         
             if(this.animation.isAnimationOver())
             {
-                console.log("HERE");
                 this.isMoving = false;
                 this.animation = null;
                 this.animationOver = true;
