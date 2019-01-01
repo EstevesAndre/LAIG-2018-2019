@@ -805,6 +805,14 @@ class Board extends CGFobject
                         this.pieces[i].Y = move['Y'];
                         this.pieces[i].setAnimation(oldX, oldY);
 
+                        if(this.clock.active)
+                        {
+                            if(this.pieces[i].name.charCodeAt(1) >= 65)
+                                this.clock.player1Count--;
+                            else
+                                this.clock.player2Count--;
+                        }
+
                         this.capturedCount--;
                         this.pieces[i].captured = false;
                         break;
