@@ -31,6 +31,7 @@ class Board extends CGFobject
         
         this.playing = false;
         this.videoPlaying = false;
+        this.moves = [];
         this.undoing = false;
 
         // this.moves = [
@@ -126,6 +127,7 @@ class Board extends CGFobject
                 break;
             default:
                 this.playing = false;
+                this.clock.disable();
                 console.log("THAT WAS NOT SUPOSSED TO ENTER HERE!");
                 break;
         }
@@ -550,7 +552,7 @@ class Board extends CGFobject
 
     initializeVideo()
     {
-        if(this.moves == [])
+        if(this.moves.length == 0)
         {
             console.log("There are no moves");
             return;
@@ -565,6 +567,7 @@ class Board extends CGFobject
      
         if(this.playing)
         {
+            this.clock.stop();
             this.playing = false;
             this.wasPlaying = true;
         }
@@ -585,11 +588,16 @@ class Board extends CGFobject
         this.resetPieceCoords('initial');
         if(this.moves.length == 1  || (this.moves.length > 1 && this.moves[0].type != this.moves[1].type))
             this.moves.unshift(this.moves[0]);
-        
-        console.log(this.moves);
 
         this.indexVideoMoves = 0;
         this.secondIndex = null;
+    };
+
+    endGame()
+    {        
+        this.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
+        this.playing = false;
+        this.clock.disable();
     };
 
     videoDisplay()
@@ -602,6 +610,8 @@ class Board extends CGFobject
             if(this.wasPlaying) 
             {
                 this.playing = true;
+                this.clock.continue();
+                this.stateMachine.isPieceMoving = false;
 
                 switch(this.stateMachine.currentState)
                 {
