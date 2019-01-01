@@ -751,6 +751,16 @@ class Board extends CGFobject
             return;
         }
 
+        if(this.stateMachine.currentState != P1_CHOOSE_PIECE)
+        {
+            this.setPieceSelectable('pA',false);
+        }
+        else if(this.stateMachine.currentState == P2_CHOOSE_PIECE)
+        {
+            this.setPieceSelectable('p1',false);
+        }
+        
+
         this.undoing = true;
 
         var move = this.moves.pop();
