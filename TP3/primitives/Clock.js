@@ -63,12 +63,22 @@ class Clock extends CGFobject {
 
         this.plays = 0;
         this.playClock = time;
-    }
+    };
 
     disable()
     {
         this.active = false;
-    }
+    };
+
+    stop()
+    {
+        this.active = false;
+    };
+
+    continue()
+    {
+        this.active = true;
+    };
 
     display()
     {
@@ -121,17 +131,17 @@ class Clock extends CGFobject {
     addPlay()
     {
         this.plays++;
-    }
+    };
    
     undoPlay()
     {
         this.plays--;
-    }
+    };
 
     start()
     {
         this.counting_clock = this.playClock;
-    }
+    };
 
     applyNumberTexture(n)
     {
@@ -188,7 +198,7 @@ class Clock extends CGFobject {
             }
             break;
         }
-    }
+    };
 
     update(time)
     {
@@ -205,5 +215,5 @@ class Clock extends CGFobject {
 
             alert("Time is up!");
         }
-    }
+    };
 };
