@@ -52,6 +52,8 @@
         <texture id="blue_flower" file="images/blue_flower.png" />
         <texture id="yellow_flower" file="images/yellow_flower.png" />
         <texture id="fence" file="images/fence.png" />
+        <texture id="column" file="images/column.png" />
+        <texture id="base" file="images/base.png" />
 
     </textures>
 
@@ -130,6 +132,18 @@
         <primitive id="plant">
             <plant/>
         </primitive>
+
+        <primitive id="column_tall">
+            <cylinder base="0.5" top="0.5" height="5.0" slices="12" stacks="12"/>
+        </primitive>
+
+        <primitive id="column_medium">
+            <cylinder base="0.5" top="0.5" height="4.0" slices="12" stacks="12"/>
+        </primitive>
+
+        <primitive id="column_small">
+            <cylinder base="0.5" top="0.5" height="3.0" slices="12" stacks="12"/>
+        </primitive>
     </primitives>
 
     <components>            
@@ -154,6 +168,7 @@
                 <componentref id="table_center" />
                 <componentref id="board" />
                 <componentref id="vases" />
+                <componentref id="columns" />
             </children>
         </component>
 
@@ -767,6 +782,31 @@
             </children>
         </component>
 
+        <component id="vase_yellow">
+            <transformation>
+                <translate x="-7.0" y="0.0" z="5.0"/>
+                <rotate axis="y" angle="45"/>
+                <rotate axis="x" angle="-90"/>
+                <scale x="0.9" y="1.0" z="0.9"/>
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="yellow_flower" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="pot"/>
+                <componentref id="dirt"/>
+                <componentref id="rim"/>
+                <componentref id="plant"/>
+                <componentref id="flower_1"/>
+                <componentref id="flower_2"/>
+                <componentref id="flower_3"/>
+            </children>
+        </component>
+
         <component id="vase_blue">
             <transformation>
                 <translate x="-7.0" y="0.0" z="-5.0"/>
@@ -1128,6 +1168,203 @@
 
             <children>
                 <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="columns">
+            <transformation>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="column" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="column_tall"/>
+                <componentref id="column_medium"/>
+                <componentref id="column_small"/>
+            </children>
+        </component>
+
+        <component id="column_tall">
+            <transformation>
+                <translate x="7.5" y="-6.0" z="0.2"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="column_tall"/>
+                <componentref id="column_base"/>
+                <componentref id="column_top_tall"/>
+                <componentref id="column_tall_vase"/>
+            </children>
+        </component>
+
+        <component id="column_base">
+            <transformation>
+                <scale x="1.2" y="1.2" z="0.2"/>
+                <translate x="0.0" y="-0.5" z="0.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="base" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="column_top_tall">
+            <transformation>
+                <scale x="1.2" y="1.2" z="0.2"/>
+                <translate x="0.0" y="-0.5" z="25.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="base" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="column_tall_vase">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+                <scale x="0.4" y="0.4" z="0.4"/>
+                <translate x="7.0" y="12.5" z="-5.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="base" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="vase_pink"/>
+            </children>
+        </component>
+
+        <component id="column_medium">
+            <transformation>
+                <translate x="5.5" y="-6.0" z="0.2"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="column_medium"/>
+                <componentref id="column_base"/>
+                <componentref id="column_top_medium"/>
+                <componentref id="column_medium_vase"/>
+            </children>
+        </component>
+
+        <component id="column_top_medium">
+            <transformation>
+                <scale x="1.2" y="1.2" z="0.2"/>
+                <translate x="0.0" y="-0.5" z="20.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="base" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="column_medium_vase">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+                <scale x="0.4" y="0.4" z="0.4"/>
+                <translate x="7.0" y="10.0" z="-5.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="base" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="vase_yellow"/>
+            </children>
+        </component>
+
+        <component id="column_small">
+            <transformation>
+                <translate x="3.5" y="-6.0" z="0.2"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="column_small"/>
+                <componentref id="column_base"/>
+                <componentref id="column_top_small"/>
+                <componentref id="column_small_vase"/>
+            </children>
+        </component>
+
+        <component id="column_top_small">
+            <transformation>
+                <scale x="1.2" y="1.2" z="0.2"/>
+                <translate x="0.0" y="-0.5" z="15.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="base" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="column_small_vase">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+                <scale x="0.4" y="0.4" z="0.4"/>
+                <translate x="7.0" y="7.5" z="5.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="base" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="vase_blue"/>
             </children>
         </component>
     </components>
