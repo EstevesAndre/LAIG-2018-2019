@@ -222,8 +222,8 @@ class XMLscene extends CGFscene {
                             if (this.graph.primitives[i].type == "board")
                             {
                                 this.currentBoard = this.graph.primitives[i].obj;
-                                if(this.graph.primitives[i].obj.playing)
-                                    this.cameraAnimation = new CameraAnimation(1000, this.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                                if(this.currentBoard.playing)
+                                    this.currentBoard.setCamera(this.currentBoard.stateMachine.currentState);        
                             }
                         }
                     }

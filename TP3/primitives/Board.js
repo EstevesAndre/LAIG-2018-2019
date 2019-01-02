@@ -17,6 +17,8 @@ class Board extends CGFobject
 
         this.clock = new Clock(scene, this);
         this.pieceModel = new CGFOBJModel(scene, "cgfobjreader/models/piece.obj");
+        this.pinSelected = new CGFOBJModel(scene, "cgfobjreader/models/pinSelected.obj");
+        this.pinNotSelected = new CGFOBJModel(scene, "cgfobjreader/models/pinNotSelected.obj");
 
         this.spaces = [];
         this.pieces = [];
@@ -135,11 +137,11 @@ class Board extends CGFobject
             if(i < this.npartsX)
                 this.pieces.push(new Piece(this.scene, "p" + (i+1), this.pieceSize, this.texturePiece1, this.textureP1, this.textureP2,
                                             0.35 - (this.capturedCount % this.npartsX) * this.squareSize - (this.capturedCount >= this.npartsX ?  0.0 : 0.03), 
-                                            (this.capturedCount >= this.npartsX ?  0.075 : -0.06) - 0.75, this.pieceModel));
+                                            (this.capturedCount >= this.npartsX ?  0.075 : -0.06) - 0.75, this.pieceModel, this.pinSelected, this.pinNotSelected));
             else
                 this.pieces.push(new Piece(this.scene, "p" + String.fromCharCode(65 - this.npartsX + i), this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2,                                            
                                             0.35 - (this.capturedCount % this.npartsX) * this.squareSize - (this.capturedCount >= this.npartsX ?  0.0 : 0.03), 
-                                            (this.capturedCount >= this.npartsX ?  0.075 : -0.06) - 0.75, this.pieceModel));
+                                            (this.capturedCount >= this.npartsX ?  0.075 : -0.06) - 0.75, this.pieceModel, this.pinSelected, this.pinNotSelected));
         
             this.capturedCount++;
             this.pieces[i].captured = true;
@@ -596,41 +598,7 @@ class Board extends CGFobject
                 this.clock.continue();
                 this.stateMachine.isPieceMoving = false;
 
-                switch(this.stateMachine.currentState)
-                {
-                    case P1_CHOOSE_PIECE:
-                        this.setPieceSelectable('p1');
-                    case P1_PIECE_SENT:
-                    case P1_BOARD_SENT:
-                    case P1_VALID_MOVES:
-                    case P1_CHOOSE_MOVE:
-                    case P1_IS_GAME_OVER:
-                    case P1_GAME_OVER_RESPONSE:                        
-                        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
-                        break;
-                    case P1_CHOOSE_PIN_1:
-                    case P1_CHOOSE_PIN_2:
-                        this.setPinsSelectable('x');
-                        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
-                        break;
-                    case P2_CHOOSE_PIECE:                        
-                        this.setPieceSelectable('pA');                        
-                    case P2_PIECE_SENT:
-                    case P2_BOARD_SENT:
-                    case P2_VALID_MOVES:
-                    case P2_CHOOSE_MOVE:
-                    case P2_IS_GAME_OVER:
-                    case P2_GAME_OVER_RESPONSE:
-                        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
-                        break;
-                    case P2_CHOOSE_PIN_1:
-                    case P2_CHOOSE_PIN_2:
-                        this.setPinsSelectable('o');
-                        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
-                        break;
-                    default:
-                        break;
-                }
+                this.setCamera(this.stateMachine.currentState);
             }
             else
             {
@@ -678,7 +646,7 @@ class Board extends CGFobject
                         }
                         
                         this.indexVideoMoves++;                        
-                        break;
+                        return;
                     }
                     else if(this.pieces[i].isMoving)
                     {
@@ -714,6 +682,52 @@ class Board extends CGFobject
                 break;
         }
     };
+
+    setCamera(state)
+    {
+        switch(state)
+        {
+            case P1_CHOOSE_PIECE:
+                this.setPieceSelectable('p1');
+            case P1_PIECE_SENT:
+            case P1_BOARD_SENT:
+            case P1_VALID_MOVES:
+            case P1_CHOOSE_MOVE:
+            case P1_IS_GAME_OVER:
+            case P1_GAME_OVER_RESPONSE:                        
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                break;
+            case P1_CHOOSE_PIN_1:
+            case P1_CHOOSE_PIN_2:
+                this.setPinsSelectable('x');
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                break;
+            case P2_CHOOSE_PIECE:                        
+                this.setPieceSelectable('pA');                        
+            case P2_PIECE_SENT:
+            case P2_BOARD_SENT:
+            case P2_VALID_MOVES:
+            case P2_CHOOSE_MOVE:
+            case P2_IS_GAME_OVER:
+            case P2_GAME_OVER_RESPONSE:
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                break;
+            case P2_CHOOSE_PIN_1:
+            case P2_CHOOSE_PIN_2:
+                this.setPinsSelectable('o');
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                break;
+            case this.Player1 == "AI" && this.Player2 == "HUMAN":
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                break;
+            case this.Player2 == "AI" && this.Player1 == "HUMAN":
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                break;
+            default:
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(0, 10, 9), vec3.fromValues(0.0, 0.0, -3.0));
+                break;
+        }
+    }
 
     undo(second)
     {

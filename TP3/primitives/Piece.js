@@ -1,6 +1,6 @@
 class Piece extends CGFobject 
 {
-    constructor(scene, name, size, texture, textureP1, textureP2, X, Y, pieceModel)
+    constructor(scene, name, size, texture, textureP1, textureP2, X, Y, pieceModel, pinSelected, pinNotSelected)
     {
         super(scene);
 
@@ -19,6 +19,8 @@ class Piece extends CGFobject
 
         this.blended = pieceModel ? true:false;
         this.struct = pieceModel || new Box(scene, this.size, this.size, 0.2);
+        this.pinSelected = pinSelected;
+        this.pinNotSelected = pinSelected;
 
         this.def = new CGFappearance(this.scene);
         this.def.setAmbient(1,1,1,1);
@@ -66,13 +68,13 @@ class Piece extends CGFobject
             for(let j = this.size * 0.9 / 2.0 - tmhX - space, j_iter = 1; j >= -this.size * 0.9 / 2.0 + 0.0005 - tmhX - space; j -= (tmhX + space), j_iter++)
             {       
                 if(i_iter == 3 && j_iter == 3)
-                    line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY, this.name));     
+                    line.push(new Pin(this.scene, this.pinSelected, this.pinNotSelected, this.name, j,i,j+tmhX,i+tmhY, this.name));     
                 else if(this.name.charCodeAt(1) >= 65 && i_iter == 4 && j_iter == 3)
-                    line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY, 'o')); 
+                    line.push(new Pin(this.scene, this.pinSelected, this.pinNotSelected, this.name, j,i,j+tmhX,i+tmhY, 'o')); 
                 else if(this.name.charCodeAt(1) < 65 && i_iter == 2 && j_iter == 3)
-                    line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY, 'x')); 
+                    line.push(new Pin(this.scene, this.pinSelected, this.pinNotSelected, this.name, j,i,j+tmhX,i+tmhY, 'x')); 
                 else
-                    line.push(new Pin(this.scene,this.name, j,i,j+tmhX,i+tmhY)); 
+                    line.push(new Pin(this.scene, this.pinSelected, this.pinNotSelected, this.name, j,i,j+tmhX,i+tmhY)); 
             }
             this.pins.push(line);
         }
@@ -127,7 +129,7 @@ class Piece extends CGFobject
                 this.scene.translate(this.size -0.15,this.size -0.15,0.41);
             }
             if(!this.captured) this.scene.registerForPick(this.name.charCodeAt(1), this.struct);
-            if(this.struct.loaded)
+            if(!this.blended || (this.blended && this.struct.loaded))
                 this.struct.display();
         this.scene.popMatrix();
     };

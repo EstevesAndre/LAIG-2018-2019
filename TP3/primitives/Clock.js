@@ -265,6 +265,10 @@ class Clock extends CGFobject {
         {
             this.active = false;
             this.board.stateMachine.currentState = INACTIVE;
+            this.board.setPieceSelectable('pA',false);
+            this.board.setPieceSelectable('p1',false);
+            this.board.setPinsSelectable('x',false);
+            this.board.setPinsSelectable('o',false);
             this.board.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
             this.board.playing = false;
 
