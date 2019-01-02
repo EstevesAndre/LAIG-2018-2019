@@ -26,6 +26,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js',
                 'animations/CameraAnimation.js', 'primitives/Pin.js',
                 'animations/ScaleAnimation.js', 'StateMachine.js',
                 'primitives/Plant.js',
+                'cgfobjreader/CGFResourceReader.js','cgfobjreader/CGFOBJModel.js',
                 
 main=function()
 {
