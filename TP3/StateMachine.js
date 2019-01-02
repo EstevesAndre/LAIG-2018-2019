@@ -661,7 +661,12 @@ class StateMachine
             self.waitingForResponse = false;
         };
 
-        request.onerror = function () { alert("Server Error!"); this.waitingForResponse = false; this.board.playing = false; this.board.clock.disable(); };
+        request.onerror = function () { 
+            alert("Connection with SICStus failed!");
+            self.board.resetPieceCoords('pieceHolder');
+            self.waitingForResponse = false;
+            self.board.endGame();
+        };
 
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.send();
