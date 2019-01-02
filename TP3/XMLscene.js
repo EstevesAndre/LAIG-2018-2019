@@ -124,6 +124,10 @@ class XMLscene extends CGFscene {
                 this.currentBoard.undo(false);
             };
 
+            this.game_film = function() {
+                this.playVideo();
+            };
+
             this.axis = new CGFaxis(this, this.graph.referenceLength);
 
             this.setGlobalAmbientLight(this.graph.ambient.r, this.graph.ambient.g, this.graph.ambient.b, this.graph.ambient.a);
@@ -147,6 +151,8 @@ class XMLscene extends CGFscene {
             this.interface.addNewGameButton();
 
             this.interface.addUndoButton();
+
+            this.interface.addFilmButton();
 
             this.sceneInited = true;
         }

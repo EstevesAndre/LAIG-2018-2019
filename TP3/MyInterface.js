@@ -65,6 +65,11 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'Undo');
     }
 
+    addFilmButton()
+    {
+        this.gui.add(this.scene, 'game_film').name("Game Film");
+    }
+
     initKeys()
 	{
 		this.processKeyboard = function() {};
