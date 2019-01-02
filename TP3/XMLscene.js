@@ -210,7 +210,6 @@ class XMLscene extends CGFscene {
                             this.camera = new CGFcamera(d.angle * Math.PI/180.0, d.near, d.far, d.from, d.to);
                         else
                             this.camera = new CGFcameraOrtho(d.left, d.right, d.bottom, d.top, d.near, d.far, d.from, d.to, vec3.fromValues(0, 1, 0));
-                            this.interface.setActiveCamera(this.camera);
 
                         for(let i = 0; i < this.graph.primitives.length; i++)
                         {
