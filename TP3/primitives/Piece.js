@@ -1,6 +1,6 @@
 class Piece extends CGFobject 
 {
-    constructor(scene, name, size, texture, textureP1, textureP2, X, Y)
+    constructor(scene, name, size, texture, textureP1, textureP2, X, Y, pieceModel)
     {
         super(scene);
 
@@ -17,7 +17,8 @@ class Piece extends CGFobject
 
         this.pins = [];
 
-        this.struct = new Box(scene, this.size, this.size, 0.2);
+        this.blended = pieceModel ? true:false;
+        this.struct = pieceModel || new Box(scene, this.size, this.size, 0.2);
 
         this.def = new CGFappearance(this.scene);
         this.def.setAmbient(1,1,1,1);
@@ -116,11 +117,18 @@ class Piece extends CGFobject
             this.scene.popMatrix();
         }
 
-        this.scene.pushMatrix();
+        this.scene.pushMatrix();        
             this.def.setTexture(this.texture);
             this.def.apply();
+
+            if(this.blended)
+            {
+                this.scene.scale(this.size,this.size,0.5); 
+                this.scene.translate(this.size -0.15,this.size -0.15,0.41);
+            }
             if(!this.captured) this.scene.registerForPick(this.name.charCodeAt(1), this.struct);
-            this.struct.display();
+            if(this.struct.loaded)
+                this.struct.display();
         this.scene.popMatrix();
     };
         

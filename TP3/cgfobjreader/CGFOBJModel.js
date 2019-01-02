@@ -17,6 +17,7 @@ class CGFOBJModel extends CGFobject {
 		super(scene);
 		
 		this.url = url;
+		this.loaded = false;
 		
 		// false for triangles, true for lines (wireframe)
 		this.wireframe = wireframe || false;
@@ -155,6 +156,8 @@ class CGFOBJModel extends CGFobject {
 		
 		if (this.texCoords.length==0)
 			this.texCoords=null;
+
+		this.loaded = true;
 			
 		if (!this.wireframe)
 			this.primitiveType = this.scene.gl.TRIANGLES;

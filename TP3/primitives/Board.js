@@ -16,6 +16,7 @@ class Board extends CGFobject
         this.textureSelected = textureSelected;
 
         this.clock = new Clock(scene, this);
+        this.pieceModel = new CGFOBJModel(scene, "cgfobjreader/models/piece.obj");
 
         this.spaces = [];
         this.pieces = [];
@@ -163,11 +164,11 @@ class Board extends CGFobject
             if(i < this.npartsX)
                 this.pieces.push(new Piece(this.scene, "p" + (i+1), this.pieceSize, this.texturePiece1, this.textureP1, this.textureP2,
                                             0.35 - (this.capturedCount % this.npartsX) * this.squareSize - (this.capturedCount >= this.npartsX ?  0.0 : 0.03), 
-                                            (this.capturedCount >= this.npartsX ?  0.075 : -0.06) - 0.75));
+                                            (this.capturedCount >= this.npartsX ?  0.075 : -0.06) - 0.75, this.pieceModel));
             else
                 this.pieces.push(new Piece(this.scene, "p" + String.fromCharCode(65 - this.npartsX + i), this.pieceSize, this.texturePiece2, this.textureP1, this.textureP2,                                            
                                             0.35 - (this.capturedCount % this.npartsX) * this.squareSize - (this.capturedCount >= this.npartsX ?  0.0 : 0.03), 
-                                            (this.capturedCount >= this.npartsX ?  0.075 : -0.06) - 0.75));
+                                            (this.capturedCount >= this.npartsX ?  0.075 : -0.06) - 0.75, this.pieceModel));
         
             this.capturedCount++;
             this.pieces[i].captured = true;
@@ -606,7 +607,7 @@ class Board extends CGFobject
 
     endGame()
     {        
-        this.scene.cameraAnimation = new CameraAnimation(1000, this.board.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
+        this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
         this.playing = false;
         this.clock.disable();
     };
