@@ -706,7 +706,7 @@ class Board extends CGFobject
                         }
                         
                         this.indexVideoMoves++;                        
-                        return;
+                        break;
                     }
                     else if(this.pieces[i].isMoving)
                     {
