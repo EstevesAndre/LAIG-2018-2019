@@ -83,5 +83,11 @@ class MyInterface extends CGFinterface {
             this.scene.playVideo();
         else if(event.code == "KeyU")
             this.scene.Undo();
+        else if(event.code == "KeyN")
+            this.scene.New_Game();
+        else if(event.code == "Digit1" || event.code == "Numpad1")
+            this.scene.Current_Graph = this.scene.graphs[0].name;
+        else if(event.code == "Digit2" || event.code == "Numpad2")
+            this.scene.Current_Graph = this.scene.graphs[1].name;
 	};
 }
