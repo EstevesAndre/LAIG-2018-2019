@@ -50,6 +50,8 @@
         <texture id="dirt" file="images/dirt.jpg" />
         <texture id="pink_flower" file="images/pink_flower.png" />
         <texture id="blue_flower" file="images/blue_flower.png" />
+        <texture id="yellow_flower" file="images/yellow_flower.png" />
+        <texture id="fence" file="images/fence.png" />
 
     </textures>
 
@@ -87,6 +89,10 @@
 
         <primitive id="window">
             <rectangle x1="-4.0" y1="2.0" x2="4.0" y2="6.0"/>
+        </primitive>
+
+        <primitive id="fence">
+            <rectangle x1="-6.5" y1="0.0" x2="0.5" y2="8.0"/>
         </primitive>
 
         <primitive id="door">
@@ -142,6 +148,7 @@
                 <componentref id="walls" />
                 <componentref id="ceiling" />
                 <componentref id="window" />
+                <componentref id="fence" />
                 <componentref id="door" />
                 <componentref id="lamp_ceiling" />
                 <componentref id="table_center" />
@@ -890,6 +897,227 @@
                 <translate x="0.7" y="0.0" z="2.5"/>
                 <scale x="0.2" y="0.2" z="0.2"/>
                 <rotate axis="z" angle="180"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="fence">
+            <transformation>
+                <rotate axis="y" angle="-90"/>
+                <translate x="0.0" y="0" z="-9.9"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="fence" length_s="4" length_t="4" />
+
+            <children>
+                <componentref id="yellow_flowers"/>
+                <componentref id="blue_flowers"/>
+                <componentref id="pink_flowers"/>
+                <primitiveref id="fence"/>
+            </children>
+        </component>
+
+        <component id="yellow_flowers">
+            <transformation>
+                <scale x="0.1" y="0.1" z="0.1"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="yellow_flower" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="yellow_flower_1"/>
+                <componentref id="yellow_flower_2"/>
+                <componentref id="yellow_flower_3"/>
+            </children>
+        </component>
+
+        <component id="yellow_flower_1">
+            <transformation>
+                <translate x="-8.0" y="0.0" z="-20.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="yellow_flower_2">
+            <transformation>
+                <translate x="-48.0" y="0.0" z="-26.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="yellow_flower_3">
+            <transformation>
+                <translate x="-14.0" y="0.0" z="-60.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+         <component id="pink_flowers">
+            <transformation>
+                <scale x="0.1" y="0.1" z="0.1"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="pink_flower" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="pink_flower_1"/>
+                <componentref id="pink_flower_2"/>
+                <componentref id="pink_flower_3"/>
+            </children>
+        </component>
+
+        <component id="pink_flower_1">
+            <transformation>
+                <translate x="-20.0" y="0.0" z="-30.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="pink_flower_2">
+            <transformation>
+                <translate x="-55.0" y="0.0" z="-66.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="pink_flower_3">
+            <transformation>
+                <translate x="-6.0" y="0.0" z="-50.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="blue_flowers">
+            <transformation>
+                <scale x="0.1" y="0.1" z="0.1"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="blue_flower" length_s="1" length_t="1" />
+
+            <children>
+                <componentref id="blue_flower_1"/>
+                <componentref id="blue_flower_2"/>
+                <componentref id="blue_flower_3"/>
+            </children>
+        </component>
+
+        <component id="blue_flower_1">
+            <transformation>
+                <translate x="-30.0" y="0.0" z="-10.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="blue_flower_2">
+            <transformation>
+                <translate x="-25.0" y="0.0" z="-70.0"/>
+            </transformation>
+
+            <materials>
+                <material id="default" />
+            </materials>
+
+            <texture id="inherit" length_s="1" length_t="1" />
+
+            <children>
+                <primitiveref id="plant"/>
+            </children>
+        </component>
+
+        <component id="blue_flower_3">
+            <transformation>
+                <translate x="-45.0" y="0.0" z="-45.0"/>
             </transformation>
 
             <materials>
