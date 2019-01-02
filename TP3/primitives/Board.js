@@ -35,35 +35,6 @@ class Board extends CGFobject
         this.moves = [];
         this.undoing = false;
 
-        // this.moves = [
-        //     {type: "piece", name: "p3", X: 2, Y: 3, oldX: 1, oldY: 3},
-        //     {type: "pin", name: "p4", X: 0, Y: 0, oldX: null, oldY: null},
-        //     {type: "pin", name: "p3", X: 0, Y: 2, oldX: null, oldY: null},
-        //     {type: "piece", name: "pE", X: 5, Y: 5, oldX: 6, oldY: 5},
-        //     {type: "pin", name: "pC", X: 4, Y: 2, oldX: null, oldY: null},
-        //     {type: "pin", name: "pD", X: 4, Y: 1, oldX: null, oldY: null},
-        //     {type: "piece", name: "p5", X: 2, Y: 5, oldX: 1, oldY: 5},
-        //     {type: "pin", name: "p5", X: 0, Y: 2, oldX: null, oldY: null},
-        //     {type: "pin", name: "p5", X: 0, Y: 1, oldX: null, oldY: null},
-        //     {type: "piece", name: "pE", X: 4, Y: 5, oldX: 5, oldY: 5},
-        //     {type: "pin", name: "pD", X: 4, Y: 3, oldX: null, oldY: null},
-        //     {type: "pin", name: "pD", X: 4, Y: 2, oldX: null, oldY: null},
-        //     {type: "capture", name: "pE", X: 4, Y: 5, oldX: -0.15000000000000002, oldY: 0.3166666},
-        //     {type: "piece", name: "p5", X: 4, Y: 5, oldX: 2, oldY: 5},
-        //     {type: "pin", name: "p5", X: 2, Y: 0, oldX: null, oldY: null},
-        //     {type: "pin", name: "p5", X: 1, Y: 0, oldX: null, oldY: null},
-        //     {type: "piece", name: "pD", X: 5, Y: 4, oldX: 6, oldY: 4},
-        //     {type: "pin", name: "pD", X: 3, Y: 3, oldX: null, oldY: null},
-        //     {type: "pin", name: "pD", X: 2, Y: 0, oldX: null, oldY: null},
-        //     {type: "piece", name: "p3", X: 4, Y: 3, oldX: 2, oldY: 3},
-        //     {type: "pin", name: "p4", X: 1, Y: 1, oldX: null, oldY: null},
-        //     {type: "pin", name: "p4", X: 0, Y: 1, oldX: null, oldY: null},
-        //     {type: "capture", name: "p5", X: 4, Y: 5, oldX: -0.15000000000000002, oldY: 0.3166666},
-        //     {type: "piece", name: "pD", X: 4, Y: 5, oldX: 5, oldY: 4},
-        //     {type: "pin", name: "pF", X: 4, Y: 2, oldX: null, oldY: null},
-        //     {type: "pin", name: "pB", X: 4, Y: 2, oldX: null, oldY: null}
-        // ];
-
         this.squareSize = (1.0/this.npartsX);
         this.pieceSize = (1.0/this.npartsX) * 0.8;
 

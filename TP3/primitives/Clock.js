@@ -12,6 +12,10 @@ class Clock extends CGFobject {
         this.clockTexture.loadTexture("images/clock.png");
         this.clockTexture.setAmbient(1,1,1,1);
 
+        this.captureTexture = new CGFappearance(this.scene);
+        this.captureTexture.loadTexture("images/capture.png");
+        this.captureTexture.setAmbient(1,1,1,1);
+
         this.texture0 = new CGFappearance(this.scene);
         this.texture0.loadTexture("images/0.png");
         this.texture0.setAmbient(1,1,1,1);
@@ -53,6 +57,7 @@ class Clock extends CGFobject {
         this.texture9.setAmbient(1,1,1,1);
 
         this.clockPlane = new Rectangle(scene, 0, 0, 8.49, 2.56);
+        this.capturePlane = new Rectangle(scene, 0, 0, 3.55, 2.56);
 
         this.digit = new Rectangle(scene, 0, 0, 1.40, 2.16);
 
@@ -94,6 +99,20 @@ class Clock extends CGFobject {
             this.scene.translate(-4.2, 16.6, 0.1);
             this.clockPlane.display();      
         this.scene.popMatrix();  
+
+        this.scene.pushMatrix();
+            this.captureTexture.apply();
+            this.scene.scale(0.03, 0.03, 0.03);
+            this.scene.translate(-8.4, 16.6, 0.1);
+            this.capturePlane.display();      
+        this.scene.popMatrix(); 
+        
+        this.scene.pushMatrix();
+            this.captureTexture.apply();
+            this.scene.scale(-0.03, -0.03, -0.03);
+            this.scene.translate(-8.4, -19.16, 0.2);
+            this.capturePlane.display();      
+        this.scene.popMatrix(); 
 
         if(this.active)
         {
