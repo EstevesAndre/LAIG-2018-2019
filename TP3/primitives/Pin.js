@@ -25,8 +25,9 @@ class Pin extends CGFobject
         
         this.pinSelected = new SelectedSquare(this.scene, (x2 - x1) * 1.05, (x2 - x1) * 0.8);
 
-        this.windowTexture = new CGFappearance(this.scene);
-        this.windowTexture.setAmbient(0,0.2,0.7,1);
+        this.texture = new CGFappearance(this.scene);
+        this.texture.setAmbient(0.2,0.2,0.7,1);
+        this.texture.setSpecular(0.7,0.7,0.9,1);
     };
 
     setPinCode(newPinCode)
@@ -79,7 +80,7 @@ class Pin extends CGFobject
                                     this.y2 + (this.y1-this.y2)/2,
                                     0.1);
                 this.selectionAnimation.apply(this.scene);
-                this.windowTexture.apply();
+                this.texture.apply();
                 this.pinSelected.display();
             this.scene.popMatrix();
         }

@@ -22,14 +22,44 @@
     </ambient>
 
     <lights>
+        <spot id="a" enabled="1" angle="40" exponent="40.0">
+            <location x="3.5" y="5.0" z="3.5" w="1.0" />
+            <target x="0.0" y="2.0" z="0.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </spot>
+
+        <spot id="b" enabled="1" angle="40" exponent="40.0">
+            <location x="-3.5" y="5.0" z="-3.5" w="1.0" />
+            <target x="0.0" y="2.0" z="0.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </spot>
+
+        <spot id="c" enabled="1" angle="40" exponent="40.0">
+            <location x="-3.5" y="5.0" z="3.5" w="1.0" />
+            <target x="0.0" y="2.0" z="0.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </spot>
+
+        <spot id="d" enabled="1" angle="40" exponent="40.0">
+            <location x="-3.5" y="5.0" z="-3.5" w="1.0" />
+            <target x="0.0" y="2.0" z="0.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </spot>
 
         <omni id="center" enabled="1">            
             <location x="0.0" y="7.5" z="0.0" w="1.0" />
-            <ambient r="0.75" g="0.75" b="0.4" a="1.0" />
-            <diffuse r="0.75" g="0.75" b="0.4" a="1.0"  />
-            <specular r="0.75" g="0.75" b="0.4" a="1.0"  />
+            <ambient r="0.2" g="0.2" b="0.1" a="1.0" />
+            <diffuse r="0.2" g="0.2" b="0.1" a="1.0"  />
+            <specular r="0.2" g="0.2" b="0.1" a="1.0"  />
         </omni>
-
     </lights>
 
     <textures>
