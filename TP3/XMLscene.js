@@ -59,11 +59,11 @@ class XMLscene extends CGFscene {
         // Reads the lights from the scene graph.
         for (var key in this.graph.lights) {
             if (i >= 8)
-                break;              // Only eight lights allowed by WebGL.
+                break;             // Only eight lights allowed by WebGL.
 
             if (this.graph.lights.hasOwnProperty(key)) {
                 var light = this.graph.lights[key];
-
+                
                 //lights are predefined in cgfscene
                 this.lights[i].setPosition(light.location.x, light.location.y, light.location.z, light.location.w);
                 this.lights[i].setAmbient(light.ambient.r, light.ambient.g, light.ambient.b, light.ambient.a);
@@ -72,8 +72,8 @@ class XMLscene extends CGFscene {
 
                 if(light.type == "spot")
                 {
-                    this.lights[i].setSpotCutOff(light.angle);
-                    this.lights[i].setSpotExponent(light.exponent);
+                    this.lights[i].setSpotCutOff(parseInt(light.angle,10));
+                    this.lights[i].setSpotExponent(parseInt(light.exponent,10));
                     this.lights[i].setSpotDirection(light.target.x - light.location.x, light.target.y - light.location.y, light.target.z - light.location.z);
                 }
                 
@@ -90,7 +90,6 @@ class XMLscene extends CGFscene {
                 }
 
                 this.lights[i].update();
-
                 i++;
             }
         }
@@ -118,6 +117,10 @@ class XMLscene extends CGFscene {
 
             this.New_Game = function() {
                 this.currentBoard.newGame(this.Mode, this.Difficulty, this.time_to_play);
+            };
+
+            this.Quit_Game = function(){
+                this.currentBoard.quitGame();
             };
 
             this.Undo = function() {
