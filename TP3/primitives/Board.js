@@ -578,6 +578,12 @@ class Board extends CGFobject
         this.secondIndex = null;
     };
 
+    quitGame()
+    {
+        this.resetPieceCoords('pieceHolder');
+        this.endGame();
+    }
+
     endGame()
     {        
         this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(12, 7.5, 12), vec3.fromValues(0.0, 4.0, 0.0));
@@ -695,12 +701,12 @@ class Board extends CGFobject
             case P1_CHOOSE_MOVE:
             case P1_IS_GAME_OVER:
             case P1_GAME_OVER_RESPONSE:                        
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 11, 0), vec3.fromValues(-1.5, 0.0, 0.0));
                 break;
             case P1_CHOOSE_PIN_1:
             case P1_CHOOSE_PIN_2:
                 this.setPinsSelectable('x');
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 11, 0), vec3.fromValues(-1.5, 0.0, 0.0));
                 break;
             case P2_CHOOSE_PIECE:                        
                 this.setPieceSelectable('pA');                        
@@ -710,18 +716,18 @@ class Board extends CGFobject
             case P2_CHOOSE_MOVE:
             case P2_IS_GAME_OVER:
             case P2_GAME_OVER_RESPONSE:
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 11, 0), vec3.fromValues(1.5, 0.0, 0.0));
                 break;
             case P2_CHOOSE_PIN_1:
             case P2_CHOOSE_PIN_2:
                 this.setPinsSelectable('o');
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 11, 0), vec3.fromValues(1.5, 0.0, 0.0));
                 break;
             case this.Player1 == "AI" && this.Player2 == "HUMAN":
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 10, 0), vec3.fromValues(1.0, 0.0, 0.0));
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(-5, 11, 0), vec3.fromValues(1.5, 0.0, 0.0));
                 break;
             case this.Player2 == "AI" && this.Player1 == "HUMAN":
-                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 10, 0), vec3.fromValues(-1.0, 0.0, 0.0));
+                this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(5, 11, 0), vec3.fromValues(-1.5, 0.0, 0.0));
                 break;
             default:
                 this.scene.cameraAnimation = new CameraAnimation(1000, this.scene.camera, vec3.fromValues(0, 10, 9), vec3.fromValues(0.0, 0.0, -3.0));

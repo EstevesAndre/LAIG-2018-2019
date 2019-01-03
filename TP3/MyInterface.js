@@ -85,6 +85,8 @@ class MyInterface extends CGFinterface {
             this.scene.Undo();
         else if(event.code == "KeyN")
             this.scene.New_Game();
+        else if(event.code == "KeyQ")
+            this.scene.Quit_Game();
         else if(event.code == "Digit1" || event.code == "Numpad1")
             this.scene.Current_Graph = this.scene.graphs[0].name;
         else if(event.code == "Digit2" || event.code == "Numpad2")
