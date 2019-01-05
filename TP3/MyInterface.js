@@ -57,17 +57,17 @@ class MyInterface extends CGFinterface {
 
     addNewGameButton()
     {
-        this.gui.add(this.scene, 'New_Game').name("New Game");
+        this.gui.add(this.scene, 'New_Game').name("(N) New Game");
     }
 
     addUndoButton()
     {
-        this.gui.add(this.scene, 'Undo');
+        this.gui.add(this.scene, 'Undo').name("(U) Undo");
     }
 
     addFilmButton()
     {
-        this.gui.add(this.scene, 'game_film').name("Game Film");
+        this.gui.add(this.scene, 'game_film').name("(V) Game Film");
     }
 
     initKeys()
